@@ -15,6 +15,24 @@
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
     <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
+
+  <resultMap id="QueryResultMap" type="com.loki.sass.common.dto.ZoneDTO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="town" jdbcType="VARCHAR" property="town" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+    <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -312,4 +330,25 @@
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParam" resultMap="QueryResultMap">
+    select z.*,ac.real_name as create_by_name,au.real_name as update_by_name from zone z
+    left join admin ac on ac.id=z.create_by
+    left join admin au on au.id=z.update_by
+    <where>
+      z.is_deleted=0
+      <if test="name!=null and name!=''">
+        and z.name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="createByName!=null and createByName!=''">
+        and ac.real_name like CONCAT('%',#{createByName},'%')
+      </if>
+      <if test="updateByName!=null and updateByName!=''">
+        and au.real_name like CONCAT('%',#{updateByName},'%')
+      </if>
+      <if test="state!=null and state!=0">
+        and z.state=#{state}
+      </if>
+    </where>
+  </select>
 </mapper>
