@@ -56,7 +56,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
         return or(
                 regex("/login/adminLogin"),
                 regex("/login/adminLoginOut"),
-                regex("/admin/.*")
+                regex("/admin/.*"),
+                regex("/zone/.*")
         );
     }
 

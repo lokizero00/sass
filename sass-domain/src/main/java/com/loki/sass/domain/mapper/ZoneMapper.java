@@ -1,5 +1,6 @@
 package com.loki.sass.domain.mapper;
 
+import com.loki.sass.domain.po.ZonePO;
 import com.loki.sass.domain.model.Zone;
 import com.loki.sass.domain.model.ZoneExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface ZoneMapper {
     int updateByPrimaryKeySelective(Zone record);
 
     int updateByPrimaryKey(Zone record);
+
+    List<ZonePO> selectByParam(@Param("name") String name, @Param("createByName") String createByName, @Param("updateByName") String updateByName, @Param("state") Integer state);
 }
