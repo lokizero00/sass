@@ -16,7 +16,7 @@
     <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
 
-  <resultMap id="QueryResultMap" type="com.loki.sass.common.dto.ZoneDTO">
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.ZonePO">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="nation" jdbcType="VARCHAR" property="nation" />
