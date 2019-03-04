@@ -30,4 +30,6 @@ public interface ZoneMapper {
     int updateByPrimaryKey(Zone record);
 
     List<ZonePO> selectByParam(@Param("name") String name, @Param("createByName") String createByName, @Param("updateByName") String updateByName, @Param("state") Integer state);
+
+    int checkName(@Param("name") String name);
 }

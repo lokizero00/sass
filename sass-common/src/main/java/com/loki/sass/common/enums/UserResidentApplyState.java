@@ -5,11 +5,11 @@ package com.loki.sass.common.enums;
  */
 public enum UserResidentApplyState {
     //待审核
-    VERIFY(0),
+    VERIFY(1),
     //生效
-    USING(1),
+    USING(2),
     //失效
-    FORBIDDEN(2);
+    FORBIDDEN(3);
 
     private Integer value;
 

@@ -3,7 +3,7 @@ package com.loki.sass.common.enums;
 /**
  * created by lokizero00 on 2019-02-17
  */
-public enum UserState {
+public enum ZoneState {
     //禁用
     FORBIDDEN(-1),
     //启用
@@ -11,13 +11,13 @@ public enum UserState {
 
     private Integer value;
 
-    UserState(Integer value) {
+    ZoneState(Integer value) {
         this.value = value;
     }
-    public static UserState fromValue(Integer value) {
-        for (UserState userState : UserState.values()) {
-            if (userState.getValue().equals(value)) {
-                return userState;
+    public static ZoneState fromValue(Integer value) {
+        for (ZoneState zoneState : ZoneState.values()) {
+            if (zoneState.getValue().equals(value)) {
+                return zoneState;
             }
         }
         return null;

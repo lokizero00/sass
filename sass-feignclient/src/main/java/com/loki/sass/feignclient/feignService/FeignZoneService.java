@@ -2,6 +2,7 @@ package com.loki.sass.feignclient.feignService;
 
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.ZoneDTO;
+import com.loki.sass.common.exception.BizException;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,5 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-zone")
 public interface FeignZoneService {
     @RequestMapping(method = RequestMethod.POST, value = "/zone/v1/getZoneListSearch")
-    PageInfo<ZoneDTO> getZoneListSearch(@RequestParam("zoneQueryJson") String zoneQueryJson);
+    PageInfo<ZoneDTO> getZoneListSearch(@RequestParam("zoneQueryJson") String zoneQueryJson) throws BizException;
+
+    @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/addZone")
+    Boolean addZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
+
+    @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/editZone")
+    Boolean editZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
 }

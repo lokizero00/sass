@@ -10,6 +10,7 @@ import java.util.Date;
  */
 @Data
 public class ZoneRequestVO {
+    private Integer id;
 
     @NotNull(message="小区名称不允许为空")
     private String name;
@@ -23,4 +24,8 @@ public class ZoneRequestVO {
     private String town;
 
     private Integer state;
+
+    private Integer createBy;
+
+    private Integer updateBy;
 }

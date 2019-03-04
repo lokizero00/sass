@@ -5,11 +5,11 @@ package com.loki.sass.common.enums;
  */
 public enum VisitorApplyState {
     //待审核
-    VERIFY(0),
+    VERIFY(1),
     //通过
-    PASS(1),
+    PASS(2),
     //拒绝
-    REFUSE(2);
+    REFUSE(3);
 
     private Integer value;
 

@@ -5,9 +5,9 @@ package com.loki.sass.common.enums;
  */
 public enum UserType {
     //用户
-    RESIDENT(1),
+    RESIDENT(2),
     //访客
-    VISITOR(2);
+    VISITOR(3);
 
     private Integer value;
 

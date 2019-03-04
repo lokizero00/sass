@@ -351,4 +351,8 @@
       </if>
     </where>
   </select>
+
+  <select id="checkName" parameterType="String" resultType="Integer">
+    select count(id) from zone where is_deleted=0 and name=#{name}
+  </select>
 </mapper>

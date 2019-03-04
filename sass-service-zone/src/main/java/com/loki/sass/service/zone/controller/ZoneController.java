@@ -5,6 +5,7 @@ import com.loki.sass.common.dto.ZoneDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.vo.ZoneQueryVO;
+import com.loki.sass.common.vo.ZoneRequestVO;
 import com.loki.sass.service.zone.api.ZoneService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,17 @@ public class ZoneController {
     public PageInfo<ZoneDTO> getZoneListSearch(@RequestParam String zoneQueryJson) throws BizException {
         ZoneQueryVO zoneQueryVO= JsonUtils.jsonToObject(zoneQueryJson,ZoneQueryVO.class);
         return zoneService.getZoneListSearch(zoneQueryVO);
+    }
+
+    @RequestMapping(value = "v1/addZone",method = RequestMethod.POST)
+    public Boolean addZone(@RequestParam String zoneRequestStr) throws BizException {
+        ZoneRequestVO zoneRequestVO= JsonUtils.jsonToObject(zoneRequestStr,ZoneRequestVO.class);
+        return zoneService.addZone(zoneRequestVO);
+    }
+
+    @RequestMapping(value = "v1/editZone",method = RequestMethod.POST)
+    public Boolean editZone(@RequestParam String zoneRequestStr) throws BizException {
+        ZoneRequestVO zoneRequestVO= JsonUtils.jsonToObject(zoneRequestStr,ZoneRequestVO.class);
+        return zoneService.editZone(zoneRequestVO);
     }
 }
