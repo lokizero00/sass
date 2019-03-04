@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.loki.sass.domain.mapper.VisitorApplyMapper">
+  <resultMap id="BaseResultMap" type="com.loki.sass.domain.model.VisitorApply">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="visitor_name" jdbcType="VARCHAR" property="visitorName" />
+    <result column="visitor_phone" jdbcType="VARCHAR" property="visitorPhone" />
+    <result column="visitor_user_id" jdbcType="INTEGER" property="visitorUserId" />
+    <result column="region_id" jdbcType="INTEGER" property="regionId" />
+    <result column="interviewee_id" jdbcType="INTEGER" property="intervieweeId" />
+    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="visiting_time" jdbcType="TIMESTAMP" property="visitingTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, visitor_name, visitor_phone, visitor_user_id, region_id, interviewee_id, purpose, 
+    create_time, update_time, visiting_time, state
+  </sql>
+  <select id="selectByExample" parameterType="com.loki.sass.domain.model.VisitorApplyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from visitor_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from visitor_apply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from visitor_apply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.loki.sass.domain.model.VisitorApplyExample">
+    delete from visitor_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.VisitorApply" useGeneratedKeys="true">
+    insert into visitor_apply (visitor_name, visitor_phone, visitor_user_id, 
+      region_id, interviewee_id, purpose, 
+      create_time, update_time, visiting_time, 
+      state)
+    values (#{visitorName,jdbcType=VARCHAR}, #{visitorPhone,jdbcType=VARCHAR}, #{visitorUserId,jdbcType=INTEGER}, 
+      #{regionId,jdbcType=INTEGER}, #{intervieweeId,jdbcType=INTEGER}, #{purpose,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{visitingTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.VisitorApply" useGeneratedKeys="true">
+    insert into visitor_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="visitorName != null">
+        visitor_name,
+      </if>
+      <if test="visitorPhone != null">
+        visitor_phone,
+      </if>
+      <if test="visitorUserId != null">
+        visitor_user_id,
+      </if>
+      <if test="regionId != null">
+        region_id,
+      </if>
+      <if test="intervieweeId != null">
+        interviewee_id,
+      </if>
+      <if test="purpose != null">
+        purpose,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="visitingTime != null">
+        visiting_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="visitorName != null">
+        #{visitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPhone != null">
+        #{visitorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorUserId != null">
+        #{visitorUserId,jdbcType=INTEGER},
+      </if>
+      <if test="regionId != null">
+        #{regionId,jdbcType=INTEGER},
+      </if>
+      <if test="intervieweeId != null">
+        #{intervieweeId,jdbcType=INTEGER},
+      </if>
+      <if test="purpose != null">
+        #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitingTime != null">
+        #{visitingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.loki.sass.domain.model.VisitorApplyExample" resultType="java.lang.Long">
+    select count(*) from visitor_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update visitor_apply
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitorName != null">
+        visitor_name = #{record.visitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitorPhone != null">
+        visitor_phone = #{record.visitorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitorUserId != null">
+        visitor_user_id = #{record.visitorUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.intervieweeId != null">
+        interviewee_id = #{record.intervieweeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.purpose != null">
+        purpose = #{record.purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.visitingTime != null">
+        visiting_time = #{record.visitingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update visitor_apply
+    set id = #{record.id,jdbcType=INTEGER},
+      visitor_name = #{record.visitorName,jdbcType=VARCHAR},
+      visitor_phone = #{record.visitorPhone,jdbcType=VARCHAR},
+      visitor_user_id = #{record.visitorUserId,jdbcType=INTEGER},
+      region_id = #{record.regionId,jdbcType=INTEGER},
+      interviewee_id = #{record.intervieweeId,jdbcType=INTEGER},
+      purpose = #{record.purpose,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      visiting_time = #{record.visitingTime,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.loki.sass.domain.model.VisitorApply">
+    update visitor_apply
+    <set>
+      <if test="visitorName != null">
+        visitor_name = #{visitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPhone != null">
+        visitor_phone = #{visitorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorUserId != null">
+        visitor_user_id = #{visitorUserId,jdbcType=INTEGER},
+      </if>
+      <if test="regionId != null">
+        region_id = #{regionId,jdbcType=INTEGER},
+      </if>
+      <if test="intervieweeId != null">
+        interviewee_id = #{intervieweeId,jdbcType=INTEGER},
+      </if>
+      <if test="purpose != null">
+        purpose = #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitingTime != null">
+        visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.loki.sass.domain.model.VisitorApply">
+    update visitor_apply
+    set visitor_name = #{visitorName,jdbcType=VARCHAR},
+      visitor_phone = #{visitorPhone,jdbcType=VARCHAR},
+      visitor_user_id = #{visitorUserId,jdbcType=INTEGER},
+      region_id = #{regionId,jdbcType=INTEGER},
+      interviewee_id = #{intervieweeId,jdbcType=INTEGER},
+      purpose = #{purpose,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,101 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8703
+spring:
+  zipkin:
+    base-url: http://localhost:9211
+  sleuth:
+    sampler:
+      percentage: 0.1
+  application:
+    name: sass-service-payment
+    #集群配置
+    #    cluster:
+    #      nodes: 10.1.8.15:6379,10.1.8.15:6380
+    #      timeout: 5
+    #      max-redirects: 3
+    #哨兵配置
+    #    sentinel:
+    #      master: mymaster
+    #      nodes: 10.1.8.15:26379,10.1.8.15:26380,10.1.8.15:26381
+    #池配置
+    #  pool:
+    #    max-idle: 8
+    #    min-idle: 0
+    #    max-active: 8
+    #    max-wait: 1
+
+
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://47.97.177.45:3306/sass-db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#    username: root
+#    password: QiDaShi20180308@Lk
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    initialSize: 2
+#    minIdle: 0
+#    maxActive: 20
+#    maxWait: 60000
+#    timeBetweenEvictionRunsMillis: 60000
+#    minEvictableIdleTimeMillis: 30000
+#    validationQuery: SELECT 1
+#    testWhileIdle: true
+#    testOnBorrow: false
+#    testOnReturn: true
+#    poolPreparedStatements: false
+#    maxPoolPreparedStatementPerConnectionSize: 20
+#    filters: stat,wall,slf4j
+#    logSlowSql: true
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled: true
+    config:
+      stream:
+        maxConcurrentConnections: 50
+management:
+  security:
+    enabled: false
+logging:
+  file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
+
+system:
+  bill:
+    #支付宝支付
+    aliPay:
+      appId: 2018010601637748
+      appPrivateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCS0s8ozl9q5VOxIX2/heRvM+HhgSFRCBvAohYFETkGOMwkCN1twIkK9y3XCNtdKiIbg1PGVDDBzKpqhDbJ5jaCusM1hfrCPPnfWi8CjTNA1CGpduFeowR4PfaFW2lz9jeGV82o30DVQ+45Ha9dNdiVNdF/oit4Kn8OMv1D9xDRRLegihaomLHnqmGkrAL6iSTx/WtXQswhuJ9AyGFMFQjBp4MS4kg1DLjhtg8pC72cnWMDVerZDufmP59VIpKxh7/vGWI+l1ONynMJIZ/HIcN2L+kd5nkUEPO/BpVoZ4Vl9QDO5NX0e3a818/XPuWBKl6x3le/ST+DLGuwx+VbWuhLAgMBAAECggEARUy1NMh7pwPJBeEN7lkvIgG2Cu8dH5cZKkoW5Jtlc/dY+2UnxobK6F8UxttKVuXtJVlOMF1Kih6lDROMnK1Ja1jljJzJZ+bJ9c8mQykMWPwHS2puI3IESRDOC9HCq1Y6jPFig+OkQUUH6vOE8xTYPk0hrgGITPaZ88TDX9H8oRj54SQvT7PclQXbbiUrNoBE0F1sGgfYUkdSKcrBUZOxfvL7nyQ7hTU1DO59IxpimFeIRz8kPu841PQZH5WzoBVA03L9K2uVSIIEqoeh+TKyotW+yiqaU0kxxR5dHQ7ozJ0QTq2Ht5jDpw6HSAxvuzx3BzW+gSctxf1sphl01smYYQKBgQDizcYjOMyfCkjDzKT70VitOzqEk+r3r/VrAT4w5gw+pNswLIY0VrqCNaGwkL8rTwg/WYsp7VMHrlkSfXvJ1cgzvTB9p2EnB4/NlUjmXjGhGe+T9lrB0FaMUW2tQbB2HYEmG9SX81/1FvI/c/7tQUejw+lEss2DrrPZvZVkcwvjOwKBgQCluVD8ZobTkj2FerxotlcH7OaRIMdtmzx8CGoT08X6JimdKK8yHyYgHFz7bXVdvImF5HCwzHSH4z8YC+hFPUxBkJzsQDVmAAP3NMPKS1RTAqC76M+Q+x5xePejxZacYjd7XNZwj6HD36lP8kTYmMSLrTENdp3joKuPrZRAViKeMQKBgFIAUiYD8D+ESWC5ieEeBLDFXFf43xhkfxgMH/8v/bdchX86ad9ciBxx5Z7gBq5S6cl1x5IGI2IAkGXWBr6n07WZLoIP1Vl2K3EKC4x2+/yiUvOtO40dlV0wR7Y/rNxXuI0dvNSfgs8rV7THbKE9W/iC6cET4Kg+rvoHyI7D5cVnAoGAJkg3uAZrEMaQZZwjl8C/O/pyjIXY663XfANplaju68kTBdXXGqntYa+Lnxz65qtdzUsm6QBhzt4kvgZKImx1iBPC3CQ88ZIBWIKc08cw9Hf/70hpYmFP+ABsnC1RjFB35oxckOXtBVVORER/uNUZWfapBSYodOOxneAIBhCfsJECgYA1pfalLUEpNZiJjXv+T+IuAg24ajXibKy0r4pIPQm2n2/8BYT2iyVDqY3zkqcOY4qTA/xcRgBQEJO8u5HnIyMotmMmKg+BW2Ll7x+KaYaElMa3mRJGjO0Q/zThahlluaaEpfZCWnkoc9qONkUFlc4N99zdrZwpskC1I+jzenMefQ==
+      appPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAktLPKM5fauVTsSF9v4XkbzPh4YEhUQgbwKIWBRE5BjjMJAjdbcCJCvct1wjbXSoiG4NTxlQwwcyqaoQ2yeY2grrDNYX6wjz531ovAo0zQNQhqXbhXqMEeD32hVtpc/Y3hlfNqN9A1UPuOR2vXTXYlTXRf6IreCp/DjL9Q/cQ0US3oIoWqJix56phpKwC+okk8f1rV0LMIbifQMhhTBUIwaeDEuJINQy44bYPKQu9nJ1jA1Xq2Q7n5j+fVSKSsYe/7xliPpdTjcpzCSGfxyHDdi/pHeZ5FBDzvwaVaGeFZfUAzuTV9Ht2vNfP1z7lgSpesd5Xv0k/gyxrsMflW1roSwIDAQAB
+      aliPayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAllsob038Hf1aXRYsaf6cna3k3ftWRbr8VTvffyvnS9qeJMpQC0te9Lc9CXbI3x4aYLZGLGr5XFzfGxANcMf4Ps6QA9BvTwwvJS+1vpQx6E4Qd8q1T9UOR4JpnnqXoky94ft/QhYBbrm0E0fGlvWL84knI/l4ROmw6iCeeLIxW4Yy1N5VZBwgA0wngktabkvzu/os6AyWUipgeQE+q0gdk5JhZ6R4x8s7GaeBmD/pBMM3Fz08ccz6Q+4ZDuw5Qbdk/gWC4mdD7BHZkPUy0f4ed8gQRtHg083XksIUyYiyVnEWd5h/GCoChWa8/qTxqyr0ro+y4gQQ4/eTF/Jm/FfPiQIDAQAB
+      gatewayUrl: https://openapi.alipay.com/gateway.do
+      notifyUrl: http://47.97.177.45:8085/cabinet/unified/alipay
+      subject: 智慧楼宇
+      PID: 2088921273006329
+    weixinPay:
+      #设置微信公众号的appid
+      appId: wx03c3b224f6650fe8
+      #设置微信小程序的appid
+      miniAppid: wxe9127e69b83a43d9
+      #设置招聘版微信小程序的appid
+      miniRecruitSiteAppid: wxebf1f3c788ef9537
+      #微信支付商户号
+      mchId: 1496894632
+      #微信支付商户密钥
+      mchKey: NsVC4LQ8NLas9MXtTEka2KqPPD2b5jq3
+      #服务商模式下的子商户公众账号ID
+      subAppId:
+      #服务商模式下的子商户号
+      subMchId:
+      #微信支付签名文件路径
+      keyPath: /Users/daer/webdata/weixin/qidashi/apiclient_cert.p12
+      #回调地址
+      notifyUrl: http://47.97.177.45:8085/payNotify/unified/wxpay
+      appSecret: 08933835002d9a767aee303e4230dbeb
+      miniSecret: 0c78276b44031e39579b3086946a14f1
+      miniRecruitSiteSecret: 0a1210ed2584ef4ced650197a652ca0c

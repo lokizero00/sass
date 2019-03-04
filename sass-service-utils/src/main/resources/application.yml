@@ -1,0 +1,75 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8702
+spring:
+  zipkin:
+    base-url: http://localhost:9211
+  sleuth:
+    sampler:
+      percentage: 0.1
+  application:
+    name: sass-service-utils
+  redis:
+    host: 47.97.177.45
+    port: 6379
+    database: 2
+    timeout: 0
+    password: Xuanyou901595@
+    #集群配置
+    #    cluster:
+    #      nodes: 10.1.8.15:6379,10.1.8.15:6380
+    #      timeout: 5
+    #      max-redirects: 3
+    #哨兵配置
+    #    sentinel:
+    #      master: mymaster
+    #      nodes: 10.1.8.15:26379,10.1.8.15:26380,10.1.8.15:26381
+    #池配置
+    #  pool:
+    #    max-idle: 8
+    #    min-idle: 0
+    #    max-active: 8
+    #    max-wait: 1
+
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled: true
+    config:
+      stream:
+        maxConcurrentConnections: 50
+management:
+  security:
+    enabled: false
+logging:
+  file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
+
+system:
+  common:
+    #短信发送间隔时间(单位秒)
+    sms-duration: 60
+    #用户一天发送短信最大条数
+    sms-today-limit: 30
+    #短信有效期(单位秒)
+    sms-valid-time: 1800
+  api:
+    token:
+      #token密钥
+      app-secret: 63YUQdYDOazpqQ34aTJHolDGBpskBY
+      #token签名
+      app-issuer: sass
+
+#   sftp 配置
+sftp:
+  port: 22
+  authimage:
+    host: 47.97.196.211
+    username: root
+    password: Lj1987320125@
+    serverpath: /opt/images/authImage

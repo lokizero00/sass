@@ -1,0 +1,86 @@
+eureka:
+  client:
+    instance:
+      leaseRenewalIntervalInSeconds: 10
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8769
+  tomcat:
+    max-threads: 128
+    min-spare-threads: 64
+spring:
+  application:
+    name: sass-zuul
+  zipkin:
+    base-url: http://localhost:9211
+  sleuth:
+    sampler:
+      percentage: 0.1
+zuul:
+  max:
+    host:
+      connections: 500
+  host:
+    maxTotalConnections: 200
+    maxPerRouteConnections: 20
+  routes:
+#    service-login:
+#      path: /service-login/**
+#      serviceId: sass-service-login
+#      stripPrefix: true
+#      sensitiveHeaders:
+    service-web:
+      path: /service-web/**
+      serviceId: sass-service-web
+      stripPrefix: true
+      sensitiveHeaders:
+    service-resident:
+      path: /service-resident/**
+      serviceId: sass-service-resident
+      stripPrefix: true
+      sensitiveHeaders:
+  ribbonIsolationStrategy: THREAD
+  threadPool:
+    useSeparateThreadPools: true
+ribbon:
+  okhttp:
+    enabled: true
+  httpclient:
+    max-connections: 200 # 默认值
+    max-connections-per-route: 50 # 默认值
+  eager-load:
+    enabled: true
+hystrix:
+  enabled: false
+  config:
+    stream:
+      maxConcurrentConnections: 50
+  command:
+    default:
+      execution:
+        strategy: THREAD          # SEMAPHORE/THREAD
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
+service-blogs:
+  ribbon:
+    ReadTimeout: 3000
+    ConnectTimeout: 3000
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+service-order:
+  ribbon:
+    ReadTimeout: 3000
+    ConnectTimeout: 3000
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+
+management:
+  security:
+    enabled: false
+logging:
+  file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log

@@ -1,0 +1,77 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8705
+spring:
+  zipkin:
+    base-url: http://localhost:9211
+  sleuth:
+    sampler:
+      percentage: 0.1
+  application:
+    name: sass-service-manager
+  redis:
+    host: 47.97.177.45
+    port: 6379
+    database: 2
+    timeout: 0
+    password: Xuanyou901595@
+    #集群配置
+    #    cluster:
+    #      nodes: 10.1.8.15:6379,10.1.8.15:6380
+    #      timeout: 5
+    #      max-redirects: 3
+    #哨兵配置
+    #    sentinel:
+    #      master: mymaster
+    #      nodes: 10.1.8.15:26379,10.1.8.15:26380,10.1.8.15:26381
+    #池配置
+    #  pool:
+    #    max-idle: 8
+    #    min-idle: 0
+    #    max-active: 8
+    #    max-wait: 1
+
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://47.97.177.45:3306/sass-db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: QiDaShi20180308@Lk
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 2
+    minIdle: 0
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: true
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,slf4j
+    logSlowSql: true
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled: true
+    config:
+      stream:
+        maxConcurrentConnections: 50
+management:
+  security:
+    enabled: false
+logging:
+  file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
+
+system:
+  swagger:
+    enable: true
+    api-host: localhost:${server.port}

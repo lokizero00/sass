@@ -1,0 +1,22 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 7088
+spring:
+  application:
+    name: sass-admin
+  boot:
+    admin:
+      turbine:
+        enabled: true
+        clusters: SASS-ZUUL,SASS-ZIPKIN,SASS-SERVICE-WEB,SASS-SERVICE-MANAGER,SASS-SERVICE-SYSCONFIG
+        location: sass-turbine
+management:
+  security:
+    enabled: false
+info:
+  version: ${project.version}
+logging:
+  file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log

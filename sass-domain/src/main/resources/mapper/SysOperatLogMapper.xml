@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.loki.sass.domain.mapper.SysOperatLogMapper">
+  <resultMap id="BaseResultMap" type="com.loki.sass.domain.model.SysOperatLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+    <result column="ip_addr" jdbcType="VARCHAR" property="ipAddr" />
+    <result column="action_url" jdbcType="VARCHAR" property="actionUrl" />
+    <result column="sub_module" jdbcType="VARCHAR" property="subModule" />
+    <result column="module" jdbcType="VARCHAR" property="module" />
+    <result column="mean" jdbcType="VARCHAR" property="mean" />
+    <result column="function" jdbcType="VARCHAR" property="function" />
+    <result column="sub_function" jdbcType="VARCHAR" property="subFunction" />
+    <result column="param_data" jdbcType="VARCHAR" property="paramData" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, user_name, user_mobile, ip_addr, action_url, sub_module, module, mean, 
+    function, sub_function, param_data, create_time, memo
+  </sql>
+  <select id="selectByExample" parameterType="com.loki.sass.domain.model.SysOperatLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_operat_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_operat_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_operat_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.loki.sass.domain.model.SysOperatLogExample">
+    delete from sys_operat_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.SysOperatLog" useGeneratedKeys="true">
+    insert into sys_operat_log (user_id, user_name, user_mobile, 
+      ip_addr, action_url, sub_module, 
+      module, mean, function, 
+      sub_function, param_data, create_time, 
+      memo)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, 
+      #{ipAddr,jdbcType=VARCHAR}, #{actionUrl,jdbcType=VARCHAR}, #{subModule,jdbcType=VARCHAR}, 
+      #{module,jdbcType=VARCHAR}, #{mean,jdbcType=VARCHAR}, #{function,jdbcType=VARCHAR}, 
+      #{subFunction,jdbcType=VARCHAR}, #{paramData,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.SysOperatLog" useGeneratedKeys="true">
+    insert into sys_operat_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userMobile != null">
+        user_mobile,
+      </if>
+      <if test="ipAddr != null">
+        ip_addr,
+      </if>
+      <if test="actionUrl != null">
+        action_url,
+      </if>
+      <if test="subModule != null">
+        sub_module,
+      </if>
+      <if test="module != null">
+        module,
+      </if>
+      <if test="mean != null">
+        mean,
+      </if>
+      <if test="function != null">
+        function,
+      </if>
+      <if test="subFunction != null">
+        sub_function,
+      </if>
+      <if test="paramData != null">
+        param_data,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobile != null">
+        #{userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddr != null">
+        #{ipAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUrl != null">
+        #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="subModule != null">
+        #{subModule,jdbcType=VARCHAR},
+      </if>
+      <if test="module != null">
+        #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="mean != null">
+        #{mean,jdbcType=VARCHAR},
+      </if>
+      <if test="function != null">
+        #{function,jdbcType=VARCHAR},
+      </if>
+      <if test="subFunction != null">
+        #{subFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="paramData != null">
+        #{paramData,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.loki.sass.domain.model.SysOperatLogExample" resultType="java.lang.Long">
+    select count(*) from sys_operat_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_operat_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userMobile != null">
+        user_mobile = #{record.userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ipAddr != null">
+        ip_addr = #{record.ipAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionUrl != null">
+        action_url = #{record.actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subModule != null">
+        sub_module = #{record.subModule,jdbcType=VARCHAR},
+      </if>
+      <if test="record.module != null">
+        module = #{record.module,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mean != null">
+        mean = #{record.mean,jdbcType=VARCHAR},
+      </if>
+      <if test="record.function != null">
+        function = #{record.function,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subFunction != null">
+        sub_function = #{record.subFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramData != null">
+        param_data = #{record.paramData,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_operat_log
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_mobile = #{record.userMobile,jdbcType=VARCHAR},
+      ip_addr = #{record.ipAddr,jdbcType=VARCHAR},
+      action_url = #{record.actionUrl,jdbcType=VARCHAR},
+      sub_module = #{record.subModule,jdbcType=VARCHAR},
+      module = #{record.module,jdbcType=VARCHAR},
+      mean = #{record.mean,jdbcType=VARCHAR},
+      function = #{record.function,jdbcType=VARCHAR},
+      sub_function = #{record.subFunction,jdbcType=VARCHAR},
+      param_data = #{record.paramData,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      memo = #{record.memo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.loki.sass.domain.model.SysOperatLog">
+    update sys_operat_log
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobile != null">
+        user_mobile = #{userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddr != null">
+        ip_addr = #{ipAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUrl != null">
+        action_url = #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="subModule != null">
+        sub_module = #{subModule,jdbcType=VARCHAR},
+      </if>
+      <if test="module != null">
+        module = #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="mean != null">
+        mean = #{mean,jdbcType=VARCHAR},
+      </if>
+      <if test="function != null">
+        function = #{function,jdbcType=VARCHAR},
+      </if>
+      <if test="subFunction != null">
+        sub_function = #{subFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="paramData != null">
+        param_data = #{paramData,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.loki.sass.domain.model.SysOperatLog">
+    update sys_operat_log
+    set user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_mobile = #{userMobile,jdbcType=VARCHAR},
+      ip_addr = #{ipAddr,jdbcType=VARCHAR},
+      action_url = #{actionUrl,jdbcType=VARCHAR},
+      sub_module = #{subModule,jdbcType=VARCHAR},
+      module = #{module,jdbcType=VARCHAR},
+      mean = #{mean,jdbcType=VARCHAR},
+      function = #{function,jdbcType=VARCHAR},
+      sub_function = #{subFunction,jdbcType=VARCHAR},
+      param_data = #{paramData,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      memo = #{memo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
