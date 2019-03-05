@@ -23,6 +23,8 @@ public class Property {
 
     private Integer isDeleted;
 
+    private Integer state;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class Property {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 }

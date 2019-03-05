@@ -21,5 +21,9 @@ public abstract class ZoneResultCode {
 	//小区不存在
 	public final static String ZONE_NOT_EXISTS = "zone_0004";
 	//修改小区失败
-	public final static String ZONE_EDIT_ERROR = "zone_0002";
+	public final static String ZONE_EDIT_ERROR = "zone_0005";
+	//小区ID不正确
+	public final static String ZONE_ID_INVALID = "zone_0006";
+	//删除小区失败
+	public final static String ZONE_DELETE_ERROR = "zone_0007";
 }

@@ -3,6 +3,8 @@ package com.loki.sass.domain.mapper;
 import com.loki.sass.domain.model.Property;
 import com.loki.sass.domain.model.PropertyExample;
 import java.util.List;
+
+import com.loki.sass.domain.po.PropertyPO;
 import org.apache.ibatis.annotations.Param;
 
 public interface PropertyMapper {
@@ -27,4 +29,8 @@ public interface PropertyMapper {
     int updateByPrimaryKeySelective(Property record);
 
     int updateByPrimaryKey(Property record);
+
+    int checkName(@Param("name") String name,@Param("zoneId") Integer zoneId);
+
+    List<PropertyPO> selectByParam(@Param("name") String name, @Param("createByName") String createByName, @Param("updateByName") String updateByName,@Param("zoneName") String zoneName,@Param("zoneId") Integer zoneId, @Param("state") Integer state);
 }

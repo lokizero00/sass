@@ -78,12 +78,27 @@ public class ZoneServiceImpl implements ZoneService {
             throw new BizException(ZoneResultCode.ZONE_EDIT_ERROR);
         }
 
-        return false;
+        return true;
     }
 
     @Override
-    public boolean deleteZone(Integer zoneId) throws BizException {
-        return false;
+    public boolean deleteZone(Integer zoneId,Integer adminId) throws BizException {
+        Zone zone=zoneMapper.selectByPrimaryKey(zoneId);
+        if(null==zone){
+            throw new BizException(ZoneResultCode.ZONE_NOT_EXISTS);
+        }
+
+        try{
+            zone.setIsDeleted(1);
+            zone.setUpdateBy(adminId);
+            zone.setUpdateTime(new Date());
+            zoneMapper.updateByPrimaryKeySelective(zone);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new BizException(ZoneResultCode.ZONE_DELETE_ERROR);
+        }
+
+        return true;
     }
 
     @Override

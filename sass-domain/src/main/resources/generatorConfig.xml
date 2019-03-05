@@ -16,9 +16,9 @@
 
         <!--数据库连接 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://47.97.177.45:3306/sass-db?tinyInt1isBit=false"
-                        userId="root"
-                        password="QiDaShi20180308@Lk">
+                        connectionURL="jdbc:mysql://106.14.155.143:3306/sass-db?tinyInt1isBit=false"
+                        userId="test01"
+                        password="Onepercent_01">
         </jdbcConnection>
         <!--默认false
            Java type resolver will always use java.math.BigDecimal if the database column is of type DECIMAL or NUMERIC.
@@ -58,9 +58,9 @@
         <!--<table tableName="permission" domainObjectName="Permission" >-->
             <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
-        <!--<table tableName="property" domainObjectName="Property" >-->
-            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
-        <!--</table>-->
+        <table tableName="property" domainObjectName="Property" >
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
         <!--<table tableName="region" domainObjectName="Region" >-->
             <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
@@ -101,9 +101,9 @@
             <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
 
-        <table tableName="account_journal" domainObjectName="AccountJournal" >
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
+        <!--<table tableName="account_journal" domainObjectName="AccountJournal" >-->
+            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--</table>-->
 
     </context>
 </generatorConfiguration>

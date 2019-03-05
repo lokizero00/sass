@@ -89,7 +89,8 @@ public class ZoneController {
             throw new BizException(message);
         }
 
-        if (zoneRequestVO.getId()<=0){
+        if (zoneRequestVO.getId()<=0
+                || StringUtils.isEmpty(zoneRequestVO.getName())){
             throw new BizException(ZoneResultCode.ZONE_DATA_INVALID);
         }
 
@@ -99,6 +100,27 @@ public class ZoneController {
         ResultDTO result = new ResultDTO<>();
         result.setSuccess(false);
         if(feignZoneService.editZone(JsonUtils.objectToJson(zoneRequestVO))){
+            result.setSuccess(true);
+        }
+        return result;
+    }
+
+    @Operate(value = "删除小区")
+    @CrossOrigin
+    @RequiresPermissions("zoneInfo:delete")//权限管理;
+    @RequestMapping(value = "/oauth2/deleteZone", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<?> deleteZone(@RequestParam("zoneId") final int zoneId)  throws BizException {
+
+        if (zoneId<=0){
+            throw new BizException(ZoneResultCode.ZONE_ID_INVALID);
+        }
+
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+
+        ResultDTO result = new ResultDTO<>();
+        result.setSuccess(false);
+        if(feignZoneService.deleteZone(zoneId,shiroAdmin.getId())){
             result.setSuccess(true);
         }
         return result;

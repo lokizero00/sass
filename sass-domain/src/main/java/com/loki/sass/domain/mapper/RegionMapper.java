@@ -3,6 +3,8 @@ package com.loki.sass.domain.mapper;
 import com.loki.sass.domain.model.Region;
 import com.loki.sass.domain.model.RegionExample;
 import java.util.List;
+
+import com.loki.sass.domain.po.RegionPO;
 import org.apache.ibatis.annotations.Param;
 
 public interface RegionMapper {
@@ -27,4 +29,10 @@ public interface RegionMapper {
     int updateByPrimaryKeySelective(Region record);
 
     int updateByPrimaryKey(Region record);
+
+    List<RegionPO> selectByParentId(@Param("parentId") Integer parentId);
+
+    List<RegionPO> selectByZoneId(@Param("zoneId") Integer zoneId);
+
+    List<RegionPO> selectByPropertyId(@Param("propertyId") Integer propertyId);
 }

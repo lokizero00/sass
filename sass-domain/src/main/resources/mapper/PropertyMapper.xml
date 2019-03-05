@@ -12,6 +12,24 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.PropertyPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="manager_name" jdbcType="VARCHAR" property="managerName" />
+    <result column="manager_phone" jdbcType="VARCHAR" property="managerPhone" />
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time_name" jdbcType="VARCHAR" property="createTimeName" />
+    <result column="update_time_name" jdbcType="VARCHAR" property="updateTimeName" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,7 +91,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, name, manager_name, manager_phone, zone_id, create_by, update_by, create_time, 
-    update_time, is_deleted
+    update_time, is_deleted, state
   </sql>
   <select id="selectByExample" parameterType="com.loki.sass.domain.model.PropertyExample" resultMap="BaseResultMap">
     select
@@ -108,12 +126,12 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.Property" useGeneratedKeys="true">
     insert into property (name, manager_name, manager_phone, 
       zone_id, create_by, update_by, 
-      create_time, update_time, is_deleted
-      )
+      create_time, update_time, is_deleted, 
+      state)
     values (#{name,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, #{managerPhone,jdbcType=VARCHAR}, 
       #{zoneId,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
-      )
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.Property" useGeneratedKeys="true">
     insert into property
@@ -145,6 +163,9 @@
       <if test="isDeleted != null">
         is_deleted,
       </if>
+      <if test="state != null">
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -173,6 +194,9 @@
       </if>
       <if test="isDeleted != null">
         #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -215,6 +239,9 @@
       <if test="record.isDeleted != null">
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -231,7 +258,8 @@
       update_by = #{record.updateBy,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -266,6 +294,9 @@
       <if test="isDeleted != null">
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -279,7 +310,40 @@
       update_by = #{updateBy,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=INTEGER}
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="checkName" parameterType="String" resultType="Integer">
+    select count(id) from property where is_deleted=0 and name=#{name} and zone_id=#{zoneId}
+  </select>
+
+  <select id="selectByParam" resultMap="QueryResultMap">
+    select p.*,pc.real_name as create_by_name,pu.real_name as update_by_name,z.name as zone_name from property p
+    left join admin pc on pc.id=p.create_by
+    left join admin pu on pu.id=p.update_by
+    left join zone z on z.id=p.zone_id
+    <where>
+      p.is_deleted=0
+      <if test="name!=null and name!=''">
+        and p.name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="createByName!=null and createByName!=''">
+        and pc.real_name like CONCAT('%',#{createByName},'%')
+      </if>
+      <if test="updateByName!=null and updateByName!=''">
+        and pu.real_name like CONCAT('%',#{updateByName},'%')
+      </if>
+      <if test="zoneName!=null and zoneName!=''">
+        and z.name like CONCAT('%',#{zoneName},'%')
+      </if>
+      <if test="zoneId!=null and zoneId!=0">
+        and p.zone_id=#{zoneId}
+      </if>
+      <if test="state!=null and state!=0">
+        and p.state=#{state}
+      </if>
+    </where>
+  </select>
 </mapper>

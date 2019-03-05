@@ -42,4 +42,9 @@ public class ZoneController {
         ZoneRequestVO zoneRequestVO= JsonUtils.jsonToObject(zoneRequestStr,ZoneRequestVO.class);
         return zoneService.editZone(zoneRequestVO);
     }
+
+    @RequestMapping(value = "v1/deleteZone",method = RequestMethod.POST)
+    public Boolean deleteZone(@RequestParam Integer zoneId,@RequestParam Integer adminId) throws BizException {
+        return zoneService.deleteZone(zoneId,adminId);
+    }
 }

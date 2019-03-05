@@ -27,4 +27,9 @@ public class Constants {
 
     public static final String ADMIN_PERMS = "shiro:admin:perms:";
 
+    /**
+     * token header
+     */
+    public static final String TOKEN_HEADER = "token";
+
 }

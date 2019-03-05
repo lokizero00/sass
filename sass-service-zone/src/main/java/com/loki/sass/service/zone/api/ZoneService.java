@@ -12,6 +12,6 @@ import com.loki.sass.common.vo.ZoneRequestVO;
 public interface ZoneService {
     boolean addZone(ZoneRequestVO zoneRequestVO) throws BizException;
     boolean editZone(ZoneRequestVO zoneRequestVO) throws BizException;
-    boolean deleteZone(Integer zoneId) throws BizException;
+    boolean deleteZone(Integer zoneId,Integer adminId) throws BizException;
     PageInfo<ZoneDTO> getZoneListSearch(ZoneQueryVO zoneQueryVO) throws BizException;
 }

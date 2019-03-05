@@ -16,6 +16,27 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
+
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.RegionPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="property_id" jdbcType="INTEGER" property="propertyId" />
+    <result column="property_name" jdbcType="VARCHAR" property="propertyName" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="floor" jdbcType="INTEGER" property="floor" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+    <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -329,4 +350,55 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParentId" resultMap="QueryResultMap">
+    SELECT
+      r.*,
+      z.name AS zone_name,
+      p.name AS property_name,
+      ac.real_name AS create_by_name,
+      au.real_name AS update_by_name
+    FROM
+      region r
+        LEFT JOIN zone z ON z.id = r.zone_id
+        LEFT JOIN property p ON p.id = r.property_id
+        LEFT JOIN admin ac ON ac.id = r.create_by
+        LEFT JOIN admin au ON au.id = r.update_by
+    WHERE
+      r.parent_id =#{parentId} and r.is_deleted=0
+  </select>
+
+  <select id="selectByZoneId" resultMap="QueryResultMap">
+    SELECT
+      r.*,
+      z.name AS zone_name,
+      p.name AS property_name,
+      ac.real_name AS create_by_name,
+      au.real_name AS update_by_name
+    FROM
+      region r
+        LEFT JOIN zone z ON z.id = r.zone_id
+        LEFT JOIN property p ON p.id = r.property_id
+        LEFT JOIN admin ac ON ac.id = r.create_by
+        LEFT JOIN admin au ON au.id = r.update_by
+    WHERE
+      r.zone_id =#{zoneId} and r.is_deleted=0 and r.parent_id=0
+  </select>
+
+  <select id="selectByPropertyId" resultMap="QueryResultMap">
+    SELECT
+      r.*,
+      z.name AS zone_name,
+      p.name AS property_name,
+      ac.real_name AS create_by_name,
+      au.real_name AS update_by_name
+    FROM
+      region r
+        LEFT JOIN zone z ON z.id = r.zone_id
+        LEFT JOIN property p ON p.id = r.property_id
+        LEFT JOIN admin ac ON ac.id = r.create_by
+        LEFT JOIN admin au ON au.id = r.update_by
+    WHERE
+      r.property_id =#{propertyId} and r.is_deleted=0 and r.parent_id=0
+  </select>
 </mapper>
