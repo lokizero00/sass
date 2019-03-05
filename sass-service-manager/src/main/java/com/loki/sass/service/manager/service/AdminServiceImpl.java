@@ -100,24 +100,15 @@ public class AdminServiceImpl implements AdminService {
         if(adminVO==null || adminVO.getId()==null){
             throw new NullPointerException("主键id不能为空");
         }
-        AdminDTO instance = selectById(adminVO.getId());
-
-        if(instance==null) {
-            logger.error("[adminService更新记录],待更新记录的主键找不到:{}", adminVO.getId());
-            throw new NullPointerException("待更新的主键找不到");
-        }
-        instance.setUserName(adminVO.getUserName());
-        instance.setRealName(adminVO.getRealName());
-        instance.setAvatarUrl(adminVO.getAvatarUrl());
+        Admin admin = ConvertUtils.sourceToTarget(adminVO, Admin.class);
 
         //重新生成盐值和密码
         String salt = BCrypt.gensalt();
         String password = adminVO.getPassword();
-        instance.setPassword(BCrypt.hashpw(password , salt));
-        instance.setSalt(salt);
+        admin.setPassword(BCrypt.hashpw(password , salt));
+        admin.setSalt(salt);
 
-        Admin admin= ConvertUtils.sourceToTarget(instance,Admin.class);
-        int result = adminMapper.updateByPrimaryKey(admin);
+        int result = adminMapper.updateByPrimaryKeySelective(admin);
         logger.info("[adminService更新记录],参数:{},处理结果result={}",adminVO,result);
         return result;
     }

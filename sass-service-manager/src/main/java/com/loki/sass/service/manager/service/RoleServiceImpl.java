@@ -48,11 +48,8 @@ public class RoleServiceImpl implements RoleService {
         if(roleVO==null || roleVO.getId()==null){
             throw new NullPointerException("角色id为空");
         }
-        Role role = roleMapper.selectByPrimaryKey(roleVO.getId());
-        role.setZoneId(roleVO.getZoneId());
-        role.setRole(roleVO.getRole());
-        role.setDescription(roleVO.getDescription());
-        int result = roleMapper.updateByPrimaryKey(role);
+        Role role = ConvertUtils.sourceToTarget(roleVO, Role.class);
+        int result = roleMapper.updateByPrimaryKeySelective(role);
         logger.info("[roleService更新记录],roleVO={},result={}",roleVO,result);
         return result;
     }

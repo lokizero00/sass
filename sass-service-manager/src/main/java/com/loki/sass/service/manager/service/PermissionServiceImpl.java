@@ -56,14 +56,8 @@ public class PermissionServiceImpl implements PermissionService {
         if(permissionVO==null || permissionVO.getId()==null){
             throw new NullPointerException("权限id为空");
         }
-        Permission permission = permissionMapper.selectByPrimaryKey(permissionVO.getId());
-        permission.setName(permissionVO.getName());
-        permission.setResourceType(permissionVO.getResourceType());
-        permission.setUrl(permissionVO.getUrl());
-        permission.setPermission(permissionVO.getPermission());
-        permission.setParentId(permissionVO.getParentId());
-        permission.setIsRegional(permissionVO.getIsRegional());
-        int result = permissionMapper.updateByPrimaryKey(permission);
+        Permission permission = ConvertUtils.sourceToTarget(permissionVO, Permission.class);
+        int result = permissionMapper.updateByPrimaryKeySelective(permission);
         logger.info("[permissionService更新记录],permissionVO={},result={}",permissionVO,result);
 
         return result;
