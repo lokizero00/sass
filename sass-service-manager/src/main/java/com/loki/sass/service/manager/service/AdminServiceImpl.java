@@ -8,6 +8,7 @@ import com.loki.sass.domain.model.Admin;
 import com.loki.sass.domain.model.AdminExample;
 import com.loki.sass.service.manager.api.AdminService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.List;
  * created by lokizero00 on 2019-02-21
  */
 @Service
+@Slf4j
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
@@ -45,7 +47,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<AdminDTO> findAll() {
-        List<Admin> adminList = adminMapper.findAll();
+        List<Admin> adminList = adminMapper.selectByExample(new AdminExample());
         List<AdminDTO> adminDTOList = ConvertUtils.sourceToTarget(adminList, AdminDTO.class);
         return adminDTOList;
     }
@@ -95,14 +97,14 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Integer update(AdminVO adminVO) {
-        if(adminVO==null || adminVO.getMobile()==null){
-            return 0;
+        if(adminVO==null || adminVO.getId()==null){
+            throw new NullPointerException("主键id不能为空");
         }
-        AdminDTO instance = selectByMobile(adminVO.getMobile());
+        AdminDTO instance = selectById(adminVO.getId());
 
         if(instance==null) {
-            logger.error("[adminService更新记录],待更新记录的手机号找不到:{}", adminVO.getMobile());
-            throw new NullPointerException("手机号找不到");
+            logger.error("[adminService更新记录],待更新记录的主键找不到:{}", adminVO.getId());
+            throw new NullPointerException("待更新的主键找不到");
         }
         instance.setUserName(adminVO.getUserName());
         instance.setRealName(adminVO.getRealName());

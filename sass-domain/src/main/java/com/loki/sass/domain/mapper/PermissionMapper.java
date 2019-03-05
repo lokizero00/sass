@@ -29,4 +29,5 @@ public interface PermissionMapper {
     int updateByPrimaryKey(Permission record);
 
     List<Permission> selectByRoleId(@Param("roleId") Integer roleId);
+
 }

@@ -29,8 +29,4 @@ public interface AdminMapper {
     int updateByPrimaryKey(Admin record);
 
     Admin selectByMobile(@Param("mobile") String mobile);
-
-    int updateByAdmin(Admin admin);
-
-    List<Admin> findAll();
 }
