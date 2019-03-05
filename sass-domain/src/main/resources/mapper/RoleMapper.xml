@@ -88,6 +88,9 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+    <if test="offset!=null &amp;&amp; limit!=null">
+      limit ${offset},${limit}
+    </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -230,7 +233,7 @@
       create_by = #{record.createBy,jdbcType=INTEGER},
       update_by = #{record.updateBy,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />

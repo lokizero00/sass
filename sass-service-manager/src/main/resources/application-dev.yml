@@ -1,3 +1,9 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8705
 spring:
   zipkin:
     base-url: http://localhost:9211
@@ -63,12 +69,11 @@ management:
   security:
     enabled: false
 logging:
-  file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
+  file: D:\logs\spring.log
+  level:
+    com.loki.sass.domain.mapper: debug
 
 system:
   swagger:
     enable: true
     api-host: localhost:${server.port}
-  profiles:
-    #激活的yml文件
-    active: dev

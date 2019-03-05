@@ -11,6 +11,12 @@ public class AdminExample {
 
     protected List<Criteria> oredCriteria;
 
+    //当前页面
+    protected Integer offset;
+
+    //每页显示条数
+    protected Integer limit;
+
     public AdminExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
@@ -62,6 +68,22 @@ public class AdminExample {
         oredCriteria.clear();
         orderByClause = null;
         distinct = false;
+    }
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 
     protected abstract static class GeneratedCriteria {
