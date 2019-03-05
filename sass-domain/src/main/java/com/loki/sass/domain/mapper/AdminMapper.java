@@ -4,7 +4,6 @@ import com.loki.sass.domain.model.Admin;
 import com.loki.sass.domain.model.AdminExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
 
 public interface AdminMapper {
     long countByExample(AdminExample example);
@@ -30,4 +29,8 @@ public interface AdminMapper {
     int updateByPrimaryKey(Admin record);
 
     Admin selectByMobile(@Param("mobile") String mobile);
+
+    int updateByAdmin(Admin admin);
+
+    List<Admin> findAll();
 }
