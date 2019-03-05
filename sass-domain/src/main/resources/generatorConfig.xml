@@ -16,7 +16,7 @@
 
         <!--数据库连接 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://106.14.155.143:3306/sass-db?tinyInt1isBit=false"
+                        connectionURL="jdbc:mysql://39.98.90.27:3306/sass-db?tinyInt1isBit=false"
                         userId="test01"
                         password="Onepercent_01">
         </jdbcConnection>
@@ -58,9 +58,9 @@
         <!--<table tableName="permission" domainObjectName="Permission" >-->
             <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
-        <table tableName="property" domainObjectName="Property" >
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
+        <!--<table tableName="property" domainObjectName="Property" >-->
+            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--</table>-->
         <!--<table tableName="region" domainObjectName="Region" >-->
             <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->

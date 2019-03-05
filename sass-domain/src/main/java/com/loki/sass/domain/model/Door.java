@@ -23,6 +23,8 @@ public class Door {
 
     private Date updateTime;
 
+    private Integer state;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class Door {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 }
