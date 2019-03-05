@@ -40,13 +40,13 @@ public class AdminController {
     }
 
     @RequestMapping(value="v1/deleteById",method = RequestMethod.POST)
-    public void delete(@RequestParam Integer id){
+    public Integer delete(@RequestParam Integer id){
 
-        adminService.deleteById(id);
+        return adminService.deleteById(id);
     }
 
     @RequestMapping(value="v1/findById",method = RequestMethod.POST)
-    public AdminDTO findOne(Integer id){
+    public AdminDTO findOne(@RequestParam Integer id){
         return adminService.selectById(id);
     }
 

@@ -65,6 +65,7 @@ public class PermissionServiceImpl implements PermissionService {
         permission.setIsRegional(permissionVO.getIsRegional());
         int result = permissionMapper.updateByPrimaryKey(permission);
         logger.info("[permissionService更新记录],permissionVO={},result={}",permissionVO,result);
+
         return result;
     }
 

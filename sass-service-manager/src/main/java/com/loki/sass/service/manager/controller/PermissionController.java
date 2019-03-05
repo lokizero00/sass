@@ -26,25 +26,25 @@ public class PermissionController {
     }
 
     @RequestMapping(value= "v1/insert", method = RequestMethod.POST)
-    public Integer insert(String permissionVOJson){
+    public Integer insert(@RequestParam String permissionVOJson){
         PermissionVO permissionVO = JsonUtils.jsonToObject(permissionVOJson, PermissionVO.class);
         return permissionService.insert(permissionVO);
     }
 
     @RequestMapping(value="v1/update",method = RequestMethod.POST)
-    public Integer update(String permissionVOJson){
+    public Integer update(@RequestParam String permissionVOJson){
         PermissionVO permissionVO = JsonUtils.jsonToObject(permissionVOJson, PermissionVO.class);
         return permissionService.update(permissionVO);
     }
 
     @RequestMapping(value="v1/deleteById",method = RequestMethod.POST)
-    public void delete(@RequestParam Integer id){
+    public Integer delete(@RequestParam Integer id){
 
-        permissionService.deleteById(id);
+        return permissionService.deleteById(id);
     }
 
     @RequestMapping(value="v1/findById",method = RequestMethod.POST)
-    public PermissionDTO findOne(Integer id){
+    public PermissionDTO findOne(@RequestParam Integer id){
         return permissionService.selectById(id);
     }
 
