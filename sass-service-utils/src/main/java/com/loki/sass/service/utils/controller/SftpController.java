@@ -1,5 +1,6 @@
 package com.loki.sass.service.utils.controller;
 
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.service.utils.api.SftpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ public class SftpController {
     SftpService sftpService;
 
     @RequestMapping(value = "v1/uploadAuthImageServer",method = RequestMethod.POST)
-    public boolean uploadAuthImageServer(@RequestParam InputStream is, @RequestParam String serverFileName){
-        return sftpService.uploadAuthImageServer(is,serverFileName);
+    public ResultDTO<Boolean> uploadAuthImageServer(@RequestParam InputStream is, @RequestParam String serverFileName){
+        ResultDTO<Boolean> result=new ResultDTO<>();
+        result.setSuccess(sftpService.uploadAuthImageServer(is,serverFileName));
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.loki.sass.service.utils.controller;
 
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.SmsStatus;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.service.utils.api.SmsService;
@@ -20,27 +21,40 @@ public class SmsController {
     SmsService smsService;
 
     @RequestMapping(value = "v1/sendCodeSMS",method = RequestMethod.POST)
-    public boolean sendCodeSMS(@RequestParam String mobile, @RequestParam String randomCode) throws BizException {
-        return smsService.sendCodeSMS(mobile,randomCode);
+    public ResultDTO<Boolean> sendCodeSMS(@RequestParam String mobile, @RequestParam String randomCode) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
+        result.setSuccess(smsService.sendCodeSMS(mobile,randomCode));
+        return result;
     }
 
     @RequestMapping(value = "v1/sendMsg",method = RequestMethod.POST)
-    public boolean sendMsg(@RequestParam String mobile, @RequestParam Map<String, String> map, @RequestParam String templateCode, @RequestParam String str) {
-        return smsService.sendMsg(mobile,map,templateCode,str);
+    public ResultDTO<Boolean> sendMsg(@RequestParam String mobile, @RequestParam Map<String, String> map, @RequestParam String templateCode, @RequestParam String str) {
+        ResultDTO<Boolean> result=new ResultDTO<>();
+        result.setSuccess(smsService.sendMsg(mobile,map,templateCode,str));
+        return result;
     }
 
     @RequestMapping(value = "v1/confirmSmsCaptcha",method = RequestMethod.POST)
-    public String confirmSmsCaptcha(@RequestParam String mobile, @RequestParam String smsCaptcha) {
-        return smsService.confirmSmsCaptcha(mobile,smsCaptcha);
+    public ResultDTO<String> confirmSmsCaptcha(@RequestParam String mobile, @RequestParam String smsCaptcha) {
+        ResultDTO<String> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(smsService.confirmSmsCaptcha(mobile,smsCaptcha));
+        return result;
     }
 
     @RequestMapping(value = "v1/allownSend",method = RequestMethod.POST)
-    public String allownSend(@RequestParam String mobile) throws RuntimeException {
-        return smsService.allownSend(mobile);
+    public ResultDTO<String> allownSend(@RequestParam String mobile) throws RuntimeException {
+        ResultDTO<String> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(smsService.allownSend(mobile));
+        return result;
     }
 
     @RequestMapping(value = "v1/updateSum",method = RequestMethod.POST)
-    public String updateSum(@RequestBody SmsStatus smsStatus) {
-        return smsService.updateSum(smsStatus);
+    public ResultDTO<String> updateSum(@RequestBody SmsStatus smsStatus) {
+        ResultDTO<String> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(smsService.updateSum(smsStatus));
+        return result;
     }
 }

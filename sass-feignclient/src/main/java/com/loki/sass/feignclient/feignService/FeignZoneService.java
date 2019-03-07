@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-zone")
 public interface FeignZoneService {
     @RequestMapping(method = RequestMethod.POST, value = "/zone/v1/getZoneListSearch")
-    ResultDTO<?> getZoneListSearch(@RequestParam("zoneQueryJson") String zoneQueryJson) throws BizException;
+    ResultDTO<PageInfo<ZoneDTO>> getZoneListSearch(@RequestParam("zoneQueryJson") String zoneQueryJson) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/addZone")
-    ResultDTO<?> addZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
+    ResultDTO<Boolean> addZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/editZone")
-    ResultDTO<?> editZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
+    ResultDTO<Boolean> editZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/deleteZone")
-    ResultDTO<?> deleteZone(@RequestParam("zoneId") Integer zoneId,@RequestParam("adminId") Integer adminId) throws BizException;
+    ResultDTO<Boolean> deleteZone(@RequestParam("zoneId") Integer zoneId,@RequestParam("adminId") Integer adminId) throws BizException;
 }

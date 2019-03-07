@@ -2,6 +2,7 @@ package com.loki.sass.service.zone.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.PropertyDTO;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.vo.PropertyQueryVO;
@@ -26,25 +27,34 @@ public class PropertyController {
     PropertyService propertyService;
 
     @RequestMapping(value = "v1/getPropertyListSearch",method = RequestMethod.POST)
-    public PageInfo<PropertyDTO> getPropertyListSearch(@RequestParam String propertyQueryJson) throws BizException {
+    public ResultDTO<PageInfo<PropertyDTO>> getPropertyListSearch(@RequestParam String propertyQueryJson) throws BizException {
+        ResultDTO<PageInfo<PropertyDTO>> result=new ResultDTO<>();
         PropertyQueryVO propertyQueryVO= JsonUtils.jsonToObject(propertyQueryJson,PropertyQueryVO.class);
-        return propertyService.getPropertyListSearch(propertyQueryVO);
+        result.setSuccess(true);
+        result.setModule(propertyService.getPropertyListSearch(propertyQueryVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/addProperty",method = RequestMethod.POST)
-    public Boolean addProperty(@RequestParam String propertyRequestStr) throws BizException {
+    public ResultDTO<Boolean> addProperty(@RequestParam String propertyRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         PropertyRequestVO propertyRequestVO= JsonUtils.jsonToObject(propertyRequestStr,PropertyRequestVO.class);
-        return propertyService.addProperty(propertyRequestVO);
+        result.setSuccess(propertyService.addProperty(propertyRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/editProperty",method = RequestMethod.POST)
-    public Boolean editProperty(@RequestParam String propertyRequestStr) throws BizException {
+    public ResultDTO<Boolean> editProperty(@RequestParam String propertyRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         PropertyRequestVO propertyRequestVO= JsonUtils.jsonToObject(propertyRequestStr,PropertyRequestVO.class);
-        return propertyService.editProperty(propertyRequestVO);
+        result.setSuccess(propertyService.editProperty(propertyRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/deleteProperty",method = RequestMethod.POST)
-    public Boolean deleteProperty(@RequestParam Integer propertyId,@RequestParam Integer adminId) throws BizException {
-        return propertyService.deleteProperty(propertyId,adminId);
+    public ResultDTO<Boolean> deleteProperty(@RequestParam Integer propertyId,@RequestParam Integer adminId) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
+        result.setSuccess(propertyService.deleteProperty(propertyId,adminId));
+        return result;
     }
 }

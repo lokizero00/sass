@@ -1,6 +1,7 @@
 package com.loki.sass.service.zone.controller;
 
 import com.loki.sass.common.dto.RegionDTO;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.vo.RegionRequestVO;
@@ -25,34 +26,49 @@ public class RegionController {
     RegionService regionService;
 
     @RequestMapping(value = "v1/addRegion",method = RequestMethod.POST)
-    public Boolean addRegion(@RequestParam String regionRequestStr) throws BizException {
+    public ResultDTO<Boolean> addRegion(@RequestParam String regionRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         RegionRequestVO regionRequestVO= JsonUtils.jsonToObject(regionRequestStr,RegionRequestVO.class);
-        return regionService.addRegion(regionRequestVO);
+        result.setSuccess(regionService.addRegion(regionRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/editRegion",method = RequestMethod.POST)
-    public Boolean editRegion(@RequestParam String regionRequestStr) throws BizException {
+    public ResultDTO<Boolean> editRegion(@RequestParam String regionRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         RegionRequestVO regionRequestVO= JsonUtils.jsonToObject(regionRequestStr,RegionRequestVO.class);
-        return regionService.editRegion(regionRequestVO);
+        result.setSuccess(regionService.editRegion(regionRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/deleteRegion",method = RequestMethod.POST)
-    public Boolean deleteRegion(@RequestParam Integer regionId,@RequestParam Integer adminId) throws BizException {
-        return regionService.deleteRegion(regionId,adminId);
+    public ResultDTO<Boolean> deleteRegion(@RequestParam Integer regionId,@RequestParam Integer adminId) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
+        result.setSuccess(regionService.deleteRegion(regionId,adminId));
+        return result;
     }
 
     @RequestMapping(value = "v1/getRegionListByParentId",method = RequestMethod.POST)
-    public List<RegionDTO> getRegionListByParentId(@RequestParam Integer regionId) throws BizException {
-        return regionService.getRegionListByParentId(regionId);
+    public ResultDTO<List<RegionDTO>> getRegionListByParentId(@RequestParam Integer regionId) throws BizException {
+        ResultDTO<List<RegionDTO>> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(regionService.getRegionListByParentId(regionId));
+        return result;
     }
 
     @RequestMapping(value = "v1/getRootRegionListByZoneId",method = RequestMethod.POST)
-    public List<RegionDTO> getRootRegionListByZoneId(@RequestParam Integer zoneId) throws BizException {
-        return regionService.getRootRegionListByZoneId(zoneId);
+    public ResultDTO<List<RegionDTO>> getRootRegionListByZoneId(@RequestParam Integer zoneId) throws BizException {
+        ResultDTO<List<RegionDTO>> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(regionService.getRootRegionListByZoneId(zoneId));
+        return result;
     }
 
     @RequestMapping(value = "v1/getRootRegionListByPropertyId",method = RequestMethod.POST)
-    public List<RegionDTO> getRootRegionListByPropertyId(@RequestParam Integer propertyId) throws BizException {
-        return regionService.getRootRegionListByPropertyId(propertyId);
+    public ResultDTO<List<RegionDTO>> getRootRegionListByPropertyId(@RequestParam Integer propertyId) throws BizException {
+        ResultDTO<List<RegionDTO>> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(regionService.getRootRegionListByPropertyId(propertyId));
+        return result;
     }
 }

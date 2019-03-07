@@ -55,12 +55,7 @@ public class RegionController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         regionRequestVO.setCreateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignRegionService.addRegion(JsonUtils.objectToJson(regionRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignRegionService.addRegion(JsonUtils.objectToJson(regionRequestVO));
     }
 
     @Operate(value = "修改区域")
@@ -85,12 +80,7 @@ public class RegionController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         regionRequestVO.setUpdateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignRegionService.editRegion(JsonUtils.objectToJson(regionRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignRegionService.editRegion(JsonUtils.objectToJson(regionRequestVO));
     }
 
     @Operate(value = "删除区域")
@@ -106,12 +96,7 @@ public class RegionController {
 
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignRegionService.deleteRegion(regionId,shiroAdmin.getId())){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignRegionService.deleteRegion(regionId,shiroAdmin.getId());
     }
 
     @Operate(value = "根据父级查询子区域")
@@ -125,11 +110,7 @@ public class RegionController {
             throw new BizException(RegionResultCode.REGION_ID_INVALID);
         }
 
-        ResultDTO result = new ResultDTO<>();
-        List<RegionDTO> list=feignRegionService.getRegionListByParentId(regionId);
-        result.setModule(list);
-        result.setSuccess(true);
-        return result;
+        return feignRegionService.getRegionListByParentId(regionId);
     }
 
     @Operate(value = "根据小区ID查询区域")
@@ -142,11 +123,7 @@ public class RegionController {
             throw new BizException(ZoneResultCode.ZONE_ID_INVALID);
         }
 
-        ResultDTO result = new ResultDTO<>();
-        List<RegionDTO> list=feignRegionService.getRootRegionListByZoneId(zoneId);
-        result.setModule(list);
-        result.setSuccess(true);
-        return result;
+        return feignRegionService.getRootRegionListByZoneId(zoneId);
     }
 
     @Operate(value = "根据物业ID查询区域")
@@ -159,10 +136,6 @@ public class RegionController {
             throw new BizException(PropertyResultCode.PROPERTY_ID_INVALID);
         }
 
-        ResultDTO result = new ResultDTO<>();
-        List<RegionDTO> list=feignRegionService.getRootRegionListByPropertyId(propertyId);
-        result.setModule(list);
-        result.setSuccess(true);
-        return result;
+        return feignRegionService.getRootRegionListByPropertyId(propertyId);
     }
 }

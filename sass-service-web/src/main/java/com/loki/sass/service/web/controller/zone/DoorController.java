@@ -44,11 +44,7 @@ public class DoorController {
             throw new BizException(message);
         }
 
-        ResultDTO<PageInfo<DoorDTO>> result = new ResultDTO<>();
-        PageInfo<DoorDTO> list=feignDoorService.getDoorListSearch(JsonUtils.objectToJson(doorQueryVO));
-        result.setSuccess(true);
-        result.setModule(list);
-        return result;
+        return feignDoorService.getDoorListSearch(JsonUtils.objectToJson(doorQueryVO));
     }
 
     @Operate(value = "创建门禁")
@@ -72,12 +68,7 @@ public class DoorController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         doorRequestVO.setCreateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignDoorService.addDoor(JsonUtils.objectToJson(doorRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignDoorService.addDoor(JsonUtils.objectToJson(doorRequestVO));
     }
 
     @Operate(value = "修改门禁")
@@ -102,12 +93,7 @@ public class DoorController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         doorRequestVO.setUpdateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignDoorService.editDoor(JsonUtils.objectToJson(doorRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignDoorService.editDoor(JsonUtils.objectToJson(doorRequestVO));
     }
 
     @Operate(value = "删除门禁")
@@ -123,11 +109,6 @@ public class DoorController {
 
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignDoorService.deleteDoor(doorId,shiroAdmin.getId())){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignDoorService.deleteDoor(doorId,shiroAdmin.getId());
     }
 }

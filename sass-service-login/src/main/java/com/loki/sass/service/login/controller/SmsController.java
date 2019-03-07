@@ -31,19 +31,20 @@ public class SmsController {
     @RequestMapping(value = "v1/sendSmsCode",method = RequestMethod.POST)
     public ResultDTO<String> sendSmsCode(
             @ApiParam(name = "mobile", value = "手机号码") @RequestParam String mobile) throws BizException {
-        ResultDTO<String> result = new ResultDTO<>();
+        ResultDTO<String> result=new ResultDTO<>();
         assert StringUtils.isNotEmpty(mobile);
-        String resultCode = feignSmsService.allownSend(mobile);
-        if(!resultCode.equals(SmsResultCode.TRUE)){
-            throw new BizException(resultCode);
+        ResultDTO<String> allowResult = feignSmsService.allownSend(mobile);
+        if(!allowResult.isSuccess()){
+            throw new BizException(allowResult.getResultCode());
         }
         try {
             String randomCode = RandomStringUtils.randomNumeric(6);
-            if (feignSmsService.sendCodeSMS(mobile,randomCode)){
+            ResultDTO<Boolean> sendResult=feignSmsService.sendCodeSMS(mobile,randomCode);
+            if (sendResult.isSuccess()){
                 SmsStatus smsStatus = new SmsStatus(mobile);
                 smsStatus.setLastRandom(randomCode);
-                String resultCode2 = feignSmsService.updateSum(smsStatus);
-                if(!resultCode2.equals(SmsResultCode.TRUE)){
+                ResultDTO<String> updateResult=feignSmsService.updateSum(smsStatus);
+                if(!updateResult.isSuccess()){
                     throw new BizException(SmsResultCode.SEND_SMS_ERROR);
                 } else {
                     result.setModule(randomCode);

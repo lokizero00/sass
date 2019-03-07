@@ -1,5 +1,6 @@
 package com.loki.sass.feignclient.feignService;
 
+import com.loki.sass.common.dto.ResultDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-sysconfig")
 public interface FeignTipInfoService {
     @RequestMapping(method = RequestMethod.POST, value = "/tipInfo/v1/getTipMsg")
-    public String getTipMsg(@RequestParam("code") String code);
+    public ResultDTO<String> getTipMsg(@RequestParam("code") String code);
 }

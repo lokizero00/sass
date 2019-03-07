@@ -27,7 +27,7 @@ public class ZoneController {
     ZoneService zoneService;
 
     @RequestMapping(value = "v1/getZoneListSearch",method = RequestMethod.POST)
-    public ResultDTO<?> getZoneListSearch(@RequestParam String zoneQueryJson) throws BizException {
+    public ResultDTO<PageInfo<ZoneDTO>> getZoneListSearch(@RequestParam String zoneQueryJson) throws BizException {
         ResultDTO<PageInfo<ZoneDTO>> result=new ResultDTO<>();
         ZoneQueryVO zoneQueryVO= JsonUtils.jsonToObject(zoneQueryJson,ZoneQueryVO.class);
         result.setSuccess(true);
@@ -36,7 +36,7 @@ public class ZoneController {
     }
 
     @RequestMapping(value = "v1/addZone",method = RequestMethod.POST)
-    public ResultDTO<?> addZone(@RequestParam String zoneRequestStr) throws BizException {
+    public ResultDTO<Boolean> addZone(@RequestParam String zoneRequestStr) throws BizException {
         ResultDTO<Boolean> result=new ResultDTO<>();
         ZoneRequestVO zoneRequestVO= JsonUtils.jsonToObject(zoneRequestStr,ZoneRequestVO.class);
         result.setSuccess(zoneService.addZone(zoneRequestVO));
@@ -44,7 +44,7 @@ public class ZoneController {
     }
 
     @RequestMapping(value = "v1/editZone",method = RequestMethod.POST)
-    public ResultDTO<?> editZone(@RequestParam String zoneRequestStr) throws BizException {
+    public ResultDTO<Boolean> editZone(@RequestParam String zoneRequestStr) throws BizException {
         ResultDTO<Boolean> result=new ResultDTO<>();
         ZoneRequestVO zoneRequestVO= JsonUtils.jsonToObject(zoneRequestStr,ZoneRequestVO.class);
         result.setSuccess(zoneService.editZone(zoneRequestVO));
@@ -52,7 +52,7 @@ public class ZoneController {
     }
 
     @RequestMapping(value = "v1/deleteZone",method = RequestMethod.POST)
-    public ResultDTO<?> deleteZone(@RequestParam Integer zoneId,@RequestParam Integer adminId) throws BizException {
+    public ResultDTO<Boolean> deleteZone(@RequestParam Integer zoneId,@RequestParam Integer adminId) throws BizException {
         ResultDTO<Boolean> result=new ResultDTO<>();
         result.setSuccess(zoneService.deleteZone(zoneId,adminId));
         return result;

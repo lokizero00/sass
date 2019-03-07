@@ -1,5 +1,6 @@
 package com.loki.sass.feignclient.feignService;
 
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.SmsStatus;
 import com.loki.sass.common.exception.BizException;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -17,17 +18,17 @@ import java.util.Map;
 public interface FeignSmsService {
 
     @RequestMapping(method = RequestMethod.POST, value = "/sms/v1/sendCodeSMS")
-    public boolean sendCodeSMS(@RequestParam("mobile") String mobile, @RequestParam("randomCode") String randomCode) throws BizException;
+    ResultDTO<Boolean> sendCodeSMS(@RequestParam("mobile") String mobile, @RequestParam("randomCode") String randomCode) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST, value = "/sms/v1/sendMsg")
-    public boolean sendMsg(@RequestParam("mobile") String mobile, @RequestParam("map") Map<String, String> map, @RequestParam("templateCode") String templateCode, @RequestParam("str") String str);
+    ResultDTO<Boolean> sendMsg(@RequestParam("mobile") String mobile, @RequestParam("map") Map<String, String> map, @RequestParam("templateCode") String templateCode, @RequestParam("str") String str);
 
     @RequestMapping(method = RequestMethod.POST, value = "/sms/v1/confirmSmsCaptcha")
-    public String confirmSmsCaptcha(@RequestParam("mobile") String mobile, @RequestParam("smsCaptcha") String smsCaptcha);
+    ResultDTO<String> confirmSmsCaptcha(@RequestParam("mobile") String mobile, @RequestParam("smsCaptcha") String smsCaptcha);
 
     @RequestMapping(method = RequestMethod.POST, value = "/sms/v1/allownSend")
-    public String allownSend(@RequestParam("mobile") String mobile) throws RuntimeException;
+    ResultDTO<String> allownSend(@RequestParam("mobile") String mobile) throws RuntimeException;
 
     @RequestMapping(method = RequestMethod.POST, value = "/sms/v1/updateSum")
-    public String updateSum(@RequestBody SmsStatus smsStatus);
+    ResultDTO<String> updateSum(@RequestBody SmsStatus smsStatus);
 }

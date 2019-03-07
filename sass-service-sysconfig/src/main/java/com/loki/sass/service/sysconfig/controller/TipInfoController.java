@@ -1,5 +1,6 @@
 package com.loki.sass.service.sysconfig.controller;
 
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.service.sysconfig.util.TipCacheService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,17 +22,26 @@ public class TipInfoController {
     TipCacheService tipCacheService;
 
     @RequestMapping(value = "v1/putIt",method = RequestMethod.POST)
-    public void putIt(@RequestParam String code,@RequestParam String msg){
+    public ResultDTO<Void> putIt(@RequestParam String code, @RequestParam String msg){
+        ResultDTO<Void> result=new ResultDTO<>();
         tipCacheService.putIt(code,msg);
+        result.setSuccess(true);
+        return result;
     }
 
     @RequestMapping(value = "v1/reload",method = RequestMethod.POST)
-    public void reload() throws BizException {
+    public ResultDTO<Void> reload() throws BizException {
+        ResultDTO<Void> result=new ResultDTO<>();
         tipCacheService.reload();
+        result.setSuccess(true);
+        return result;
     }
 
     @RequestMapping(value = "v1/getTipMsg",method = RequestMethod.POST)
-    public String getTipMsg(@RequestParam String code){
-        return tipCacheService.getTipMsg(code);
+    public ResultDTO<String> getTipMsg(@RequestParam String code){
+        ResultDTO<String> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(tipCacheService.getTipMsg(code));
+        return result;
     }
 }
