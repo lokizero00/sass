@@ -6,6 +6,7 @@ import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
+import com.loki.sass.common.vo.RoleQueryVO;
 import com.loki.sass.common.vo.RoleRequestVO;
 import com.loki.sass.feignclient.feignService.FeignRoleService;
 import com.loki.sass.service.web.aop.bind.Function;
@@ -111,13 +112,13 @@ public class RoleController {
     @RequiresPermissions("role:view")//权限管理;
     @RequestMapping(value = "/oauth2/findByPage", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<PageInfo<RoleDTO>> findByPage(@Valid @RequestBody RoleRequestVO roleRequestVO, BindingResult bindingResult)throws BizException{
+    public ResultDTO<PageInfo<RoleDTO>> findByPage(@Valid @RequestBody RoleQueryVO roleQueryVO, BindingResult bindingResult)throws BizException{
         if(bindingResult.hasErrors()){
             String message = String.format("查询失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
         }
 
-        return feignRoleService.findByPage(JsonUtils.objectToJson(roleRequestVO));
+        return feignRoleService.findByPage(JsonUtils.objectToJson(roleQueryVO));
     }
 
 }
