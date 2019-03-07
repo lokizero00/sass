@@ -28,24 +28,33 @@ public class ZoneController {
 
     @RequestMapping(value = "v1/getZoneListSearch",method = RequestMethod.POST)
     public ResultDTO<?> getZoneListSearch(@RequestParam String zoneQueryJson) throws BizException {
+        ResultDTO<PageInfo<ZoneDTO>> result=new ResultDTO<>();
         ZoneQueryVO zoneQueryVO= JsonUtils.jsonToObject(zoneQueryJson,ZoneQueryVO.class);
-        return zoneService.getZoneListSearch(zoneQueryVO);
+        result.setSuccess(true);
+        result.setModule(zoneService.getZoneListSearch(zoneQueryVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/addZone",method = RequestMethod.POST)
     public ResultDTO<?> addZone(@RequestParam String zoneRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         ZoneRequestVO zoneRequestVO= JsonUtils.jsonToObject(zoneRequestStr,ZoneRequestVO.class);
-        return zoneService.addZone(zoneRequestVO);
+        result.setSuccess(zoneService.addZone(zoneRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/editZone",method = RequestMethod.POST)
     public ResultDTO<?> editZone(@RequestParam String zoneRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         ZoneRequestVO zoneRequestVO= JsonUtils.jsonToObject(zoneRequestStr,ZoneRequestVO.class);
-        return zoneService.editZone(zoneRequestVO);
+        result.setSuccess(zoneService.editZone(zoneRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/deleteZone",method = RequestMethod.POST)
     public ResultDTO<?> deleteZone(@RequestParam Integer zoneId,@RequestParam Integer adminId) throws BizException {
-        return zoneService.deleteZone(zoneId,adminId);
+        ResultDTO<Boolean> result=new ResultDTO<>();
+        result.setSuccess(zoneService.deleteZone(zoneId,adminId));
+        return result;
     }
 }
