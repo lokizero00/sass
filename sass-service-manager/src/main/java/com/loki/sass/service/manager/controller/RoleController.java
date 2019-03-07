@@ -28,7 +28,7 @@ public class RoleController {
     RoleService roleService;
 
     @RequestMapping(value = "v1/selectByUserId",method = RequestMethod.POST)
-    public ResultDTO<?> selectByUserId(@RequestParam("adminId") Integer adminId)throws BizException {
+    public ResultDTO<List<RoleDTO>> selectByUserId(@RequestParam("adminId") Integer adminId)throws BizException {
         ResultDTO<List<RoleDTO>> resultDTO = new ResultDTO<>();
         resultDTO.setSuccess(false);
         resultDTO.setModule(roleService.selectByUserId(adminId));

@@ -62,7 +62,7 @@ public class ShiroRealm extends AuthorizingRealm {
         ResultDTO<?> resultDTO = feignAdminService.selectByMobile(mobile);
         AdminDTO adminDTO = null;
         if(resultDTO!=null && resultDTO.getModule()!=null){
-            adminDTO = (AdminDTO) resultDTO.getModule();
+            adminDTO=(AdminDTO) resultDTO.getModule();
         }
         if (adminDTO==null){
             log.info("Admin："+mobile+"登录失败，用户不存在");

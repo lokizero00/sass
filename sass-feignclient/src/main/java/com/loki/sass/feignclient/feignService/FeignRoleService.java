@@ -1,11 +1,14 @@
 package com.loki.sass.feignclient.feignService;
 
 import com.loki.sass.common.dto.ResultDTO;
+import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * created by lokizero00 on 2019-02-20
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-manager")
 public interface FeignRoleService {
     @RequestMapping(method = RequestMethod.POST, value = "/role/v1/selectByUserId")
-    public ResultDTO<?> selectByUserId(@RequestParam("adminId") Integer adminId)throws BizException;
+    public ResultDTO<List<RoleDTO>> selectByUserId(@RequestParam("adminId") Integer adminId)throws BizException;
 
     @RequestMapping(value = "/role/v1/addRole",method = RequestMethod.POST)
     public ResultDTO<?> addRole(@RequestParam("roleRequestVOJson") String roleRequestVOJson)throws BizException;

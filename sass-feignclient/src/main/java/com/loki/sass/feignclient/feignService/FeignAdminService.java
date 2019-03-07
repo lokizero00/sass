@@ -1,5 +1,6 @@
 package com.loki.sass.feignclient.feignService;
 
+import com.loki.sass.common.dto.AdminDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-manager")
 public interface FeignAdminService {
     @RequestMapping(method = RequestMethod.POST, value = "/admin/v1/selectByMobile")
-    public ResultDTO<?> selectByMobile(@RequestParam("mobile") String mobile)throws BizException;
+    ResultDTO<AdminDTO> selectByMobile(@RequestParam("mobile") String mobile)throws BizException;
 
     @RequestMapping(method = RequestMethod.POST, value = "/admin/v1/addAdmin")
     public ResultDTO<?> addAdmin(@RequestParam("adminRequestVOJson") String adminRequestVOJson)throws BizException;

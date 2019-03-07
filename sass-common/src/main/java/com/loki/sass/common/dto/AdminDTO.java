@@ -2,13 +2,14 @@ package com.loki.sass.common.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * created by lokizero00 on 2019-02-15
  */
 @Data
-public class AdminDTO {
+public class AdminDTO implements Serializable {
     private Integer id;
 
     private String userName;

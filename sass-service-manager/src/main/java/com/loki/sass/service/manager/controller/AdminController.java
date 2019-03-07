@@ -29,7 +29,7 @@ public class AdminController {
     AdminService adminService;
 
     @RequestMapping(value = "v1/selectByMobile",method = RequestMethod.POST)
-    public ResultDTO<?> selectByMobile(@RequestParam("mobile") String mobile)throws BizException {
+    public ResultDTO<AdminDTO> selectByMobile(@RequestParam("mobile") String mobile)throws BizException {
         ResultDTO<AdminDTO> resultDTO = new ResultDTO();
         resultDTO.setSuccess(false);
         resultDTO.setModule(adminService.selectByMobile(mobile));
