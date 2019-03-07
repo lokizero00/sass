@@ -4,6 +4,7 @@ import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
+import com.loki.sass.common.util.ResultDTOUtils;
 import com.loki.sass.common.vo.PermissionRequestVO;
 import com.loki.sass.service.manager.api.PermissionService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,55 +27,37 @@ public class PermissionController {
     PermissionService permissionService;
 
     @RequestMapping(value = "v1/selectByRoleId",method = RequestMethod.POST)
-    public ResultDTO<?> selectByRoleId(@RequestParam("roleId") Integer roleId)throws BizException {
-        ResultDTO<List<PermissionDTO>> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(false);
-        resultDTO.setModule(permissionService.selectByRoleId(roleId));
-        resultDTO.setSuccess(true);
-        return resultDTO;
+    public ResultDTO<List<PermissionDTO>> selectByRoleId(@RequestParam("roleId") Integer roleId)throws BizException {
+        return ResultDTOUtils.success(permissionService.selectByRoleId(roleId));
     }
 
     @RequestMapping(value= "v1/addPermission", method = RequestMethod.POST)
-    public ResultDTO<?> addPermission(@RequestParam("permissionRequestVOJson") String permissionRequestVOJson,
-                                 @RequestParam("operatorId")Integer operatorId)throws BizException{
-        ResultDTO<?> resultDTO = new ResultDTO<>();
+    public ResultDTO<Boolean> addPermission(@RequestParam("permissionRequestVOJson") String permissionRequestVOJson,
+                                            @RequestParam("operatorId")Integer operatorId)throws BizException{
         PermissionRequestVO permissionRequestVO = JsonUtils.jsonToObject(permissionRequestVOJson, PermissionRequestVO.class);
-        resultDTO.setSuccess(permissionService.insert(permissionRequestVO));
-        return resultDTO;
+        return ResultDTOUtils.success(permissionService.insert(permissionRequestVO));
     }
 
     @RequestMapping(value="v1/editPermission",method = RequestMethod.POST)
-    public ResultDTO<?> editPermission(@RequestParam("permissionRequestVOJson") String permissionRequestVOJson,
+    public ResultDTO<Boolean> editPermission(@RequestParam("permissionRequestVOJson") String permissionRequestVOJson,
                                   @RequestParam("operatorId")Integer operatorId)throws BizException{
-        ResultDTO<?> resultDTO = new ResultDTO<>();
         PermissionRequestVO permissionRequestVO = JsonUtils.jsonToObject(permissionRequestVOJson, PermissionRequestVO.class);
-        resultDTO.setSuccess(permissionService.update(permissionRequestVO));
-        return resultDTO;
+        return ResultDTOUtils.success(permissionService.update(permissionRequestVO));
     }
 
     @RequestMapping(value="v1/deletePermission",method = RequestMethod.POST)
-    public ResultDTO<?> deletePermission(@RequestParam("id") Integer id,
+    public ResultDTO<Boolean> deletePermission(@RequestParam("id") Integer id,
                                     @RequestParam("operatorId") Integer operatorId)throws BizException{
-        ResultDTO<?> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(permissionService.delete(id,operatorId));
-        return resultDTO;
+        return ResultDTOUtils.success(permissionService.delete(id,operatorId));
     }
 
     @RequestMapping(value="v1/findOne",method = RequestMethod.POST)
-    public ResultDTO<?> findOne(@RequestParam("id") Integer id)throws BizException{
-        ResultDTO<PermissionDTO> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(false);
-        resultDTO.setModule(permissionService.findOne(id));
-        resultDTO.setSuccess(true);
-        return resultDTO;
+    public ResultDTO<PermissionDTO> findOne(@RequestParam("id") Integer id)throws BizException{
+        return ResultDTOUtils.success(permissionService.findOne(id));
     }
 
     @RequestMapping(value="v1/findAll",method = RequestMethod.POST)
-    public ResultDTO<?> findAll()throws BizException{
-        ResultDTO<List<PermissionDTO>> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(false);
-        resultDTO.setModule(permissionService.findAll());
-        resultDTO.setSuccess(true);
-        return resultDTO;
+    public ResultDTO<List<PermissionDTO>> findAll()throws BizException{
+        return ResultDTOUtils.success(permissionService.findAll());
     }
 }

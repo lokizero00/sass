@@ -1,6 +1,7 @@
 package com.loki.sass.service.web.controller.admin;
 
 import com.loki.sass.common.code.PermissionResultCode;
+import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,7 +35,7 @@ public class PermissionController {
     @RequiresPermissions("permission:add")//权限管理;
     @RequestMapping(value = "/oauth2/add", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> addPermission(@Valid @RequestBody PermissionRequestVO permissionRequestVO, BindingResult bindingResult)  throws BizException {
+    public ResultDTO<Boolean> addPermission(@Valid @RequestBody PermissionRequestVO permissionRequestVO, BindingResult bindingResult)  throws BizException {
         if(bindingResult.hasErrors()){
             String message = String.format("添加失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
@@ -53,7 +55,7 @@ public class PermissionController {
     @RequiresPermissions("permission:edit")//权限管理;
     @RequestMapping(value = "/oauth2/edit", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> editPermission(@Valid @RequestBody PermissionRequestVO permissionRequestVO, BindingResult bindingResult)  throws BizException {
+    public ResultDTO<Boolean> editPermission(@Valid @RequestBody PermissionRequestVO permissionRequestVO, BindingResult bindingResult)  throws BizException {
         if(bindingResult.hasErrors()){
             String message = String.format("修改失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
@@ -74,7 +76,7 @@ public class PermissionController {
     @RequiresPermissions("permission:delete")//权限管理;
     @RequestMapping(value = "/oauth2/delete", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> deletePermission(@RequestParam("id")Integer id)  throws BizException {
+    public ResultDTO<Boolean> deletePermission(@RequestParam("id")Integer id)  throws BizException {
 
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
 
@@ -86,7 +88,7 @@ public class PermissionController {
     @RequiresPermissions("permission:view")//权限管理;
     @RequestMapping(value = "/oauth2/selectByRoleId", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> findByRoleId(@RequestParam("roleId")Integer roleId)  throws BizException {
+    public ResultDTO<List<PermissionDTO>> findByRoleId(@RequestParam("roleId")Integer roleId)  throws BizException {
 
         return feignPermissionService.selectByRoleId(roleId);
     }
@@ -96,7 +98,7 @@ public class PermissionController {
     @RequiresPermissions("permission:view")//权限管理;
     @RequestMapping(value = "/oauth2/findAll", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> findByRoleId()  throws BizException {
+    public ResultDTO<List<PermissionDTO>> findByRoleId()  throws BizException {
 
         return feignPermissionService.findAll();
     }
@@ -106,7 +108,7 @@ public class PermissionController {
     @RequiresPermissions("permission:view")//权限管理;
     @RequestMapping(value = "/oauth2/findOne", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> findOne(@RequestParam("id")Integer id)  throws BizException {
+    public ResultDTO<PermissionDTO> findOne(@RequestParam("id")Integer id)  throws BizException {
 
         return feignPermissionService.findOne(id);
     }

@@ -1,6 +1,8 @@
 package com.loki.sass.service.web.controller.admin;
 
+import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.AdminResultCode;
+import com.loki.sass.common.dto.AdminDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
@@ -19,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * created by lokizero00 on 2019-02-21
@@ -37,7 +40,7 @@ public class AdminController {
     @RequiresPermissions("admin:add")//权限管理;
     @RequestMapping(value = "/oauth2/add", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> addAdmin(@Valid @RequestBody AdminRequestVO adminRequestVO, BindingResult bindingResult)  throws BizException {
+    public ResultDTO<Boolean> addAdmin(@Valid @RequestBody AdminRequestVO adminRequestVO, BindingResult bindingResult)  throws BizException {
         if(bindingResult.hasErrors()){
             String message = String.format("添加失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
@@ -57,7 +60,7 @@ public class AdminController {
     @RequiresPermissions("admin:delete")//权限管理;
     @RequestMapping(value = "/oauth2/delete", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> deleteAdmin(@RequestParam("id")Integer id) throws BizException{
+    public ResultDTO<Boolean> deleteAdmin(@RequestParam("id")Integer id) throws BizException{
 
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         return feignAdminService.deleteAdmin(id,shiroAdmin.getId());
@@ -68,7 +71,7 @@ public class AdminController {
     @RequiresPermissions("admin:edit")//权限管理;
     @RequestMapping(value = "/oauth2/edit", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> editAdmin(@Valid @RequestBody AdminRequestVO adminRequestVO, BindingResult bindingResult) throws BizException{
+    public ResultDTO<Boolean> editAdmin(@Valid @RequestBody AdminRequestVO adminRequestVO, BindingResult bindingResult) throws BizException{
         if(bindingResult.hasErrors()){
             String message = String.format("编辑失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
@@ -85,7 +88,7 @@ public class AdminController {
     @RequiresPermissions("admin:view")//权限管理;
     @RequestMapping(value = "/oauth2/selectByMobile", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> selectByMobile(@RequestParam("mobile")String mobile) throws BizException{
+    public ResultDTO<AdminDTO> selectByMobile(@RequestParam("mobile")String mobile) throws BizException{
 
         return feignAdminService.selectByMobile(mobile);
     }
@@ -95,7 +98,7 @@ public class AdminController {
     @RequiresPermissions("admin:view")//权限管理;
     @RequestMapping(value = "/oauth2/findOne", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> findOne(@RequestParam("id") Integer id) throws BizException{
+    public ResultDTO<AdminDTO> findOne(@RequestParam("id") Integer id) throws BizException{
 
         return feignAdminService.findOne(id);
     }
@@ -105,7 +108,7 @@ public class AdminController {
     @RequiresPermissions("admin:view")//权限管理;
     @RequestMapping(value = "/oauth2/findAll", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> findAll() throws BizException{
+    public ResultDTO<List<AdminDTO>> findAll() throws BizException{
 
         return feignAdminService.findAll();
     }
@@ -115,7 +118,7 @@ public class AdminController {
     @RequiresPermissions("admin:view")//权限管理;
     @RequestMapping(value = "/oauth2/findByPage", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> findByPage(@Valid @RequestBody AdminQueryVO adminQueryVO, BindingResult bindingResult) throws BizException{
+    public ResultDTO<PageInfo<AdminDTO>> findByPage(@Valid @RequestBody AdminQueryVO adminQueryVO, BindingResult bindingResult) throws BizException{
         if(bindingResult.hasErrors()){
             String message = String.format("查询失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);

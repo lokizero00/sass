@@ -1,5 +1,6 @@
 package com.loki.sass.feignclient.feignService;
 
+import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
@@ -19,22 +20,22 @@ public interface FeignRoleService {
     public ResultDTO<List<RoleDTO>> selectByUserId(@RequestParam("adminId") Integer adminId)throws BizException;
 
     @RequestMapping(value = "/role/v1/addRole",method = RequestMethod.POST)
-    public ResultDTO<?> addRole(@RequestParam("roleRequestVOJson") String roleRequestVOJson)throws BizException;
+    public ResultDTO<Boolean> addRole(@RequestParam("roleRequestVOJson") String roleRequestVOJson)throws BizException;
 
     @RequestMapping(value = "/role/v1/deleteRole",method = RequestMethod.POST)
-    public ResultDTO<?> deleteRole(@RequestParam("id") Integer id,
+    public ResultDTO<Boolean> deleteRole(@RequestParam("id") Integer id,
                                    @RequestParam("operatorId") Integer operatorId)throws BizException;
 
     @RequestMapping(value = "/role/v1/editRole",method = RequestMethod.POST)
-    public ResultDTO<?> editRole(@RequestParam("roleRequestVOJson") String roleRequestVOJson)throws BizException;
+    public ResultDTO<Boolean> editRole(@RequestParam("roleRequestVOJson") String roleRequestVOJson)throws BizException;
 
     @RequestMapping(value = "/role/v1/findOne",method = RequestMethod.POST)
-    public ResultDTO<?> findOne(@RequestParam("id") Integer id)throws BizException;
+    public ResultDTO<RoleDTO> findOne(@RequestParam("id") Integer id)throws BizException;
 
     @RequestMapping(value = "/role/v1/findAll",method = RequestMethod.POST)
-    public ResultDTO<?> findAll()throws BizException;
+    public ResultDTO<List<RoleDTO>> findAll()throws BizException;
 
     @RequestMapping(value = "/role/v1/findByPage",method = RequestMethod.POST)
-    public ResultDTO<?> findByPage(@RequestParam("roleQueryVOJson") String roleQueryVOJson)throws BizException;
+    public ResultDTO<PageInfo<RoleDTO>> findByPage(@RequestParam("roleQueryVOJson") String roleQueryVOJson)throws BizException;
 
 }

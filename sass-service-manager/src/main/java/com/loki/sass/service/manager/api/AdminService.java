@@ -15,11 +15,11 @@ public interface AdminService {
 
     AdminDTO selectByMobile(String mobile)throws BizException;
 
-    boolean insert(AdminRequestVO adminRequestVO)throws BizException;
+    Boolean insert(AdminRequestVO adminRequestVO)throws BizException;
 
-    boolean deleteById(Integer id,Integer operatorId)throws BizException;
+    Boolean deleteById(Integer id,Integer operatorId)throws BizException;
 
-    boolean update(AdminRequestVO adminRequestVO)throws BizException;
+    Boolean update(AdminRequestVO adminRequestVO)throws BizException;
 
     AdminDTO findOne(Integer id)throws BizException;
 
