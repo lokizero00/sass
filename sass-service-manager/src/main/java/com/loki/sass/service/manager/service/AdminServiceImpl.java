@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean insert(AdminRequestVO adminRequestVO) throws BizException{
+    public Boolean insert(AdminRequestVO adminRequestVO) throws BizException{
         if(adminRequestVO==null){
             throw new BizException(AdminResultCode.ADMIN_IS_NULL);
         }
@@ -103,7 +103,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean deleteById(Integer id,Integer operatorId)throws BizException {
+    public Boolean deleteById(Integer id,Integer operatorId)throws BizException {
         Admin admin = adminMapper.selectByPrimaryKey(id);
         if(admin==null){
             log.info("[adminService删除记录],待删除记录找不到,传参id:{}",id);
@@ -126,7 +126,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean update(AdminRequestVO adminRequestVO) throws BizException{
+    public Boolean update(AdminRequestVO adminRequestVO) throws BizException{
         Admin checkExist = adminMapper.selectByPrimaryKey(adminRequestVO.getId());
         if(checkExist==null){
             throw new BizException(AdminResultCode.ADMIN_IS_NULL);

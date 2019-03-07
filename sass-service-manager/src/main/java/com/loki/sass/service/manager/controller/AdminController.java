@@ -5,6 +5,7 @@ import com.loki.sass.common.dto.AdminDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
+import com.loki.sass.common.util.ResultDTOUtils;
 import com.loki.sass.common.vo.AdminQueryVO;
 import com.loki.sass.common.vo.AdminRequestVO;
 import com.loki.sass.service.manager.api.AdminService;
@@ -30,63 +31,41 @@ public class AdminController {
 
     @RequestMapping(value = "v1/selectByMobile",method = RequestMethod.POST)
     public ResultDTO<AdminDTO> selectByMobile(@RequestParam("mobile") String mobile)throws BizException {
-        ResultDTO<AdminDTO> resultDTO = new ResultDTO();
-        resultDTO.setSuccess(false);
-        resultDTO.setModule(adminService.selectByMobile(mobile));
-        resultDTO.setSuccess(true);
-        return resultDTO;
+        return ResultDTOUtils.success(adminService.selectByMobile(mobile));
     }
 
     @RequestMapping(value= "v1/addAdmin", method = RequestMethod.POST)
-    public ResultDTO<?> insert(@RequestParam("adminRequestVOJson") String adminRequestVOJson)throws BizException{
-        ResultDTO<Boolean> resultDTO = new ResultDTO<>();
+    public ResultDTO<Boolean> insert(@RequestParam("adminRequestVOJson") String adminRequestVOJson)throws BizException{
         AdminRequestVO adminRequestVO = JsonUtils.jsonToObject(adminRequestVOJson,AdminRequestVO.class);
-        resultDTO.setSuccess(adminService.insert(adminRequestVO));
-        return resultDTO;
+        return ResultDTOUtils.success(adminService.insert(adminRequestVO));
     }
 
     @RequestMapping(value="v1/editAdmin",method = RequestMethod.POST)
-    public ResultDTO<?> update(@RequestParam("adminRequestVOJson") String adminRequestVOJson)throws BizException{
-        ResultDTO<Boolean> resultDTO = new ResultDTO();
+    public ResultDTO<Boolean> update(@RequestParam("adminRequestVOJson") String adminRequestVOJson)throws BizException{
         AdminRequestVO adminRequestVO = JsonUtils.jsonToObject(adminRequestVOJson,AdminRequestVO.class);
-        resultDTO.setSuccess(adminService.update(adminRequestVO));
-        return resultDTO;
+        return ResultDTOUtils.success(adminService.update(adminRequestVO));
     }
 
     @RequestMapping(value="v1/deleteAdmin",method = RequestMethod.POST)
-    public ResultDTO<?> delete(@RequestParam("id") Integer id,@RequestParam("operatorId") Integer operatorId)throws BizException{
-        ResultDTO<Boolean> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(adminService.deleteById(id,operatorId));
-        return resultDTO;
+    public ResultDTO<Boolean> delete(@RequestParam("id") Integer id,@RequestParam("operatorId") Integer operatorId)throws BizException{
+        return ResultDTOUtils.success(adminService.deleteById(id,operatorId));
     }
 
     @RequestMapping(value="v1/findOne",method = RequestMethod.POST)
-    public ResultDTO<?> findOne(@RequestParam("id") Integer id)throws BizException{
-        ResultDTO<AdminDTO> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(false);
-        resultDTO.setModule(adminService.findOne(id));
-        resultDTO.setSuccess(true);
-        return resultDTO;
+    public ResultDTO<AdminDTO> findOne(@RequestParam("id") Integer id)throws BizException{
+        return ResultDTOUtils.success(adminService.findOne(id));
     }
 
     @RequestMapping(value="v1/findAll",method = RequestMethod.POST)
-    public ResultDTO<?> findAll()throws BizException{
-        ResultDTO<List<AdminDTO>> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(false);
-        resultDTO.setModule(adminService.findAll());
-        resultDTO.setSuccess(true);
-        return resultDTO;
+    public ResultDTO<List<AdminDTO>> findAll()throws BizException{
+        return ResultDTOUtils.success(adminService.findAll());
     }
 
 
     @RequestMapping(value="v1/findByPage",method = RequestMethod.POST)
-    public ResultDTO<?> findByPage(@RequestParam("adminQueryVOJson") String adminQueryVOJson)throws BizException{
-        ResultDTO<PageInfo<AdminDTO>> resultDTO = new ResultDTO<>();
-        resultDTO.setSuccess(false);
+    public ResultDTO<PageInfo<AdminDTO>> findByPage(@RequestParam("adminQueryVOJson") String adminQueryVOJson)throws BizException{
         AdminQueryVO adminQueryVO = JsonUtils.jsonToObject(adminQueryVOJson, AdminQueryVO.class);
-        resultDTO.setModule(adminService.getAdminListSearch(adminQueryVO));
-        resultDTO.setSuccess(true);
-        return resultDTO;
+        return ResultDTOUtils.success(adminService.getAdminListSearch(adminQueryVO));
     }
 
 }
