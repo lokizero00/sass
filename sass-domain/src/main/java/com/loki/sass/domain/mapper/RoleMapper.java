@@ -2,8 +2,10 @@ package com.loki.sass.domain.mapper;
 
 import com.loki.sass.domain.model.Role;
 import com.loki.sass.domain.model.RoleExample;
-import java.util.List;
+import com.loki.sass.domain.po.RolePO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface RoleMapper {
     long countByExample(RoleExample example);
@@ -29,4 +31,8 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     List<Role> selectByAdminId(@Param("adminId") Integer adminId);
+
+    List<RolePO> selectByParam(@Param("role") String role,@Param("createByName") String createByName, @Param("updateByName") String updateByName);
+
+    int checkRole(@Param("role") String role);
 }

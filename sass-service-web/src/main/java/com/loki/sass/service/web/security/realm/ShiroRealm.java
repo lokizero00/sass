@@ -4,17 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loki.sass.common.constant.Constants;
 import com.loki.sass.common.dto.AdminDTO;
 import com.loki.sass.common.dto.PermissionDTO;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
-import com.loki.sass.domain.model.Admin;
-import com.loki.sass.domain.model.Permission;
-import com.loki.sass.domain.model.Role;
 import com.loki.sass.feignclient.feignService.FeignAdminService;
 import com.loki.sass.feignclient.feignService.FeignPermissionService;
 import com.loki.sass.feignclient.feignService.FeignRoleService;
 import com.loki.sass.service.web.dto.AdminPermsDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -62,7 +59,11 @@ public class ShiroRealm extends AuthorizingRealm {
         log.debug("Shiro开始数据库登录认证");
         UsernamePasswordToken userToken = (UsernamePasswordToken) token;
         String mobile = userToken.getUsername();
-        AdminDTO adminDTO = feignAdminService.selectByMobile(mobile);
+        ResultDTO<?> resultDTO = feignAdminService.selectByMobile(mobile);
+        AdminDTO adminDTO = null;
+        if(resultDTO!=null && resultDTO.getModule()!=null){
+            adminDTO = (AdminDTO) resultDTO.getModule();
+        }
         if (adminDTO==null){
             log.info("Admin："+mobile+"登录失败，用户不存在");
             return null;
@@ -120,11 +121,19 @@ public class ShiroRealm extends AuthorizingRealm {
                 permissions = adminPermsDTO.getPermissions();
             } else {
                 //没有则从mysql中获取
-                List<RoleDTO> roleDTOList = feignRoleService.selectByUserId(shiroAdmin.getId());
+                ResultDTO<?> resultRoleDTO = feignRoleService.selectByUserId(shiroAdmin.getId());
+                List<RoleDTO> roleDTOList = null;
+                if(resultRoleDTO!=null && resultRoleDTO.getModule()!=null){
+                    roleDTOList = (List<RoleDTO>)resultRoleDTO.getModule();
+                }
                 for (RoleDTO roleDTO : roleDTOList) {
                     roleSet.add(roleDTO.getId().toString());
                     if(roleDTO != null){
-                        List<PermissionDTO> _permissions = feignPermissionService.selectByRoleId(roleDTO.getId());
+                        ResultDTO<?> resultPermissionDTO = feignPermissionService.selectByRoleId(roleDTO.getId());
+                        List<PermissionDTO> _permissions = null;
+                        if(resultPermissionDTO!=null && resultPermissionDTO.getModule()!=null){
+                            _permissions = (List<PermissionDTO>)resultPermissionDTO.getModule();
+                        }
                         for(PermissionDTO permissionDTO : _permissions){
                             if(permissionDTO != null && StringUtils.isNotEmpty(permissionDTO.getUrl())){
                                 permissions.add(permissionDTO.getPermission());

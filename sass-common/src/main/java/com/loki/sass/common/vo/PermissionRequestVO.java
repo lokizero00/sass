@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @ToString
-public class PermissionVO implements Serializable {
+public class PermissionRequestVO implements Serializable {
 
     private Integer id;
 
@@ -28,4 +28,8 @@ public class PermissionVO implements Serializable {
 
     @NotNull(message = "区域性标志不允许为空")
     private Integer isRegional;
+
+    private Integer createBy;
+
+    private Integer updateBy;
 }

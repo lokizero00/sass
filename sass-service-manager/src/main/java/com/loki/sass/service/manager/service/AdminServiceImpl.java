@@ -1,22 +1,25 @@
 package com.loki.sass.service.manager.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.loki.sass.common.code.AdminResultCode;
 import com.loki.sass.common.dto.AdminDTO;
+import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
-import com.loki.sass.common.vo.AdminVO;
+import com.loki.sass.common.vo.AdminQueryVO;
+import com.loki.sass.common.vo.AdminRequestVO;
 import com.loki.sass.domain.mapper.AdminMapper;
 import com.loki.sass.domain.model.Admin;
 import com.loki.sass.domain.model.AdminExample;
+import com.loki.sass.domain.po.AdminPO;
 import com.loki.sass.service.manager.api.AdminService;
-
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,93 +27,129 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Transactional
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
-    AdminMapper adminMapper;
-
-    private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+    private AdminMapper adminMapper;
 
     @Override
-    public AdminDTO selectByMobile(String mobile) {
+    public AdminDTO selectByMobile(String mobile)throws BizException {
+        if(StringUtils.isEmpty(mobile)){
+            throw new BizException(AdminResultCode.ADMIN_MOBILE_WRONG);
+        }
         Admin admin = adminMapper.selectByMobile(mobile);
         AdminDTO adminDTO = ConvertUtils.sourceToTarget(admin,AdminDTO.class);
         return adminDTO;
     }
 
     @Override
-    public AdminDTO selectById(Integer id){
+    public AdminDTO findOne(Integer id)throws BizException{
         Admin admin = adminMapper.selectByPrimaryKey(id);
         AdminDTO adminDTO = ConvertUtils.sourceToTarget(admin,AdminDTO.class);
         return adminDTO;
     }
 
     @Override
-    public List<AdminDTO> findAll() {
+    public List<AdminDTO> findAll() throws BizException{
+        AdminExample adminExample = new AdminExample();
+
         List<Admin> adminList = adminMapper.selectByExample(new AdminExample());
         List<AdminDTO> adminDTOList = ConvertUtils.sourceToTarget(adminList, AdminDTO.class);
         return adminDTOList;
     }
 
     @Override
-    public List<AdminDTO> findByPage(Integer current, Integer count) {
-        if(current==null){
-            current = 1;
+    public PageInfo<AdminDTO> getAdminListSearch(AdminQueryVO adminQueryVO) throws BizException{
+        if (!StringUtils.isEmpty(adminQueryVO.getPage()) && !StringUtils.isEmpty(adminQueryVO.getRows())) {
+            PageHelper.startPage(adminQueryVO.getPage(), adminQueryVO.getRows());
         }
-        if(count==null){
-            count = 10;
-        }
-        AdminExample adminExample = new AdminExample();
-        adminExample.setOffset((current-1)*count);
-        adminExample.setLimit(count);
-        List<Admin> adminList = adminMapper.selectByExample(adminExample);
-        List<AdminDTO> rtnList = ConvertUtils.sourceToTarget(adminList, AdminDTO.class);
-        return rtnList;
+        List<AdminPO> list = adminMapper.selectByParam(adminQueryVO.getUsername(),adminQueryVO.getCreateByName(),adminQueryVO.getUpdateByName(),adminQueryVO.getState());
+        List<AdminDTO> dtoList= ConvertUtils.sourceToTarget(list,AdminDTO.class);
+        PageInfo<AdminDTO> pageInfo = new PageInfo<>(dtoList);
+        return pageInfo;
     }
 
     @Override
-    public Integer insert(AdminVO adminVO) {
-        Admin admin = ConvertUtils.sourceToTarget(adminVO,Admin.class);
-        //TODO admin非页面参数的默认赋值过程
+    public boolean insert(AdminRequestVO adminRequestVO) throws BizException{
+        if(adminRequestVO==null){
+            throw new BizException(AdminResultCode.ADMIN_IS_NULL);
+        }
+        Admin admin = ConvertUtils.sourceToTarget(adminRequestVO,Admin.class);
+        String username = admin.getUserName();
+        if(StringUtils.isEmpty(username)){
+            throw new BizException(AdminResultCode.ADMIN_USERNAME_EMPTY);
+        }
+        Integer count = adminMapper.checkName(username);
+        if(count>0){
+            throw new BizException(AdminResultCode.ADMIN_USERNAME_EXIST);
+        }
+        Integer result = 0;
+        try{
+            String salt = BCrypt.gensalt();
+            String password = adminRequestVO.getPassword();
+            admin.setPassword(BCrypt.hashpw(password , salt));
+            admin.setSalt(salt);
+            admin.setIsSuper(0);//默认不是超级管理员
+            admin.setState(1);//默认是启用状态
+            admin.setIsDeleted(0);//默认未被删除
 
-        String salt = BCrypt.gensalt();
-        String password = adminVO.getPassword();
-        admin.setPassword(BCrypt.hashpw(password , salt));
-        admin.setSalt(salt);
-        admin.setIsSuper(0);//默认不是超级管理员
-        admin.setState(1);//默认是启用状态
-        admin.setIsDeleted(0);//默认未被删除
-
-        int result = adminMapper.insert(admin);
-        logger.info("[adminService插入记录],admin={},插入结果{}",admin,result);
-        return result;
+            result = adminMapper.insert(admin);
+        }catch(Exception e){
+            log.info("[adminService插入记录],存在异常:{}",e);
+            throw new BizException(AdminResultCode.ADMIN_ADD_ERROR);
+        }
+        return result>0;
     }
 
     @Override
-    public Integer deleteById(Integer id) {
-        logger.info("[adminService删除记录],待删除记录id:{}",id);
-        if(id==null){
-            throw new NullPointerException("id不能为空");
+    public boolean deleteById(Integer id,Integer operatorId)throws BizException {
+        Admin admin = adminMapper.selectByPrimaryKey(id);
+        if(admin==null){
+            log.info("[adminService删除记录],待删除记录找不到,传参id:{}",id);
+            throw new BizException(AdminResultCode.ADMIN_IS_NULL);
         }
-        return adminMapper.deleteByPrimaryKey(id);
+        Admin operatorAdmin = adminMapper.selectByPrimaryKey(operatorId);
+        if(operatorAdmin==null){
+            log.info("[adminService删除记录],操作者记录找不到,operatorId:{}",operatorId);
+            throw new BizException(AdminResultCode.ADMIN_OPERATOR_NOT_EXIST);
+        }
+        int result = 0;
+        try{
+            admin.setIsDeleted(1);
+            admin.setUpdateBy(operatorId);
+            result = adminMapper.updateByPrimaryKeySelective(admin);
+        }catch(Exception e){
+            throw new BizException(AdminResultCode.ADMIN_DELETE_ERROR);
+        }
+        return result>0;
     }
 
     @Override
-    public Integer update(AdminVO adminVO) {
-        if(adminVO==null || adminVO.getId()==null){
-            throw new NullPointerException("主键id不能为空");
+    public boolean update(AdminRequestVO adminRequestVO) throws BizException{
+        Admin checkExist = adminMapper.selectByPrimaryKey(adminRequestVO.getId());
+        if(checkExist==null){
+            throw new BizException(AdminResultCode.ADMIN_IS_NULL);
         }
-        Admin admin = ConvertUtils.sourceToTarget(adminVO, Admin.class);
-
-        //重新生成盐值和密码
-        String salt = BCrypt.gensalt();
-        String password = adminVO.getPassword();
-        admin.setPassword(BCrypt.hashpw(password , salt));
-        admin.setSalt(salt);
-
-        int result = adminMapper.updateByPrimaryKeySelective(admin);
-        logger.info("[adminService更新记录],参数:{},处理结果result={}",adminVO,result);
-        return result;
+        Admin operatorAdmin = adminMapper.selectByPrimaryKey(adminRequestVO.getUpdateBy());
+        if(operatorAdmin==null){
+            log.info("[adminService删除记录],操作者记录找不到,operatorId:{}",adminRequestVO.getUpdateBy());
+            throw new BizException(AdminResultCode.ADMIN_OPERATOR_NOT_EXIST);
+        }
+        int result = 0;
+        try {
+            Admin admin = ConvertUtils.sourceToTarget(adminRequestVO, Admin.class);
+            //重新生成盐值和密码
+            String salt = BCrypt.gensalt();
+            String password = adminRequestVO.getPassword();
+            admin.setPassword(BCrypt.hashpw(password , salt));
+            admin.setSalt(salt);
+            result = adminMapper.updateByPrimaryKeySelective(admin);
+        }catch(Exception e){
+            log.error("[adminService更新记录],出现异常,e={}",e);
+            throw new BizException(AdminResultCode.ADMIN_UPDATE_ERROR);
+        }
+        return result>0;
     }
 
 

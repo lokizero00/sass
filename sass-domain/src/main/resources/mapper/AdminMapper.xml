@@ -19,6 +19,26 @@
     <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
     <result column="property_id" jdbcType="INTEGER" property="propertyId" />
   </resultMap>
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.AdminPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="is_super" jdbcType="INTEGER" property="isSuper" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+    <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="property_id" jdbcType="INTEGER" property="propertyId" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -88,6 +108,9 @@
     </if>
     <include refid="Base_Column_List" />
     from admin
+    <where>
+      is_deleted = 0
+    </where>
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -102,7 +125,7 @@
     select 
     <include refid="Base_Column_List" />
     from admin
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from admin
@@ -110,6 +133,9 @@
   </delete>
   <delete id="deleteByExample" parameterType="com.loki.sass.domain.model.AdminExample">
     delete from admin
+    <where>
+      is_deleted = 0
+    </where>
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -230,6 +256,9 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
+    <where>
+      is_deleted = 0
+    </where>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update admin
@@ -283,6 +312,9 @@
         property_id = #{record.propertyId,jdbcType=INTEGER},
       </if>
     </set>
+    <where>
+      is_deleted = 0
+    </where>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -305,6 +337,9 @@
       is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       zone_id = #{record.zoneId,jdbcType=INTEGER},
       property_id = #{record.propertyId,jdbcType=INTEGER}
+    <where>
+      is_deleted = 0
+    </where>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -358,7 +393,7 @@
         property_id = #{propertyId,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted = 0
   </update>
   <update id="updateByPrimaryKey" parameterType="com.loki.sass.domain.model.Admin">
     update admin
@@ -377,13 +412,43 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER},
       zone_id = #{zoneId,jdbcType=INTEGER},
       property_id = #{propertyId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted = 0
   </update>
 
   <select id="selectByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
     select *
     from admin
-    where is_deleted=0 and mobile = #{mobile,jdbcType=VARCHAR}
+    where is_deleted = 0 and mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByParam" parameterType="com.loki.sass.common.vo.AdminQueryVO" resultMap="QueryResultMap">
+    select aa.*,ac.real_name as create_by_name,au.real_name as update_by_name
+    from admin aa
+    left join admin ac on ac.id=aa.create_by
+    left join admin au on au.id=aa.update_by
+    <where>
+      aa.is_deleted=0
+      <if test="username!=null and username!=''">
+        and aa.user_name like CONCAT('%',#{username},'%')
+      </if>
+      <if test="createByName!=null and createByName!=''">
+        and ac.real_name like CONCAT('%',#{createByName},'%')
+      </if>
+      <if test="updateByName!=null and updateByName!=''">
+        and au.real_name like CONCAT('%',#{updateByName},'%')
+      </if>
+      <if test="state!=null and state!=0">
+        and aa.state=#{state}
+      </if>
+    </where>
+  </select>
+
+  <select id="checkName" parameterType="String" resultType="Integer">
+    select count(id) from admin where is_deleted = 0 and user_name=#{username}
+  </select>
+
+  <select id="checkExist" parameterType="Integer" resultType="Boolean">
+    <![CDATA[ select count(1) from admin where is_deleted = 0 and id=#{id}]]>
   </select>
 
 </mapper>

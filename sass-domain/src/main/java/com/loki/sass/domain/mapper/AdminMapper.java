@@ -2,8 +2,10 @@ package com.loki.sass.domain.mapper;
 
 import com.loki.sass.domain.model.Admin;
 import com.loki.sass.domain.model.AdminExample;
-import java.util.List;
+import com.loki.sass.domain.po.AdminPO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface AdminMapper {
     long countByExample(AdminExample example);
@@ -29,4 +31,10 @@ public interface AdminMapper {
     int updateByPrimaryKey(Admin record);
 
     Admin selectByMobile(@Param("mobile") String mobile);
+
+    List<AdminPO> selectByParam(@Param("username") String username, @Param("createByName") String createByName, @Param("updateByName") String updateByName, @Param("state") Integer state);
+
+    int checkName(@Param("username") String username);
+
+    boolean checkExist(@Param("id") Integer id);
 }

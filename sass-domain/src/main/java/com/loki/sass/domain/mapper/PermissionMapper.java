@@ -2,8 +2,9 @@ package com.loki.sass.domain.mapper;
 
 import com.loki.sass.domain.model.Permission;
 import com.loki.sass.domain.model.PermissionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PermissionMapper {
     long countByExample(PermissionExample example);
@@ -30,4 +31,5 @@ public interface PermissionMapper {
 
     List<Permission> selectByRoleId(@Param("roleId") Integer roleId);
 
+    int checkName(@Param("name") String name);
 }

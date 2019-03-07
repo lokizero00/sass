@@ -1,14 +1,19 @@
 package com.loki.sass.service.manager.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
+import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
-import com.loki.sass.common.vo.RoleVO;
-import com.loki.sass.domain.model.Role;
+import com.loki.sass.common.vo.RoleQueryVO;
+import com.loki.sass.common.vo.RoleRequestVO;
 import com.loki.sass.service.manager.api.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,40 +28,63 @@ public class RoleController {
     RoleService roleService;
 
     @RequestMapping(value = "v1/selectByUserId",method = RequestMethod.POST)
-    List<RoleDTO> selectByUserId(@RequestParam Integer adminId) {
-
-        return roleService.selectByUserId(adminId);
+    public ResultDTO<?> selectByUserId(@RequestParam("adminId") Integer adminId)throws BizException {
+        ResultDTO<List<RoleDTO>> resultDTO = new ResultDTO<>();
+        resultDTO.setSuccess(false);
+        resultDTO.setModule(roleService.selectByUserId(adminId));
+        resultDTO.setSuccess(true);
+        return resultDTO;
     }
 
-    @RequestMapping(value = "v1/insert",method = RequestMethod.POST)
-    public Integer insert(@RequestParam String roleVOJson){
-        RoleVO roleVO = JsonUtils.jsonToObject(roleVOJson, RoleVO.class);
-        return roleService.insert(roleVO);
+    @RequestMapping(value = "v1/addRole",method = RequestMethod.POST)
+    public ResultDTO<?> addRole(@RequestParam("roleRequestVOJson") String roleRequestVOJson)throws BizException{
+        ResultDTO<Boolean> resultDTO = new ResultDTO<>();
+        RoleRequestVO roleRequestVO = JsonUtils.jsonToObject(roleRequestVOJson, RoleRequestVO.class);
+        resultDTO.setSuccess(roleService.insert(roleRequestVO));
+        return resultDTO;
     }
 
-    @RequestMapping(value = "v1/deleteById",method = RequestMethod.POST)
-    public Integer deleteById(@RequestParam Integer id){
-        return roleService.deleteById(id);
+    @RequestMapping(value = "v1/deleteRole",method = RequestMethod.POST)
+    public ResultDTO<?> deleteRole(@RequestParam("id") Integer id,
+                              @RequestParam("operatorId") Integer operatorId)throws BizException{
+        ResultDTO<Boolean> resultDTO = new ResultDTO<>();
+        resultDTO.setSuccess(roleService.deleteById(id,operatorId));
+        return resultDTO;
     }
 
-    @RequestMapping(value = "v1/update",method = RequestMethod.POST)
-    public Integer updateById(@RequestParam String roleVOJson){
-        RoleVO roleVO = JsonUtils.jsonToObject(roleVOJson,RoleVO.class);
-        return roleService.update(roleVO);
+    @RequestMapping(value = "v1/editRole",method = RequestMethod.POST)
+    public ResultDTO<?> editRole(@RequestParam("roleRequestVOJson") String roleRequestVOJson)throws BizException{
+        ResultDTO<Boolean> resultDTO = new ResultDTO<>();
+        RoleRequestVO roleRequestVO = JsonUtils.jsonToObject(roleRequestVOJson,RoleRequestVO.class);
+        resultDTO.setSuccess(roleService.update(roleRequestVO));
+        return resultDTO;
     }
 
-    @RequestMapping(value = "v1/findById",method = RequestMethod.POST)
-    public RoleDTO findById(@RequestParam Integer id){
-        return roleService.findById(id);
+    @RequestMapping(value = "v1/findOne",method = RequestMethod.POST)
+    public ResultDTO<?> findOne(@RequestParam("id") Integer id)throws BizException{
+        ResultDTO<RoleDTO> resultDTO = new ResultDTO<>();
+        resultDTO.setSuccess(false);
+        resultDTO.setModule(roleService.findById(id));
+        resultDTO.setSuccess(true);
+        return resultDTO;
     }
 
     @RequestMapping(value = "v1/findAll",method = RequestMethod.POST)
-    public List<RoleDTO> findAll(){
-        return roleService.findAll();
+    public ResultDTO<?> findAll()throws BizException{
+        ResultDTO<List<RoleDTO>> resultDTO = new ResultDTO<>();
+        resultDTO.setSuccess(false);
+        resultDTO.setModule(roleService.findAll());
+        resultDTO.setSuccess(true);
+        return resultDTO;
     }
 
-    @RequestMapping(value = "v1/findByPage/{current}/{size}",method = RequestMethod.POST)
-    public List<RoleDTO> findByPage(@PathVariable("current")Integer current,@PathVariable("size") Integer size){
-        return roleService.findByPage(current,size);
+    @RequestMapping(value = "v1/findByPage",method = RequestMethod.POST)
+    public ResultDTO<?> findByPage(@RequestParam("roleQueryVOJson") String roleQueryVOJson)throws BizException{
+        ResultDTO<PageInfo<RoleDTO>> resultDTO = new ResultDTO<>();
+        resultDTO.setSuccess(false);
+        RoleQueryVO adminQueryVO = JsonUtils.jsonToObject(roleQueryVOJson, RoleQueryVO.class);
+        resultDTO.setModule(roleService.getAdminListSearch(adminQueryVO));
+        resultDTO.setSuccess(true);
+        return resultDTO;
     }
 }

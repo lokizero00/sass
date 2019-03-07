@@ -1,8 +1,10 @@
 package com.loki.sass.service.manager.api;
 
+import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.AdminDTO;
-import com.loki.sass.common.vo.AdminVO;
-import com.loki.sass.domain.model.Admin;
+import com.loki.sass.common.exception.BizException;
+import com.loki.sass.common.vo.AdminQueryVO;
+import com.loki.sass.common.vo.AdminRequestVO;
 
 import java.util.List;
 
@@ -11,17 +13,17 @@ import java.util.List;
  */
 public interface AdminService {
 
-    public AdminDTO selectByMobile(String mobile);
+    AdminDTO selectByMobile(String mobile)throws BizException;
 
-    public Integer insert(AdminVO adminVO);
+    boolean insert(AdminRequestVO adminRequestVO)throws BizException;
 
-    public Integer deleteById(Integer id);
+    boolean deleteById(Integer id,Integer operatorId)throws BizException;
 
-    public Integer update(AdminVO adminVO);
+    boolean update(AdminRequestVO adminRequestVO)throws BizException;
 
-    public AdminDTO selectById(Integer id);
+    AdminDTO findOne(Integer id)throws BizException;
 
-    public List<AdminDTO> findAll();
+    List<AdminDTO> findAll()throws BizException;
 
-    public List<AdminDTO> findByPage(Integer current,Integer count);
+    PageInfo<AdminDTO> getAdminListSearch(AdminQueryVO adminQueryVO)throws BizException;
 }

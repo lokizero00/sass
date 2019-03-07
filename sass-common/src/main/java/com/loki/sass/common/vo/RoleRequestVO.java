@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @ToString
-public class RoleVO implements Serializable {
+public class RoleRequestVO implements Serializable {
 
     private Integer id;
 
@@ -19,4 +19,8 @@ public class RoleVO implements Serializable {
     private String role;
 
     private String description;
+
+    private Integer createBy;
+
+    private Integer updateBy;
 }

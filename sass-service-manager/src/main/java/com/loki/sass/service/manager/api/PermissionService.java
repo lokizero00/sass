@@ -1,8 +1,8 @@
 package com.loki.sass.service.manager.api;
 
 import com.loki.sass.common.dto.PermissionDTO;
-import com.loki.sass.common.vo.PermissionVO;
-import com.loki.sass.domain.model.Permission;
+import com.loki.sass.common.exception.BizException;
+import com.loki.sass.common.vo.PermissionRequestVO;
 
 import java.util.List;
 
@@ -10,17 +10,15 @@ import java.util.List;
  * created by lokizero00 on 2019-02-21
  */
 public interface PermissionService {
-    List<PermissionDTO> selectByRoleId(Integer roleId);
+    List<PermissionDTO> selectByRoleId(Integer roleId)throws BizException;
 
-    Integer insert(PermissionVO permissionVO);
+    Boolean insert(PermissionRequestVO permissionRequestVO)throws BizException;
 
-    Integer deleteById(Integer id);
+    Boolean delete(Integer which,Integer operatorId)throws BizException;
 
-    Integer update(PermissionVO permissionVO);
+    Boolean update(PermissionRequestVO permissionRequestVO)throws BizException;
 
-    PermissionDTO selectById(Integer id);
+    PermissionDTO findOne(Integer id)throws BizException;
 
-    List<PermissionDTO> findAll();
-
-    List<PermissionDTO> findByPage(Integer current,Integer count);
+    List<PermissionDTO> findAll()throws BizException;
 }

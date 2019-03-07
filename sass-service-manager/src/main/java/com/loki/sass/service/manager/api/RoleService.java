@@ -1,8 +1,10 @@
 package com.loki.sass.service.manager.api;
 
+import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.RoleDTO;
-import com.loki.sass.common.vo.RoleVO;
-import com.loki.sass.domain.model.Role;
+import com.loki.sass.common.exception.BizException;
+import com.loki.sass.common.vo.RoleQueryVO;
+import com.loki.sass.common.vo.RoleRequestVO;
 
 import java.util.List;
 
@@ -10,17 +12,17 @@ import java.util.List;
  * created by lokizero00 on 2019-02-21
  */
 public interface RoleService {
-    List<RoleDTO> selectByUserId(Integer adminId);
+    List<RoleDTO> selectByUserId(Integer adminId)throws BizException;
 
-    Integer insert(RoleVO roleVO);
+    Boolean insert(RoleRequestVO roleRequestVO)throws BizException;
 
-    Integer update(RoleVO roleVO);
+    Boolean update(RoleRequestVO roleRequestVO)throws BizException;
 
-    Integer deleteById(Integer id);
+    Boolean deleteById(Integer id,Integer operatorId)throws BizException;
 
-    List<RoleDTO> findAll();
+    List<RoleDTO> findAll()throws BizException;
 
-    List<RoleDTO> findByPage(Integer current,Integer count);
+    PageInfo<RoleDTO> getAdminListSearch(RoleQueryVO roleQueryVO)throws BizException;
 
-    RoleDTO findById(Integer id);
+    RoleDTO findById(Integer id)throws BizException;
 }

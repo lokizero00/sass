@@ -85,6 +85,9 @@
     </if>
     <include refid="Base_Column_List" />
     from permission
+    <where>
+      is_deleted = 0
+    </where>
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -99,17 +102,20 @@
     select 
     <include refid="Base_Column_List" />
     from permission
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from permission
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted = 0
   </delete>
   <delete id="deleteByExample" parameterType="com.loki.sass.domain.model.PermissionExample">
     delete from permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
+    <where>
+      is_deleted = 0
+    </where>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.Permission" useGeneratedKeys="true">
     insert into permission (name, resource_type, url, 
@@ -207,6 +213,9 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
+    <where>
+      is_deleted = 0
+    </where>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update permission
@@ -251,6 +260,9 @@
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
     </set>
+    <where>
+      is_deleted = 0
+    </where>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -270,6 +282,9 @@
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       is_regional = #{record.isRegional,jdbcType=INTEGER},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <where>
+      is_deleted = 0
+    </where>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -314,7 +329,7 @@
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted = 0
   </update>
   <update id="updateByPrimaryKey" parameterType="com.loki.sass.domain.model.Permission">
     update permission
@@ -330,10 +345,14 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       is_regional = #{isRegional,jdbcType=INTEGER},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted = 0
   </update>
 
   <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select p.* from permission p left join role_permission rp on p.id=rp.permission_id where  p.is_deleted=0 AND p.available=1 AND rp.role_id =#{roleId,jdbcType=INTEGER}
+  </select>
+
+  <select id="checkName" parameterType="String" resultType="Integer">
+    select count(id) from permission where is_deleted = 0 and name=#{name}
   </select>
 </mapper>
