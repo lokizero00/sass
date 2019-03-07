@@ -2,6 +2,7 @@ package com.loki.sass.feignclient.feignService;
 
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.PropertyDTO;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.ZoneDTO;
 import com.loki.sass.common.exception.BizException;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-zone")
 public interface FeignZoneService {
     @RequestMapping(method = RequestMethod.POST, value = "/zone/v1/getZoneListSearch")
-    PageInfo<ZoneDTO> getZoneListSearch(@RequestParam("zoneQueryJson") String zoneQueryJson) throws BizException;
+    ResultDTO<?> getZoneListSearch(@RequestParam("zoneQueryJson") String zoneQueryJson) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/addZone")
-    Boolean addZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
+    ResultDTO<?> addZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/editZone")
-    Boolean editZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
+    ResultDTO<?> editZone(@RequestParam("zoneRequestStr") String zoneRequestStr) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST,value = "/zone/v1/deleteZone")
-    Boolean deleteZone(@RequestParam("zoneId") Integer zoneId,@RequestParam("adminId") Integer adminId) throws BizException;
+    ResultDTO<?> deleteZone(@RequestParam("zoneId") Integer zoneId,@RequestParam("adminId") Integer adminId) throws BizException;
 }

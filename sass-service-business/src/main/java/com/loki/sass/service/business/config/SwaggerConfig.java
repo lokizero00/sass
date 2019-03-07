@@ -1,4 +1,4 @@
-package com.loki.sass.service.zone.config;
+package com.loki.sass.service.business.config;
 
 import com.google.common.base.Predicate;
 import com.loki.sass.common.dto.CurrentUserInfo;
@@ -46,18 +46,15 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("智慧楼宇区域服务接口")
-                .description("智慧楼宇区域服务接口")
+                .title("智慧楼宇业务服务接口")
+                .description("智慧楼宇业务服务接口")
                 .version("1.0")
                 .build();
     }
 
     private Predicate<String> paths() {
         return or(
-                regex("/zone/.*"),
-                regex("/property/.*"),
-                regex("/region/.*"),
-                regex("/door/.*")
+                regex("/zone/.*")
         );
     }
 

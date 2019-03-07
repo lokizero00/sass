@@ -56,7 +56,7 @@ public class PropertyServiceImpl implements PropertyService {
             property.setManagerPhone(propertyRequestVO.getManagerPhone());
             property.setCreateBy(propertyRequestVO.getCreateBy());
             property.setCreateTime(new Date());
-            property.setState(PropertyState.USING.getValue());
+            property.setState(propertyRequestVO.getState());
             property.setZoneId(zone.getId());
             propertyMapper.insertSelective(property);
         }catch(Exception e){
@@ -82,7 +82,7 @@ public class PropertyServiceImpl implements PropertyService {
             property.setName(propertyRequestVO.getName());
             property.setManagerName(propertyRequestVO.getManagerName());
             property.setManagerPhone(propertyRequestVO.getManagerPhone());
-            property.setState(PropertyState.USING.getValue());
+            property.setState(propertyRequestVO.getState());
             property.setZoneId(zone.getId());
             property.setUpdateBy(propertyRequestVO.getUpdateBy());
             property.setUpdateTime(new Date());

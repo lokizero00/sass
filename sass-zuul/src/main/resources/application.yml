@@ -84,3 +84,7 @@ management:
     enabled: false
 logging:
   file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
+  level:
+    root: INFO
+    #    org.springframework.web: DEBUG
+    com.loki.sass: DEBUG

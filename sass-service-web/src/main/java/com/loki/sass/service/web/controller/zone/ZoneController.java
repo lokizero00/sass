@@ -45,11 +45,7 @@ public class ZoneController {
             throw new BizException(message);
         }
 
-        ResultDTO<PageInfo<ZoneDTO>> result = new ResultDTO<>();
-        PageInfo<ZoneDTO> list=feignZoneService.getZoneListSearch(JsonUtils.objectToJson(zoneQueryVO));
-        result.setSuccess(true);
-        result.setModule(list);
-        return result;
+        return feignZoneService.getZoneListSearch(JsonUtils.objectToJson(zoneQueryVO));
     }
 
     @Operate(value = "创建小区")
@@ -70,12 +66,7 @@ public class ZoneController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         zoneRequestVO.setCreateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignZoneService.addZone(JsonUtils.objectToJson(zoneRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignZoneService.addZone(JsonUtils.objectToJson(zoneRequestVO));
     }
 
     @Operate(value = "修改小区")
@@ -97,12 +88,7 @@ public class ZoneController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         zoneRequestVO.setUpdateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignZoneService.editZone(JsonUtils.objectToJson(zoneRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignZoneService.editZone(JsonUtils.objectToJson(zoneRequestVO));
     }
 
     @Operate(value = "删除小区")
@@ -118,11 +104,6 @@ public class ZoneController {
 
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignZoneService.deleteZone(zoneId,shiroAdmin.getId())){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignZoneService.deleteZone(zoneId,shiroAdmin.getId());
     }
 }

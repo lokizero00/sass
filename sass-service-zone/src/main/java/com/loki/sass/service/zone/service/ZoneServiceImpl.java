@@ -3,6 +3,7 @@ package com.loki.sass.service.zone.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.ZoneResultCode;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.ZoneDTO;
 import com.loki.sass.common.enums.ZoneState;
 import com.loki.sass.common.exception.BizException;
@@ -33,7 +34,8 @@ public class ZoneServiceImpl implements ZoneService {
     ZoneMapper zoneMapper;
 
     @Override
-    public boolean addZone(ZoneRequestVO zoneRequestVO) throws BizException {
+    public ResultDTO<?> addZone(ZoneRequestVO zoneRequestVO) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         int nameCheck=zoneMapper.checkName(zoneRequestVO.getName());
         if (nameCheck>0){
             throw new BizException(ZoneResultCode.ZONE_NAME_EXISTS);
@@ -47,17 +49,19 @@ public class ZoneServiceImpl implements ZoneService {
             zone.setCity(zoneRequestVO.getCity());
             zone.setTown(zoneRequestVO.getTown());
             zone.setCreateTime(new Date());
-            zone.setState(ZoneState.USING.getValue());
+            zone.setState(zoneRequestVO.getState());
             zoneMapper.insertSelective(zone);
         }catch(Exception e){
             e.printStackTrace();
             throw new BizException(ZoneResultCode.ZONE_ADD_ERROR);
         }
-        return true;
+        result.setSuccess(true);
+        return result;
     }
 
     @Override
-    public boolean editZone(ZoneRequestVO zoneRequestVO) throws BizException {
+    public ResultDTO<?> editZone(ZoneRequestVO zoneRequestVO) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         Zone zone=zoneMapper.selectByPrimaryKey(zoneRequestVO.getId());
         if(null==zone){
             throw new BizException(ZoneResultCode.ZONE_NOT_EXISTS);
@@ -78,11 +82,13 @@ public class ZoneServiceImpl implements ZoneService {
             throw new BizException(ZoneResultCode.ZONE_EDIT_ERROR);
         }
 
-        return true;
+        result.setSuccess(true);
+        return result;
     }
 
     @Override
-    public boolean deleteZone(Integer zoneId,Integer adminId) throws BizException {
+    public ResultDTO<?> deleteZone(Integer zoneId,Integer adminId) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         Zone zone=zoneMapper.selectByPrimaryKey(zoneId);
         if(null==zone){
             throw new BizException(ZoneResultCode.ZONE_NOT_EXISTS);
@@ -98,17 +104,21 @@ public class ZoneServiceImpl implements ZoneService {
             throw new BizException(ZoneResultCode.ZONE_DELETE_ERROR);
         }
 
-        return true;
+        result.setSuccess(true);
+        return result;
     }
 
     @Override
-    public PageInfo<ZoneDTO> getZoneListSearch(ZoneQueryVO zoneQueryVO) throws BizException {
+    public ResultDTO<?> getZoneListSearch(ZoneQueryVO zoneQueryVO) throws BizException {
+        ResultDTO<PageInfo<ZoneDTO>> result=new ResultDTO<>();
         if (!StringUtils.isEmpty(zoneQueryVO.getPage()) && !StringUtils.isEmpty(zoneQueryVO.getRows())) {
             PageHelper.startPage(zoneQueryVO.getPage(), zoneQueryVO.getRows());
         }
         List<ZonePO> list=zoneMapper.selectByParam(zoneQueryVO.getName(),zoneQueryVO.getCreateByName(),zoneQueryVO.getUpdateByName(),zoneQueryVO.getState());
         List<ZoneDTO> dtoList= ConvertUtils.sourceToTarget(list,ZoneDTO.class);
         PageInfo<ZoneDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        result.setSuccess(true);
+        result.setModule(pageInfo);
+        return result;
     }
 }

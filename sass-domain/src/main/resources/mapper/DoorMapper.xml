@@ -14,6 +14,23 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
+
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.DoorPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="remote_ip" jdbcType="VARCHAR" property="remoteIp" />
+    <result column="region_id" jdbcType="INTEGER" property="regionId" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+    <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -297,4 +314,42 @@
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="checkName" parameterType="String" resultType="Integer">
+    select count(id) from door where is_deleted=0 and name=#{name} and region_id=#{regionId}
+  </select>
+
+  <select id="selectByParam" resultMap="QueryResultMap">
+    select d.*,dc.real_name as create_by_name,du.real_name as update_by_name,r.name as region_name from door d
+    left join admin dc on dc.id=d.create_by
+    left join admin du on du.id=d.update_by
+    left join region r on r.id=d.region_id
+    <where>
+      d.is_deleted=0
+      <if test="name!=null and name!=''">
+        and d.name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="code!=null and code!=''">
+        and d.code like CONCAT('%',#{code},'%')
+      </if>
+      <if test="remoteIp!=null and remoteIp!=''">
+        and d.remote_ip like CONCAT('%',#{remoteIp},'%')
+      </if>
+      <if test="regionName!=null and regionName!=''">
+        and r.name like CONCAT('%',#{regionName},'%')
+      </if>
+      <if test="regionId!=null and regionId!=0">
+        and d.region_id=#{regionId}
+      </if>
+      <if test="createByName!=null and createByName!=''">
+        and dc.real_name like CONCAT('%',#{createByName},'%')
+      </if>
+      <if test="updateByName!=null and updateByName!=''">
+        and du.real_name like CONCAT('%',#{updateByName},'%')
+      </if>
+      <if test="state!=null and state!=0">
+        and d.state=#{state}
+      </if>
+    </where>
+  </select>
 </mapper>

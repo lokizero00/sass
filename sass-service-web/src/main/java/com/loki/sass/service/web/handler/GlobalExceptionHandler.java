@@ -8,6 +8,8 @@ import com.loki.sass.common.code.CommonResultCode;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.feignclient.feignService.FeignTipInfoService;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+import feign.FeignException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;

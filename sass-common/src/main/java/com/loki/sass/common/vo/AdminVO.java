@@ -1,6 +1,5 @@
 package com.loki.sass.common.vo;
 
-import com.sun.javafx.beans.IDProperty;
 import lombok.Data;
 import lombok.ToString;
 
