@@ -46,15 +46,15 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("智慧楼宇业务服务接口")
-                .description("智慧楼宇业务服务接口")
+                .title("智慧楼宇-业务-服务接口")
+                .description("智慧楼宇-业务-服务接口")
                 .version("1.0")
                 .build();
     }
 
     private Predicate<String> paths() {
         return or(
-                regex("/zone/.*")
+                regex("/userResidentApply/.*")
         );
     }
 

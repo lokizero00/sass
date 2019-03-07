@@ -46,8 +46,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("智慧楼宇业主服务接口")
-                .description("智慧楼宇业主服务接口")
+                .title("智慧楼宇-业主-服务接口")
+                .description("智慧楼宇-业主-服务接口")
                 .version("1.0")
                 .build();
     }
