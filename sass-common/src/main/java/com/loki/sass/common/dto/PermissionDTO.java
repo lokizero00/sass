@@ -3,6 +3,7 @@ package com.loki.sass.common.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class PermissionDTO {
@@ -31,4 +32,6 @@ public class PermissionDTO {
     private Integer isRegional;
 
     private Integer isDeleted;
+
+    List<PermissionDTO> childList;
 }

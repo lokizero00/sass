@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,8 +36,76 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public List<PermissionDTO> selectByRoleId(Integer roleId) throws BizException {
         List<Permission> permissionList = permissionMapper.selectByRoleId(roleId);
+        List<PermissionDTO> _permissionDTOList = ConvertUtils.sourceToTarget(permissionList,PermissionDTO.class);
+        List<PermissionDTO> permissionDTOList=new ArrayList<>();
+        for (PermissionDTO permissionDTO : _permissionDTOList) {
+            if (permissionDTO.getParentId() == 0) {
+                if (checkIsExistChildNode(_permissionDTOList,permissionDTO.getId()) ){
+                    permissionDTO.setChildList(getChildList(_permissionDTOList, permissionDTO.getId()));
+                }
+                permissionDTOList.add(permissionDTO);
+            }
+        }
+        return permissionDTOList;
+    }
+
+    @Override
+    public List<PermissionDTO> selectByRoleIds(List<Integer> roleIdList) throws BizException {
+        List<Permission> permissionList = permissionMapper.selectByRoleIds(roleIdList);
+        List<PermissionDTO> _permissionDTOList = ConvertUtils.sourceToTarget(permissionList,PermissionDTO.class);
+        List<PermissionDTO> permissionDTOList=new ArrayList<>();
+        for (PermissionDTO permissionDTO : _permissionDTOList) {
+            if (permissionDTO.getParentId() == 0) {
+                if (checkIsExistChildNode(_permissionDTOList,permissionDTO.getId()) ){
+                    permissionDTO.setChildList(getChildList(_permissionDTOList, permissionDTO.getId()));
+                }
+                permissionDTOList.add(permissionDTO);
+            }
+        }
+        return permissionDTOList;
+    }
+
+    @Override
+    public List<PermissionDTO> selectButtonByRoleId(Integer roleId) throws BizException {
+        List<Permission> permissionList = permissionMapper.selectButtonByRoleId(roleId);
         List<PermissionDTO> permissionDTOList = ConvertUtils.sourceToTarget(permissionList,PermissionDTO.class);
         return permissionDTOList;
+    }
+
+    /**
+     * 判断当前节点存在子节点
+     * @param permissionDTOList
+     * @return
+     *
+     */
+    private boolean checkIsExistChildNode(List<PermissionDTO> permissionDTOList,Integer pid) {
+        for (PermissionDTO permissionDTO : permissionDTOList) {
+            if (permissionDTO.getParentId().equals(pid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 递归加载子节点
+     * @param permissionDTOList
+     * @param pid
+     * @param
+     * @return
+     *
+     */
+    public List<PermissionDTO> getChildList(List<PermissionDTO> permissionDTOList, Integer pid) {
+        List<PermissionDTO> childList=new ArrayList<>();
+        for (PermissionDTO permissionDTO : permissionDTOList) {
+            if (permissionDTO.getParentId().equals(pid)) {
+                if (checkIsExistChildNode(permissionDTOList, permissionDTO.getId())) {
+                    permissionDTO.setChildList(getChildList(permissionDTOList, permissionDTO.getId()));
+                }
+                childList.add(permissionDTO);
+            }
+        }
+        return childList;
     }
 
     @Override

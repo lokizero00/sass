@@ -24,4 +24,5 @@ public class ShiroAdmin implements Serializable {
     private Integer zoneId;
     private Integer propertyId;
     private Integer parentComFlag = 0;  //公司总部标识 1：总部，其他：非总部
+    private String token;
 }

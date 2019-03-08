@@ -29,7 +29,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/admin")
-@Function(value ="admin1登录管理",moduleName = "1登录管理",subModuleName = "")
+@Function(value ="admin登录管理",moduleName = "登录管理",subModuleName = "")
 public class AdminController {
 
     @Autowired

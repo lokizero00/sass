@@ -31,6 +31,16 @@ public class PermissionController {
         return ResultDTOUtils.success(permissionService.selectByRoleId(roleId));
     }
 
+    @RequestMapping(value = "v1/selectByRoleIds",method = RequestMethod.POST)
+    public ResultDTO<List<PermissionDTO>> selectByRoleIds(@RequestParam("roleIdList") List<Integer> roleIdList)throws BizException {
+        return ResultDTOUtils.success(permissionService.selectByRoleIds(roleIdList));
+    }
+
+    @RequestMapping(value = "v1/selectButtonByRoleId",method = RequestMethod.POST)
+    public ResultDTO<List<PermissionDTO>> selectButtonByRoleId(@RequestParam("roleId") Integer roleId)throws BizException {
+        return ResultDTOUtils.success(permissionService.selectButtonByRoleId(roleId));
+    }
+
     @RequestMapping(value= "v1/addPermission", method = RequestMethod.POST)
     public ResultDTO<Boolean> addPermission(@RequestParam("permissionRequestVOJson") String permissionRequestVOJson,
                                             @RequestParam("operatorId")Integer operatorId)throws BizException{

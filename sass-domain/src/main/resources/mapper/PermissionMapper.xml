@@ -362,4 +362,22 @@
   <select id="count" parameterType="java.lang.Integer" resultType="Integer">
     select count(id) from permission where is_deleted = 0 and id=#{id}
   </select>
+
+  <select id="selectButtonByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select p.*
+    from permission p
+           left join role_permission rp on p.id=rp.permission_id
+    where  p.is_deleted=0 AND p.available=1 AND rp.role_id =#{roleId,jdbcType=INTEGER} AND p.resource_type='button'
+  </select>
+
+  <select id="selectByRoleIds" resultMap="BaseResultMap">
+    select distinct p.*
+    from permission p
+    left join role_permission rp on p.id=rp.permission_id
+    where p.is_deleted=0 AND p.available=1
+    AND rp.role_id in
+    <foreach collection="roleIdList" item="roleId" index="index" open="(" close=")" separator=",">
+      #{roleId}
+    </foreach>
+  </select>
 </mapper>

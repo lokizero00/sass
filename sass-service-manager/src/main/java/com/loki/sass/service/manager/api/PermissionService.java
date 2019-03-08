@@ -12,6 +12,10 @@ import java.util.List;
 public interface PermissionService {
     List<PermissionDTO> selectByRoleId(Integer roleId)throws BizException;
 
+    List<PermissionDTO> selectByRoleIds(List<Integer> roleIdList)throws BizException;
+
+    List<PermissionDTO> selectButtonByRoleId(Integer roleId)throws BizException;
+
     Boolean insert(PermissionRequestVO permissionRequestVO)throws BizException;
 
     Boolean delete(Integer which,Integer operatorId)throws BizException;

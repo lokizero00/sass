@@ -18,6 +18,12 @@ public interface FeignPermissionService {
     @RequestMapping(method = RequestMethod.POST, value = "/permission/v1/selectByRoleId")
     public ResultDTO<List<PermissionDTO>> selectByRoleId(@RequestParam("roleId") Integer roleId)throws BizException;
 
+    @RequestMapping(method = RequestMethod.POST, value = "/permission/v1/selectByRoleIds")
+    public ResultDTO<List<PermissionDTO>> selectByRoleIds(@RequestParam("roleIdList") List<Integer> roleIdList)throws BizException;
+
+    @RequestMapping(method = RequestMethod.POST, value = "/permission/v1/selectButtonByRoleId")
+    public ResultDTO<List<PermissionDTO>> selectButtonByRoleId(@RequestParam("roleId") Integer roleId)throws BizException;
+
     @RequestMapping(value= "/permission/v1/addPermission", method = RequestMethod.POST)
     public ResultDTO<Boolean> addPermission(@RequestParam("permissionRequestVOJson") String permissionRequestVOJson,
                                             @RequestParam("operatorId")Integer operatorId)throws BizException;

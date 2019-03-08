@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PermissionServiceImplTest {
@@ -55,5 +58,13 @@ public class PermissionServiceImplTest {
         permissionVO.setParentId(0);
         permissionVO.setIsRegional(0);
         permissionService.update(permissionVO);
+    }
+
+    @Test
+    public void getTree(){
+        List<Integer> list=new ArrayList<>();
+        list.add(1);
+        list.add(15);
+        permissionService.selectByRoleIds(list);
     }
 }
