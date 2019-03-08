@@ -2,6 +2,7 @@ package com.loki.sass.domain.mapper;
 
 import com.loki.sass.domain.model.RolePermission;
 import com.loki.sass.domain.model.RolePermissionExample;
+import com.loki.sass.domain.model.RolePermissionRequest;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,5 +32,7 @@ public interface RolePermissionMapper {
 
     int count(RolePermission record);
 
-    int deleteRolePermission(RolePermission record);
+    int deleteRoleOwnPermissions(@Param("roleId") Integer roleId);
+
+    int addRoleOwnPermissions(@Param("rolePermissionRequest")RolePermissionRequest rolePermissionRequest);
 }

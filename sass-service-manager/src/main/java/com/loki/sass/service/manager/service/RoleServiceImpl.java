@@ -4,8 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.AdminResultCode;
 import com.loki.sass.common.code.PermissionResultCode;
-import com.loki.sass.common.code.RolePermissionResultCode;
 import com.loki.sass.common.code.RoleResultCode;
+import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
@@ -16,9 +16,10 @@ import com.loki.sass.domain.mapper.AdminMapper;
 import com.loki.sass.domain.mapper.PermissionMapper;
 import com.loki.sass.domain.mapper.RoleMapper;
 import com.loki.sass.domain.mapper.RolePermissionMapper;
+import com.loki.sass.domain.model.Permission;
 import com.loki.sass.domain.model.Role;
 import com.loki.sass.domain.model.RoleExample;
-import com.loki.sass.domain.model.RolePermission;
+import com.loki.sass.domain.model.RolePermissionRequest;
 import com.loki.sass.domain.po.RolePO;
 import com.loki.sass.service.manager.api.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -116,8 +117,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> findAll()throws BizException {
         List<Role> roleList = roleMapper.selectByExample(new RoleExample());
-        List<RoleDTO> roleDTOList = ConvertUtils.sourceToTarget(roleList, RoleDTO.class);
-        return roleDTOList;
+        return ConvertUtils.sourceToTarget(roleList, RoleDTO.class);
     }
 
     @Override
@@ -127,81 +127,43 @@ public class RoleServiceImpl implements RoleService {
         }
         List<RolePO> list = roleMapper.selectByParam(roleQueryVO.getRole(),roleQueryVO.getCreateByName(),roleQueryVO.getUpdateByName());
         List<RoleDTO> dtoList= ConvertUtils.sourceToTarget(list,RoleDTO.class);
-        PageInfo<RoleDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        return new PageInfo<>(dtoList);
     }
 
     @Override
     public RoleDTO findById(Integer id)throws BizException {
         Role role = roleMapper.selectByPrimaryKey(id);
-        RoleDTO roleDTO = ConvertUtils.sourceToTarget(role, RoleDTO.class);
-        return roleDTO;
+        return ConvertUtils.sourceToTarget(role, RoleDTO.class);
     }
 
-    public void checkExists(RolePermissionRequestVO rolePermissionRequestVO)throws BizException {
-        int roleCount=0,permissionCount = 0;
-        roleCount = roleMapper.count(rolePermissionRequestVO.getRoleId());
+    @Override
+    public List<PermissionDTO> findOwnPermissions(Integer roleId) throws BizException {
+        int count = roleMapper.count(roleId);
+        if(count==0){
+            throw new BizException(RoleResultCode.ROLE_NOT_EXIST);
+        }
+        List<Permission> permissionList = permissionMapper.selectByRoleId(roleId);
+        return ConvertUtils.sourceToTarget(permissionList,PermissionDTO.class);
+    }
+
+    @Override
+    public Boolean updateOwnPermissions(RolePermissionRequestVO rolePermissionRequestVO)throws BizException{
+        int roleCount = roleMapper.count(rolePermissionRequestVO.getRoleId());
         if(roleCount==0){
             throw new BizException(RoleResultCode.ROLE_NOT_EXIST);
         }
-        permissionCount = permissionMapper.count(rolePermissionRequestVO.getPermissionId());
-        if(permissionCount==0){
-            throw new BizException(PermissionResultCode.PERMISSION_NOT_EXIST);
-        }
-    }
-
-    @Override
-    public Boolean hasPermission(RolePermissionRequestVO rolePermissionRequestVO) throws BizException {
-        checkExists(rolePermissionRequestVO);
-        RolePermission rolePermission = new RolePermission();
-        rolePermission.setRoleId(rolePermissionRequestVO.getRoleId());
-        rolePermission.setPermissionId(rolePermissionRequestVO.getPermissionId());
-        return rolePermissionMapper.count(rolePermission)>0;
-    }
-
-    @Override
-    public Boolean addPermission(RolePermissionRequestVO rolePermissionRequestVO) throws BizException {
-        if(hasPermission(rolePermissionRequestVO)){
-            throw new BizException(RolePermissionResultCode.ROLE_HAS_PERMISSION);
+        //校验权限是否存在
+        int permissionCount = permissionMapper.countForList(rolePermissionRequestVO.getPermissionIdsList());
+        if(permissionCount!=rolePermissionRequestVO.getPermissionIdsList().size()){
+            throw new BizException(PermissionResultCode.PERMISSION_NOT_All_EXIST);
         }
         int result = 0;
         try{
-            RolePermission rolePermission = new RolePermission();
-            rolePermission.setRoleId(rolePermissionRequestVO.getRoleId());
-            rolePermission.setPermissionId(rolePermissionRequestVO.getPermissionId());
-            result = rolePermissionMapper.insert(rolePermission);
+            rolePermissionMapper.deleteRoleOwnPermissions(rolePermissionRequestVO.getRoleId());
+            RolePermissionRequest rolePermissionRequest = ConvertUtils.sourceToTarget(rolePermissionRequestVO, RolePermissionRequest.class);
+            result = rolePermissionMapper.addRoleOwnPermissions(rolePermissionRequest);
         }catch(Exception e){
-            throw new BizException(RolePermissionResultCode.ROLE_PERMISSION_ADD_ERROR);
-        }
-        return result>0;
-    }
-
-    @Override
-    public Boolean deletePermissionById(Integer id)throws BizException{
-        RolePermission rolePermission = rolePermissionMapper.selectByPrimaryKey(id);
-        if(rolePermission==null){
-            throw new BizException(RolePermissionResultCode.ROLE_PERMISSION_NOT_EXIST);
-        }
-        int result = 0;
-        try{
-            result = rolePermissionMapper.deleteByPrimaryKey(id);
-        }catch(Exception e){
-            throw new BizException(RolePermissionResultCode.ROLE_PERMISSION_DELETE_ERROR);
-        }
-        return result>0;
-    }
-
-    @Override
-    public Boolean deletePermissionByRecord(RolePermissionRequestVO rolePermissionRequestVO) throws BizException {
-        checkExists(rolePermissionRequestVO);
-        RolePermission rolePermission = new RolePermission();
-        rolePermission.setRoleId(rolePermissionRequestVO.getRoleId());
-        rolePermission.setPermissionId(rolePermissionRequestVO.getPermissionId());
-        int result = 0;
-        try{
-            result = rolePermissionMapper.deleteRolePermission(rolePermission);
-        }catch(Exception e){
-            throw new BizException(RolePermissionResultCode.ROLE_PERMISSION_DELETE_ERROR);
+            throw new BizException(RoleResultCode.ROLE_PERMISSION_OPERATE_ERROR);
         }
         return result>0;
     }

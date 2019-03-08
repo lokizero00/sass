@@ -38,4 +38,6 @@ public interface PermissionMapper {
     int count(@Param("id")Integer id);
 
     List<Permission> selectByRoleIds(@Param("roleIdList") List<Integer> roleIdList);
+
+    int countForList(@Param("ids")List<Integer> ids);
 }

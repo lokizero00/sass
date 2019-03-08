@@ -380,4 +380,11 @@
       #{roleId}
     </foreach>
   </select>
+
+  <select id="countForList" parameterType="java.util.List" resultType="Integer">
+    select count(1) from permission where is_deleted = 0 and id in
+    <foreach collection="ids" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
 </mapper>
