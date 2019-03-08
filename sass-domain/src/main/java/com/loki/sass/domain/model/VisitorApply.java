@@ -23,7 +23,11 @@ public class VisitorApply {
 
     private Date visitingTime;
 
+    private Integer updateBy;
+
     private Integer state;
+
+    private String reason;
 
     public Integer getId() {
         return id;
@@ -105,11 +109,27 @@ public class VisitorApply {
         this.visitingTime = visitingTime;
     }
 
+    public Integer getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Integer updateBy) {
+        this.updateBy = updateBy;
+    }
+
     public Integer getState() {
         return state;
     }
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason == null ? null : reason.trim();
     }
 }

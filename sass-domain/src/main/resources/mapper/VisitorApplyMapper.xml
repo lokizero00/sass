@@ -12,7 +12,29 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="visiting_time" jdbcType="TIMESTAMP" property="visitingTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
     <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+  </resultMap>
+
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.VisitorApplyPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="visitor_name" jdbcType="VARCHAR" property="visitorName" />
+    <result column="visitor_phone" jdbcType="VARCHAR" property="visitorPhone" />
+    <result column="visitor_user_id" jdbcType="INTEGER" property="visitorUserId" />
+    <result column="region_id" jdbcType="INTEGER" property="regionId" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="interviewee_id" jdbcType="INTEGER" property="intervieweeId" />
+    <result column="interviewee_name" jdbcType="VARCHAR" property="intervieweeName" />
+    <result column="interviewee_phone" jdbcType="VARCHAR" property="intervieweePhone" />
+    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="visiting_time" jdbcType="TIMESTAMP" property="visitingTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +96,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, visitor_name, visitor_phone, visitor_user_id, region_id, interviewee_id, purpose, 
-    create_time, update_time, visiting_time, state
+    create_time, update_time, visiting_time, update_by, state, reason
   </sql>
   <select id="selectByExample" parameterType="com.loki.sass.domain.model.VisitorApplyExample" resultMap="BaseResultMap">
     select
@@ -110,11 +132,13 @@
     insert into visitor_apply (visitor_name, visitor_phone, visitor_user_id, 
       region_id, interviewee_id, purpose, 
       create_time, update_time, visiting_time, 
-      state)
+      update_by, state, reason
+      )
     values (#{visitorName,jdbcType=VARCHAR}, #{visitorPhone,jdbcType=VARCHAR}, #{visitorUserId,jdbcType=INTEGER}, 
       #{regionId,jdbcType=INTEGER}, #{intervieweeId,jdbcType=INTEGER}, #{purpose,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{visitingTime,jdbcType=TIMESTAMP}, 
-      #{state,jdbcType=INTEGER})
+      #{updateBy,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.loki.sass.domain.model.VisitorApply" useGeneratedKeys="true">
     insert into visitor_apply
@@ -146,8 +170,14 @@
       <if test="visitingTime != null">
         visiting_time,
       </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
       <if test="state != null">
         state,
+      </if>
+      <if test="reason != null">
+        reason,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -178,8 +208,14 @@
       <if test="visitingTime != null">
         #{visitingTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=INTEGER},
+      </if>
       <if test="state != null">
         #{state,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -222,8 +258,14 @@
       <if test="record.visitingTime != null">
         visiting_time = #{record.visitingTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
       <if test="record.state != null">
         state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.reason != null">
+        reason = #{record.reason,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -242,7 +284,9 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       visiting_time = #{record.visitingTime,jdbcType=TIMESTAMP},
-      state = #{record.state,jdbcType=INTEGER}
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=INTEGER},
+      reason = #{record.reason,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -277,8 +321,14 @@
       <if test="visitingTime != null">
         visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
       <if test="state != null">
         state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -294,7 +344,62 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=INTEGER}
+      update_by = #{updateBy,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParam" resultMap="QueryResultMap">
+    SELECT
+    va.*,
+    r.name AS region_name,
+    u.mobile AS interviewee_phone,
+    ua.real_name AS interviewee_name,
+    a.real_name AS update_by_name
+    FROM
+    visitor_apply va
+    LEFT JOIN user u ON u.id = va.interviewee_id
+    LEFT JOIN user_auth ua ON ua.user_id = va.interviewee_id
+    LEFT JOIN region r ON r.id = va.region_id
+    LEFT JOIN admin a ON a.id = va.update_by
+    <where>
+      <if test="visitorName!=null and visitorName!=''">
+        va.visitor_name like CONCAT('%',#{visitorName},'%')
+      </if>
+      <if test="visitorPhone!=null and visitorPhone!=''">
+        AND va.visitor_phone like CONCAT('%',#{visitorPhone},'%')
+      </if>
+      <if test="visitorUserId!=null and visitorUserId!=0">
+        AND va.visitor_user_id=#{visitorUserId}
+      </if>
+      <if test="regionId!=null and regionId!=0">
+        AND va.region_id=#{regionId}
+      </if>
+      <if test="regionName!=null and regionName!=''">
+        AND r.name like CONCAT('%',#{regionName},'%')
+      </if>
+      <if test="intervieweePhone!=null and intervieweePhone!=''">
+        AND u.mobile like CONCAT('%',#{intervieweePhone},'%')
+      </if>
+      <if test="intervieweeName!=null and intervieweeName!=''">
+        AND ua.real_name like CONCAT('%',#{intervieweeName},'%')
+      </if>
+      <if test="intervieweeId!=null and intervieweeId!=0">
+        AND va.interviewee_id=#{intervieweeId}
+      </if>
+      <if test="updateByName!=null and updateByName!=''">
+        AND a.real_name like CONCAT('%',#{updateByName},'%')
+      </if>
+      <if test="state!=null and state!=0">
+        AND va.state=#{state}
+      </if>
+      <if test="visitingTimeStart!=null and visitingTimeStart!=''">
+        <![CDATA[   and DATE_FORMAT(va.visiting_time, '%Y-%m-%d')>=  DATE_FORMAT(#{visitingTimeStart}, '%Y-%m-%d')   ]]>
+      </if>
+      <if test="visitingTimeEnd!=null and visitingTimeEnd!=''">
+        <![CDATA[  and DATE_FORMAT(va.visiting_time, '%Y-%m-%d') <= DATE_FORMAT(#{visitingTimeEnd}, '%Y-%m-%d')    ]]>
+      </if>
+    </where>
+  </select>
 </mapper>

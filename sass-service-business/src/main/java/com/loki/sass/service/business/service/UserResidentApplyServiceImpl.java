@@ -32,7 +32,7 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
     UserResidentApplyMapper userResidentApplyMapper;
 
     @Override
-    public boolean applyPass(Integer applyId, Integer adminId) throws BizException {
+    public boolean applyPass(Integer applyId,String reason, Integer adminId) throws BizException {
         UserResidentApply userResidentApply=userResidentApplyMapper.selectByPrimaryKey(applyId);
         if(null==userResidentApply){
             throw new BizException(ResidentResultCode.REGISTER_APPLY_NOT_EXISTS);
@@ -41,8 +41,11 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
         try{
             userResidentApply.setUpdateBy(adminId);
             userResidentApply.setUpdateTime(new Date());
+            userResidentApply.setReason(reason);
             userResidentApply.setState(UserResidentApplyState.USING.getValue());
             userResidentApplyMapper.updateByPrimaryKeySelective(userResidentApply);
+
+            //TODO 处理业主所属区域和门禁权限
         }catch(Exception e){
             throw new BizException(ResidentResultCode.REGISTER_VERIFY_ERROR);
         }
@@ -50,7 +53,7 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
     }
 
     @Override
-    public boolean applyRefuse(Integer applyId, Integer adminId) throws BizException {
+    public boolean applyRefuse(Integer applyId,String reason, Integer adminId) throws BizException {
         UserResidentApply userResidentApply=userResidentApplyMapper.selectByPrimaryKey(applyId);
         if(null==userResidentApply){
             throw new BizException(ResidentResultCode.REGISTER_APPLY_NOT_EXISTS);
@@ -59,6 +62,7 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
         try{
             userResidentApply.setUpdateBy(adminId);
             userResidentApply.setUpdateTime(new Date());
+            userResidentApply.setReason(reason);
             userResidentApply.setState(UserResidentApplyState.FORBIDDEN.getValue());
             userResidentApplyMapper.updateByPrimaryKeySelective(userResidentApply);
         }catch(Exception e){

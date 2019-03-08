@@ -25,7 +25,7 @@ public class VisitorApplyPO {
 
     private String intervieweePhone;
 
-    private String intervieweeRealName;
+    private String intervieweeName;
 
     private String purpose;
 
@@ -35,5 +35,11 @@ public class VisitorApplyPO {
 
     private Date visitingTime;
 
+    private Integer updateBy;
+
+    private String updateByName;
+
     private Integer state;
+
+    private String reason;
 }

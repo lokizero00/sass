@@ -17,6 +17,8 @@ public class UserResidentApply {
 
     private Integer state;
 
+    private String reason;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class UserResidentApply {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason == null ? null : reason.trim();
     }
 }

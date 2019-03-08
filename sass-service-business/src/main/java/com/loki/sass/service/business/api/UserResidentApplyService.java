@@ -9,7 +9,7 @@ import com.loki.sass.common.vo.UserResidentApplyQueryVO;
  * created by lokizero00 on 2019-03-07
  */
 public interface UserResidentApplyService {
-    boolean applyPass(Integer applyId,Integer adminId) throws BizException;
-    boolean applyRefuse(Integer applyId,Integer adminId) throws BizException;
+    boolean applyPass(Integer applyId,String reason,Integer adminId) throws BizException;
+    boolean applyRefuse(Integer applyId,String reason,Integer adminId) throws BizException;
     PageInfo<UserResidentApplyDTO> getApplyListSearch(UserResidentApplyQueryVO userResidentApplyQueryVO) throws BizException;
 }

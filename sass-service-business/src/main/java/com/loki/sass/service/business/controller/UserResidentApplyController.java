@@ -43,9 +43,9 @@ public class UserResidentApplyController {
         boolean bs=false;
 
         if(userResidentApplyQueryVO.getVerifyResult().equals(USING.getValue())){
-            bs=userResidentApplyService.applyPass(userResidentApplyQueryVO.getApplyId(),userResidentApplyQueryVO.getUpdateBy());
+            bs=userResidentApplyService.applyPass(userResidentApplyQueryVO.getApplyId(),userResidentApplyQueryVO.getReason(),userResidentApplyQueryVO.getUpdateBy());
         }else if (userResidentApplyQueryVO.getVerifyResult().equals(FORBIDDEN.getValue())){
-            bs=userResidentApplyService.applyRefuse(userResidentApplyQueryVO.getApplyId(),userResidentApplyQueryVO.getUpdateBy());
+            bs=userResidentApplyService.applyRefuse(userResidentApplyQueryVO.getApplyId(),userResidentApplyQueryVO.getReason(),userResidentApplyQueryVO.getUpdateBy());
         }
 
         if(!bs){

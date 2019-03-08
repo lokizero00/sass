@@ -30,4 +30,6 @@ public class UserResidentApplyPO {
     private String updateByName;
 
     private Integer state;
+
+    private String reason;
 }

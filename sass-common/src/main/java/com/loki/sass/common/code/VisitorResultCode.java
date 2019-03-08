@@ -20,4 +20,10 @@ public abstract class VisitorResultCode {
 	public final static String VISIT_APPLY_ERROR = "visitor_0003";
 	//来访信息有误
 	public final static String VISIT_DATA_INVALID = "visitor_0004";
+	//来访申请不存在
+	public final static String VISIT_APPLY_NOT_EXISTS = "visitor_0005";
+	//来访申请审批失败
+	public final static String VISIT_VERIFY_ERROR = "visitor_0006";
+	//审批数据有误
+	public final static String VISIT_VERIFY_DATA_INVALID = "visitor_0007";
 }

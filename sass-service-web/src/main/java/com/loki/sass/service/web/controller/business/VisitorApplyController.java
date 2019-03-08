@@ -1,12 +1,12 @@
 package com.loki.sass.service.web.controller.business;
 
-import com.loki.sass.common.code.ResidentResultCode;
+import com.loki.sass.common.code.VisitorResultCode;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
-import com.loki.sass.common.vo.UserResidentApplyQueryVO;
-import com.loki.sass.common.vo.UserResidentApplyVerifyVO;
-import com.loki.sass.feignclient.feignService.FeignUserResidentApplyService;
+import com.loki.sass.common.vo.VisitorApplyQueryVO;
+import com.loki.sass.common.vo.VisitorApplyVerifyVO;
+import com.loki.sass.feignclient.feignService.FeignVisitorApplyService;
 import com.loki.sass.service.web.aop.bind.Function;
 import com.loki.sass.service.web.aop.bind.Operate;
 import com.loki.sass.service.web.security.realm.ShiroAdmin;
@@ -24,45 +24,45 @@ import javax.validation.Valid;
  */
 @Slf4j
 @RestController
-@RequestMapping("/userResidentApply")
-@Function(value ="业主入驻管理",moduleName = "业务管理",subModuleName = "")
-public class UserResidentApplyController {
+@RequestMapping("/visitorApply")
+@Function(value ="访客申请管理",moduleName = "业务管理",subModuleName = "")
+public class VisitorApplyController {
     @Autowired
-    FeignUserResidentApplyService feignUserResidentApplyService;
+    FeignVisitorApplyService feignVisitorApplyService;
 
     @Operate(value = "申请查询")
     @CrossOrigin
-    @RequiresPermissions("userResidentApplyInfo:view")//权限管理;
+    @RequiresPermissions("visitorApplyInfo:view")//权限管理;
     @RequestMapping(value = "/oauth2/getApplyListSearch", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> getApplyListSearch(@Valid @RequestBody UserResidentApplyQueryVO userResidentApplyQueryVO, BindingResult bindingResult)  throws BizException {
+    public ResultDTO<?> getApplyListSearch(@Valid @RequestBody VisitorApplyQueryVO visitorApplyQueryVO, BindingResult bindingResult)  throws BizException {
         if (bindingResult.hasErrors()) {
             String message = String.format("查询失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
         }
 
-        return feignUserResidentApplyService.getApplyListSearch(JsonUtils.objectToJson(userResidentApplyQueryVO));
+        return feignVisitorApplyService.getApplyListSearch(JsonUtils.objectToJson(visitorApplyQueryVO));
     }
 
     @Operate(value = "申请审批")
     @CrossOrigin
-    @RequiresPermissions("userResidentApplyInfo:verify")//权限管理;
+    @RequiresPermissions("visitorApplyInfo:verify")//权限管理;
     @RequestMapping(value = "/oauth2/applyVerify", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> applyVerify(@Valid @RequestBody UserResidentApplyVerifyVO userResidentApplyVerifyVO, BindingResult bindingResult)  throws BizException {
+    public ResultDTO<?> applyVerify(@Valid @RequestBody VisitorApplyVerifyVO visitorApplyVerifyVO, BindingResult bindingResult)  throws BizException {
         if (bindingResult.hasErrors()) {
             String message = String.format("审批失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
         }
 
-        if (userResidentApplyVerifyVO.getApplyId()<=0
-                || userResidentApplyVerifyVO.getVerifyResult()<=0){
-            throw new BizException(ResidentResultCode.REGISTER_VERIFY_DATA_INVALID);
+        if (visitorApplyVerifyVO.getApplyId()<=0
+                || visitorApplyVerifyVO.getVerifyResult()<=0){
+            throw new BizException(VisitorResultCode.VISIT_VERIFY_DATA_INVALID);
         }
 
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
-        userResidentApplyVerifyVO.setUpdateBy(shiroAdmin.getId());
+        visitorApplyVerifyVO.setUpdateBy(shiroAdmin.getId());
 
-        return feignUserResidentApplyService.applyVerify(JsonUtils.objectToJson(userResidentApplyVerifyVO));
+        return feignVisitorApplyService.applyVerify(JsonUtils.objectToJson(visitorApplyVerifyVO));
     }
 }
