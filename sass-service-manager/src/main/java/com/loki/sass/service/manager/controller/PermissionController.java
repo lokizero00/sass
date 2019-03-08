@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/permission")
 public class PermissionController {
     @Autowired
-    PermissionService permissionService;
+    private PermissionService permissionService;
 
     @RequestMapping(value = "v1/selectByRoleId",method = RequestMethod.POST)
     public ResultDTO<List<PermissionDTO>> selectByRoleId(@RequestParam("roleId") Integer roleId)throws BizException {
@@ -57,7 +57,7 @@ public class PermissionController {
     }
 
     @RequestMapping(value="v1/findAll",method = RequestMethod.POST)
-    public ResultDTO<List<PermissionDTO>> findAll()throws BizException{
+    public ResultDTO<List<PermissionDTO>> findAll()throws BizException {
         return ResultDTOUtils.success(permissionService.findAll());
     }
 }

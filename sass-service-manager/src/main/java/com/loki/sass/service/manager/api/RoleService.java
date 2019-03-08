@@ -3,6 +3,7 @@ package com.loki.sass.service.manager.api;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
+import com.loki.sass.common.vo.RolePermissionRequestVO;
 import com.loki.sass.common.vo.RoleQueryVO;
 import com.loki.sass.common.vo.RoleRequestVO;
 
@@ -25,4 +26,12 @@ public interface RoleService {
     PageInfo<RoleDTO> getAdminListSearch(RoleQueryVO roleQueryVO)throws BizException;
 
     RoleDTO findById(Integer id)throws BizException;
+
+    Boolean hasPermission(RolePermissionRequestVO rolePermissionRequestVO)throws BizException;
+
+    Boolean addPermission(RolePermissionRequestVO rolePermissionRequestVO)throws BizException;
+
+    Boolean deletePermissionByRecord(RolePermissionRequestVO rolePermissionRequestVO) throws BizException;
+
+    Boolean deletePermissionById(Integer id)throws BizException;
 }

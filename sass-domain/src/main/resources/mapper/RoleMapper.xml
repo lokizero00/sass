@@ -341,4 +341,8 @@
   <select id="checkRole" parameterType="String" resultType="Integer">
     select count(id) from role where is_deleted = 0 and role=#{role}
   </select>
+
+  <select id="count" parameterType="java.lang.Integer" resultType="Integer">
+    select count(id) from role where is_deleted = 0 and id=#{id}
+  </select>
 </mapper>

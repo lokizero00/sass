@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
-    AdminService adminService;
+    private AdminService adminService;
 
     @RequestMapping(value = "v1/selectByMobile",method = RequestMethod.POST)
     public ResultDTO<AdminDTO> selectByMobile(@RequestParam("mobile") String mobile)throws BizException {

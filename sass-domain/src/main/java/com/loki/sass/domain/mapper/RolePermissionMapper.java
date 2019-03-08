@@ -2,8 +2,9 @@ package com.loki.sass.domain.mapper;
 
 import com.loki.sass.domain.model.RolePermission;
 import com.loki.sass.domain.model.RolePermissionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface RolePermissionMapper {
     long countByExample(RolePermissionExample example);
@@ -27,4 +28,8 @@ public interface RolePermissionMapper {
     int updateByPrimaryKeySelective(RolePermission record);
 
     int updateByPrimaryKey(RolePermission record);
+
+    int count(RolePermission record);
+
+    int deleteRolePermission(RolePermission record);
 }

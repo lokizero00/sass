@@ -451,4 +451,8 @@
     <![CDATA[ select count(1) from admin where is_deleted = 0 and id=#{id}]]>
   </select>
 
+  <select id="count" parameterType="Integer" resultType="Integer">
+    select count(id) from admin where is_deleted = 0 and id=#{id}
+  </select>
+
 </mapper>

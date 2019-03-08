@@ -170,4 +170,14 @@
       role_id = #{roleId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="count" parameterType="com.loki.sass.domain.model.RolePermission" resultType="Integer">
+    select count(id)
+    from role_permission
+    where role_id = #{roleId} and permission_id = #{permissionId}
+  </select>
+
+  <delete id="deleteRolePermission" parameterType="com.loki.sass.domain.model.RolePermission">
+    delete from role_permission
+    where role_id = #{roleId} and permission_id = #{permissionId}
+  </delete>
 </mapper>

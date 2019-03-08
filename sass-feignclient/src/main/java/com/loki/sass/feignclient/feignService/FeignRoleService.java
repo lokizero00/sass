@@ -1,6 +1,7 @@
 package com.loki.sass.feignclient.feignService;
 
 import com.github.pagehelper.PageInfo;
+import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
@@ -37,5 +38,20 @@ public interface FeignRoleService {
 
     @RequestMapping(value = "/role/v1/findByPage",method = RequestMethod.POST)
     public ResultDTO<PageInfo<RoleDTO>> findByPage(@RequestParam("roleQueryVOJson") String roleQueryVOJson)throws BizException;
+
+    @RequestMapping(value = "/role/v1/hasPermission",method = RequestMethod.POST)
+    public ResultDTO<Boolean> hasPermission(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
+
+    @RequestMapping(value = "/role/v1/addPermission",method = RequestMethod.POST)
+    public ResultDTO<Boolean> addPermission(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
+
+    @RequestMapping(value = "/role/v1/deletePermissionByRecord",method = RequestMethod.POST)
+    public ResultDTO<Boolean> deletePermissionByRecord(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
+
+    @RequestMapping(value="/role/v1/deletePermissionById",method = RequestMethod.POST)
+    public ResultDTO<Boolean> deletePermissionById(@RequestParam("id") Integer id)throws BizException;
+
+    @RequestMapping(value = "/role/v1/showPermissions",method = RequestMethod.POST)
+    public ResultDTO<List<PermissionDTO>> showPermissions(Integer roleId)throws BizException;
 
 }

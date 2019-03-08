@@ -1,13 +1,16 @@
 package com.loki.sass.service.manager.controller;
 
+import com.loki.sass.common.dto.PermissionDTO;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.util.ResultDTOUtils;
+import com.loki.sass.common.vo.RolePermissionRequestVO;
 import com.loki.sass.common.vo.RoleQueryVO;
 import com.loki.sass.common.vo.RoleRequestVO;
+import com.loki.sass.service.manager.api.PermissionService;
 import com.loki.sass.service.manager.api.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +29,10 @@ import java.util.List;
 @RequestMapping("/role")
 public class RoleController {
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @RequestMapping(value = "v1/selectByUserId",method = RequestMethod.POST)
     public ResultDTO<List<RoleDTO>> selectByUserId(@RequestParam("adminId") Integer adminId)throws BizException {
@@ -65,5 +71,33 @@ public class RoleController {
     public ResultDTO<PageInfo<RoleDTO>> findByPage(@RequestParam("roleQueryVOJson") String roleQueryVOJson)throws BizException{
         RoleQueryVO roleQueryVO = JsonUtils.jsonToObject(roleQueryVOJson, RoleQueryVO.class);
         return ResultDTOUtils.success(roleService.getAdminListSearch(roleQueryVO));
+    }
+
+    @RequestMapping(value = "v1/hasPermission",method = RequestMethod.POST)
+    public ResultDTO<Boolean> hasPermission(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException{
+       RolePermissionRequestVO rolePermissionRequestVO = JsonUtils.jsonToObject(rolePermissionRequestVOJson,RolePermissionRequestVO.class);
+       return ResultDTOUtils.success(roleService.hasPermission(rolePermissionRequestVO));
+    }
+
+    @RequestMapping(value="v1/addPermission",method = RequestMethod.POST)
+    public ResultDTO<Boolean> addPermission(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException{
+        RolePermissionRequestVO rolePermissionRequestVO = JsonUtils.jsonToObject(rolePermissionRequestVOJson,RolePermissionRequestVO.class);
+        return ResultDTOUtils.success(roleService.addPermission(rolePermissionRequestVO));
+    }
+
+    @RequestMapping(value="v1/deletePermissionByRecord",method = RequestMethod.POST)
+    public ResultDTO<Boolean> deletePermission(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException{
+        RolePermissionRequestVO rolePermissionRequestVO = JsonUtils.jsonToObject(rolePermissionRequestVOJson,RolePermissionRequestVO.class);
+        return ResultDTOUtils.success(roleService.deletePermissionByRecord(rolePermissionRequestVO));
+    }
+
+    @RequestMapping(value="v1/deletePermissionById",method = RequestMethod.POST)
+    public ResultDTO<Boolean> deletePermissionById(@RequestParam("id") Integer id)throws BizException{
+        return ResultDTOUtils.success(roleService.deletePermissionById(id));
+    }
+
+    @RequestMapping(value="v1/showPermissions",method = RequestMethod.POST)
+    public ResultDTO<List<PermissionDTO>> showPermissions(@RequestParam("roleId")Integer roleId) throws BizException{
+        return ResultDTOUtils.success(permissionService.selectByRoleId(roleId));
     }
 }

@@ -2,10 +2,12 @@ package com.loki.sass.service.web.controller.admin;
 
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.RoleResultCode;
+import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
+import com.loki.sass.common.vo.RolePermissionRequestVO;
 import com.loki.sass.common.vo.RoleQueryVO;
 import com.loki.sass.common.vo.RoleRequestVO;
 import com.loki.sass.feignclient.feignService.FeignRoleService;
@@ -119,6 +121,68 @@ public class RoleController {
         }
 
         return feignRoleService.findByPage(JsonUtils.objectToJson(roleQueryVO));
+    }
+
+    @Operate(value="查看角色是否有权限")
+    @CrossOrigin
+    @RequiresPermissions("role:auth")//权限管理;
+    @RequestMapping(value="/oauth2/hasPermission",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<Boolean> hasPermission(@Valid @RequestBody RolePermissionRequestVO rolePermissionRequestVO, BindingResult bindingResult)throws BizException{
+        if(bindingResult.hasErrors()){
+            String message = String.format("查询失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
+            throw new BizException(message);
+        }
+
+        return feignRoleService.hasPermission(JsonUtils.objectToJson(rolePermissionRequestVO));
+    }
+
+    @Operate(value="为角色授权")
+    @CrossOrigin
+    @RequiresPermissions("role:auth")//权限管理;
+    @RequestMapping(value="/oauth2/addPermission",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<Boolean> addPermission(@Valid @RequestBody RolePermissionRequestVO rolePermissionRequestVO, BindingResult bindingResult)throws BizException{
+        if(bindingResult.hasErrors()){
+            String message = String.format("授权失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
+            throw new BizException(message);
+        }
+
+        return feignRoleService.addPermission(JsonUtils.objectToJson(rolePermissionRequestVO));
+    }
+
+    @Operate(value="为角色取消权限")
+    @CrossOrigin
+    @RequiresPermissions("role:auth")//权限管理;
+    @RequestMapping(value="/oauth2/deletePermissionByRecord",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<Boolean> deletePermissionByRecord(@Valid @RequestBody RolePermissionRequestVO rolePermissionRequestVO, BindingResult bindingResult)throws BizException{
+        if(bindingResult.hasErrors()){
+            String message = String.format("取消授权失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
+            throw new BizException(message);
+        }
+
+        return feignRoleService.deletePermissionByRecord(JsonUtils.objectToJson(rolePermissionRequestVO));
+    }
+
+    @Operate(value="删除角色授权")
+    @CrossOrigin
+    @RequiresPermissions("role:auth")//权限管理;
+    @RequestMapping(value="/oauth2/deletePermissionById",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<Boolean> deletePermissionById(@RequestParam("id")Integer id)throws BizException{
+
+        return feignRoleService.deletePermissionById(id);
+    }
+
+    @Operate(value="展示角色权限")
+    @CrossOrigin
+    @RequiresPermissions("role:auth")//权限管理;
+    @RequestMapping(value="/oauth2/showPermissions",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<List<PermissionDTO>> showPermissions(@RequestParam("id") Integer id)throws BizException{
+
+        return feignRoleService.showPermissions(id);
     }
 
 }

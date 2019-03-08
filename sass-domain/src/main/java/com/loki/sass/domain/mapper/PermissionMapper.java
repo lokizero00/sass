@@ -32,4 +32,6 @@ public interface PermissionMapper {
     List<Permission> selectByRoleId(@Param("roleId") Integer roleId);
 
     int checkName(@Param("name") String name);
+
+    int count(@Param("id")Integer id);
 }

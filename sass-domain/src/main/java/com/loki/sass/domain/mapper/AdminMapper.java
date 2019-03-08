@@ -36,5 +36,5 @@ public interface AdminMapper {
 
     int checkName(@Param("username") String username);
 
-    boolean checkExist(@Param("id") Integer id);
+    int count(@Param("id")Integer id);
 }

@@ -41,7 +41,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Boolean insert(PermissionRequestVO permissionRequestVO)throws BizException {
-        if(!adminMapper.checkExist(permissionRequestVO.getCreateBy())){
+        if(adminMapper.count(permissionRequestVO.getCreateBy())==0){
             throw new BizException(AdminResultCode.ADMIN_OPERATOR_NOT_EXIST);
         }
         int count = permissionMapper.checkName(permissionRequestVO.getName());
@@ -64,7 +64,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Boolean delete(Integer which,Integer operatorId) throws BizException{
-        if(!adminMapper.checkExist(operatorId)){
+        if(adminMapper.count(operatorId)==0){
             throw new BizException(AdminResultCode.ADMIN_OPERATOR_NOT_EXIST);
         }
         int result = 0;
@@ -85,7 +85,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Boolean update(PermissionRequestVO permissionRequestVO) throws BizException{
-        if(!adminMapper.checkExist(permissionRequestVO.getUpdateBy())){
+        if(adminMapper.count(permissionRequestVO.getUpdateBy())==0){
             throw new BizException(AdminResultCode.ADMIN_OPERATOR_NOT_EXIST);
         }
         int result = 0;
