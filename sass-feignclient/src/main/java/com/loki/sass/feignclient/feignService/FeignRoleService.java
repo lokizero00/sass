@@ -39,19 +39,10 @@ public interface FeignRoleService {
     @RequestMapping(value = "/role/v1/findByPage",method = RequestMethod.POST)
     public ResultDTO<PageInfo<RoleDTO>> findByPage(@RequestParam("roleQueryVOJson") String roleQueryVOJson)throws BizException;
 
-    @RequestMapping(value = "/role/v1/hasPermission",method = RequestMethod.POST)
-    public ResultDTO<Boolean> hasPermission(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
+    @RequestMapping(value = "/role/v1/findOwnPermissions",method = RequestMethod.POST)
+    public ResultDTO<List<PermissionDTO>> findOwnPermissions(@RequestParam("roleId")Integer roleId)throws BizException;
 
-    @RequestMapping(value = "/role/v1/addPermission",method = RequestMethod.POST)
-    public ResultDTO<Boolean> addPermission(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
-
-    @RequestMapping(value = "/role/v1/deletePermissionByRecord",method = RequestMethod.POST)
-    public ResultDTO<Boolean> deletePermissionByRecord(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
-
-    @RequestMapping(value="/role/v1/deletePermissionById",method = RequestMethod.POST)
-    public ResultDTO<Boolean> deletePermissionById(@RequestParam("id") Integer id)throws BizException;
-
-    @RequestMapping(value = "/role/v1/showPermissions",method = RequestMethod.POST)
-    public ResultDTO<List<PermissionDTO>> showPermissions(Integer roleId)throws BizException;
+    @RequestMapping(value="/role/v1/updateOwnPermissions",method = RequestMethod.POST)
+    public ResultDTO<Boolean> updateOwnPermissions(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
 
 }

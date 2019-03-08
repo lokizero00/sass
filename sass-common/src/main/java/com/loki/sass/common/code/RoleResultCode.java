@@ -22,4 +22,7 @@ public abstract class RoleResultCode {
 
     //角色名称为空
     public final static String ROLE_NAME_EMPTY = "role_0006";
+
+    //为角色更新权限失败
+    public final static String ROLE_PERMISSION_OPERATE_ERROR = "role_0007";
 }

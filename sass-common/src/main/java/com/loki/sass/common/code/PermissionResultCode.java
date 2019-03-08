@@ -22,4 +22,7 @@ public abstract class PermissionResultCode {
 
     //待添加权限的名字为空
     public final static String PERMISSION_NAME_EMPTY = "permission_0006";
+
+    //待添加的权限不都存在,部分待添加权限不存在
+    public final static String PERMISSION_NOT_All_EXIST = "permission_0007";
 }

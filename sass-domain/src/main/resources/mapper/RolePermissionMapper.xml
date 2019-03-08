@@ -176,8 +176,16 @@
     where role_id = #{roleId} and permission_id = #{permissionId}
   </select>
 
-  <delete id="deleteRolePermission" parameterType="com.loki.sass.domain.model.RolePermission">
+  <delete id="deleteRoleOwnPermissions" parameterType="java.lang.Integer">
     delete from role_permission
-    where role_id = #{roleId} and permission_id = #{permissionId}
+    where role_id = #{roleId}
   </delete>
+
+  <insert id="addRoleOwnPermissions" parameterType="com.loki.sass.domain.model.RolePermissionRequest" useGeneratedKeys="true">
+    insert into role_permission (role_id,permission_id)
+    values
+    <foreach collection="rolePermissionRequest.permissionIdsList" item="item" separator=",">
+      (#{rolePermissionRequest.roleId},#{item})
+    </foreach>
+  </insert>
 </mapper>

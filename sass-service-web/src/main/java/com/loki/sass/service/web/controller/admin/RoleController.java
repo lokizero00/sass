@@ -123,66 +123,27 @@ public class RoleController {
         return feignRoleService.findByPage(JsonUtils.objectToJson(roleQueryVO));
     }
 
-    @Operate(value="查看角色是否有权限")
+    @Operate(value = "查看角色拥有的权限")
     @CrossOrigin
-    @RequiresPermissions("role:auth")//权限管理;
-    @RequestMapping(value="/oauth2/hasPermission",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("role:view")//权限管理;
+    @RequestMapping(value = "/oauth2/findOwnPermissions", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<Boolean> hasPermission(@Valid @RequestBody RolePermissionRequestVO rolePermissionRequestVO, BindingResult bindingResult)throws BizException{
+    public ResultDTO<List<PermissionDTO>> findOwnPermissions(@RequestParam("roleId")Integer roleId)throws BizException{
+        return feignRoleService.findOwnPermissions(roleId);
+    }
+
+    @Operate(value = "更新角色拥有的权限")
+    @CrossOrigin
+    @RequiresPermissions("role:edit")//权限管理;
+    @RequestMapping(value = "/oauth2/updateOwnPermissions", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<Boolean> updateOwnPermissions(@Valid RolePermissionRequestVO rolePermissionRequestVO,BindingResult bindingResult)throws BizException{
         if(bindingResult.hasErrors()){
-            String message = String.format("查询失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
+            String message = String.format("更新失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
             throw new BizException(message);
         }
-
-        return feignRoleService.hasPermission(JsonUtils.objectToJson(rolePermissionRequestVO));
+        return feignRoleService.updateOwnPermissions(JsonUtils.objectToJson(rolePermissionRequestVO));
     }
 
-    @Operate(value="为角色授权")
-    @CrossOrigin
-    @RequiresPermissions("role:auth")//权限管理;
-    @RequestMapping(value="/oauth2/addPermission",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public ResultDTO<Boolean> addPermission(@Valid @RequestBody RolePermissionRequestVO rolePermissionRequestVO, BindingResult bindingResult)throws BizException{
-        if(bindingResult.hasErrors()){
-            String message = String.format("授权失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
-            throw new BizException(message);
-        }
-
-        return feignRoleService.addPermission(JsonUtils.objectToJson(rolePermissionRequestVO));
-    }
-
-    @Operate(value="为角色取消权限")
-    @CrossOrigin
-    @RequiresPermissions("role:auth")//权限管理;
-    @RequestMapping(value="/oauth2/deletePermissionByRecord",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public ResultDTO<Boolean> deletePermissionByRecord(@Valid @RequestBody RolePermissionRequestVO rolePermissionRequestVO, BindingResult bindingResult)throws BizException{
-        if(bindingResult.hasErrors()){
-            String message = String.format("取消授权失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
-            throw new BizException(message);
-        }
-
-        return feignRoleService.deletePermissionByRecord(JsonUtils.objectToJson(rolePermissionRequestVO));
-    }
-
-    @Operate(value="删除角色授权")
-    @CrossOrigin
-    @RequiresPermissions("role:auth")//权限管理;
-    @RequestMapping(value="/oauth2/deletePermissionById",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public ResultDTO<Boolean> deletePermissionById(@RequestParam("id")Integer id)throws BizException{
-
-        return feignRoleService.deletePermissionById(id);
-    }
-
-    @Operate(value="展示角色权限")
-    @CrossOrigin
-    @RequiresPermissions("role:auth")//权限管理;
-    @RequestMapping(value="/oauth2/showPermissions",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public ResultDTO<List<PermissionDTO>> showPermissions(@RequestParam("id") Integer id)throws BizException{
-
-        return feignRoleService.showPermissions(id);
-    }
 
 }
