@@ -135,7 +135,7 @@ public class ShiroRealm extends AuthorizingRealm {
                             _permissions = (List<PermissionDTO>)resultPermissionDTO.getModule();
                         }
                         for(PermissionDTO permissionDTO : _permissions){
-                            if(permissionDTO != null && StringUtils.isNotEmpty(permissionDTO.getUrl())){
+                            if(permissionDTO != null && StringUtils.isNotEmpty(permissionDTO.getPermission())){
                                 permissions.add(permissionDTO.getPermission());
                             }
                         }

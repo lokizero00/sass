@@ -2,8 +2,10 @@ package com.loki.sass.domain.mapper;
 
 import com.loki.sass.domain.model.AdminRole;
 import com.loki.sass.domain.model.AdminRoleExample;
-import java.util.List;
+import com.loki.sass.domain.model.AdminRoleRequest;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface AdminRoleMapper {
     long countByExample(AdminRoleExample example);
@@ -27,4 +29,8 @@ public interface AdminRoleMapper {
     int updateByPrimaryKeySelective(AdminRole record);
 
     int updateByPrimaryKey(AdminRole record);
+
+    int deleteAdminOwnRoles(@Param("adminId") Integer adminId);
+
+    int addAdminOwnRoles(@Param("adminRoleRequest")AdminRoleRequest adminRoleRequest);
 }

@@ -3,6 +3,7 @@ package com.loki.sass.feignclient.feignService;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.AdminDTO;
 import com.loki.sass.common.dto.ResultDTO;
+import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,4 +38,9 @@ public interface FeignAdminService {
     @RequestMapping(method = RequestMethod.POST,value="admin/v1/findByPage")
     public ResultDTO<PageInfo<AdminDTO>> findByPage(@RequestParam("adminQueryVOJson") String adminQueryVOJson)throws BizException;
 
+    @RequestMapping(value="admin/v1/findRolesByAdminId",method = RequestMethod.POST)
+    public ResultDTO<List<RoleDTO>> findRolesByAdminId(@RequestParam("adminId")Integer adminId)throws BizException;
+
+    @RequestMapping(value="admin/v1/updateAdminRoles",method = RequestMethod.POST)
+    public ResultDTO<Boolean> updateAdminRoles(@RequestParam("adminRoleRequestVOJson")String adminRoleRequestVOJson)throws BizException;
 }

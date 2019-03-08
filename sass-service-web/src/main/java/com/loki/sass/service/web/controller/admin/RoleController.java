@@ -125,7 +125,7 @@ public class RoleController {
 
     @Operate(value = "查看角色拥有的权限")
     @CrossOrigin
-    @RequiresPermissions("role:view")//权限管理;
+    @RequiresPermissions("role:auth")//权限管理;
     @RequestMapping(value = "/oauth2/findOwnPermissions", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResultDTO<List<PermissionDTO>> findOwnPermissions(@RequestParam("roleId")Integer roleId)throws BizException{
@@ -134,7 +134,7 @@ public class RoleController {
 
     @Operate(value = "更新角色拥有的权限")
     @CrossOrigin
-    @RequiresPermissions("role:edit")//权限管理;
+    @RequiresPermissions("role:auth")//权限管理;
     @RequestMapping(value = "/oauth2/updateOwnPermissions", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResultDTO<Boolean> updateOwnPermissions(@Valid RolePermissionRequestVO rolePermissionRequestVO,BindingResult bindingResult)throws BizException{

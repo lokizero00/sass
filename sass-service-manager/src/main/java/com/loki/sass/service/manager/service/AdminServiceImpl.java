@@ -3,14 +3,21 @@ package com.loki.sass.service.manager.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.AdminResultCode;
+import com.loki.sass.common.code.RoleResultCode;
 import com.loki.sass.common.dto.AdminDTO;
+import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.AdminQueryVO;
 import com.loki.sass.common.vo.AdminRequestVO;
+import com.loki.sass.common.vo.AdminRoleRequestVO;
 import com.loki.sass.domain.mapper.AdminMapper;
+import com.loki.sass.domain.mapper.AdminRoleMapper;
+import com.loki.sass.domain.mapper.RoleMapper;
 import com.loki.sass.domain.model.Admin;
 import com.loki.sass.domain.model.AdminExample;
+import com.loki.sass.domain.model.AdminRoleRequest;
+import com.loki.sass.domain.model.Role;
 import com.loki.sass.domain.po.AdminPO;
 import com.loki.sass.service.manager.api.AdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +39,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminMapper adminMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
+
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
 
     @Override
     public AdminDTO selectByMobile(String mobile)throws BizException {
@@ -68,6 +81,38 @@ public class AdminServiceImpl implements AdminService {
         List<AdminDTO> dtoList= ConvertUtils.sourceToTarget(list,AdminDTO.class);
         PageInfo<AdminDTO> pageInfo = new PageInfo<>(dtoList);
         return pageInfo;
+    }
+
+    @Override
+    public List<RoleDTO> findRolesByAdminId(Integer adminId) throws BizException{
+        int adminCount = adminMapper.count(adminId);
+        if(adminCount==0){
+            throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
+        }
+        List<Role> roleList = roleMapper.selectByAdminId(adminId);
+        return ConvertUtils.sourceToTarget(roleList,RoleDTO.class);
+    }
+
+    @Override
+    public Boolean updateAdminRoles(AdminRoleRequestVO adminRoleRequestVO)throws BizException {
+        Integer adminId = adminRoleRequestVO.getAdminId();
+        int adminCount = adminMapper.count(adminId);
+        if(adminCount==0){
+            throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
+        }
+        int roleCounts = roleMapper.countForList(adminRoleRequestVO.getRoleIdsList());
+        if(roleCounts!=adminRoleRequestVO.getRoleIdsList().size()){
+            throw new BizException(RoleResultCode.ROLE_NOT_ALL_EXIST);
+        }
+        int result = 0;
+        try{
+            adminRoleMapper.deleteAdminOwnRoles(adminRoleRequestVO.getAdminId());
+            AdminRoleRequest adminRoleRequest = ConvertUtils.sourceToTarget(adminRoleRequestVO,AdminRoleRequest.class);
+            result = adminRoleMapper.addAdminOwnRoles(adminRoleRequest);
+        }catch(Exception e){
+            throw new BizException(AdminResultCode.ADMIN_ROLE_OPERATE_ERROR);
+        }
+        return result>0;
     }
 
     @Override

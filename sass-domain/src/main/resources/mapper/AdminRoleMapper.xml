@@ -170,4 +170,15 @@
       role_id = #{roleId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <delete id="deleteAdminOwnRoles" parameterType="java.lang.Integer">
+    delete from admin_role
+    where admin_id = #{adminId}
+  </delete>
+  <insert id="addAdminOwnRoles" parameterType="com.loki.sass.domain.model.AdminRoleRequest">
+    insert into admin_role (admin_id,role_id)
+    values
+    <foreach collection="adminRoleRequest.roleIdsList" item="item" separator=",">
+      (#{adminRoleRequest.adminId},#{item})
+    </foreach>
+  </insert>
 </mapper>

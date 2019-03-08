@@ -4,10 +4,12 @@ import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.AdminResultCode;
 import com.loki.sass.common.dto.AdminDTO;
 import com.loki.sass.common.dto.ResultDTO;
+import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.vo.AdminQueryVO;
 import com.loki.sass.common.vo.AdminRequestVO;
+import com.loki.sass.common.vo.AdminRoleRequestVO;
 import com.loki.sass.feignclient.feignService.FeignAdminService;
 import com.loki.sass.service.web.aop.bind.Function;
 import com.loki.sass.service.web.aop.bind.Operate;
@@ -127,6 +129,27 @@ public class AdminController {
         return feignAdminService.findByPage(JsonUtils.objectToJson(adminQueryVO));
     }
 
+    @Operate(value = "查看管理员的角色")
+    @CrossOrigin
+    @RequiresPermissions("admin:auth")//权限管理;
+    @RequestMapping(value = "/oauth2/findRolesByAdminId", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<List<RoleDTO>> findRolesByAdminId(@RequestParam("adminId")Integer adminId) throws BizException{
 
+        return feignAdminService.findRolesByAdminId(adminId);
+    }
+
+    @Operate(value = "修改管理员的角色")
+    @CrossOrigin
+    @RequiresPermissions("admin:auth")//权限管理;
+    @RequestMapping(value = "/oauth2/updateAdminRoles", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<Boolean> updateAdminRoles(@Valid AdminRoleRequestVO adminRoleRequestVO ,BindingResult bindingResult) throws BizException{
+        if(bindingResult.hasErrors()){
+            String message = String.format("更新失败，详细信息[%s]。", bindingResult.getFieldError().getDefaultMessage());
+            throw new BizException(message);
+        }
+        return feignAdminService.updateAdminRoles(JsonUtils.objectToJson(adminRoleRequestVO));
+    }
 
 }

@@ -37,4 +37,6 @@ public interface RoleMapper {
     int checkRole(@Param("role") String role);
 
     int count(@Param("id")Integer id);
+
+    int countForList(@Param("ids")List<Integer> ids);
 }

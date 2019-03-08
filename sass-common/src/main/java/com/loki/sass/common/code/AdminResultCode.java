@@ -28,4 +28,10 @@ public abstract class AdminResultCode {
 
     //操作者找不到
     public final static String ADMIN_OPERATOR_NOT_EXIST = "admin_0008";
+
+    //admin找不到
+    public final static String ADMIN_NOT_EXIST = "admin_0009";
+
+    //为admin操作角色失败
+    public final static String ADMIN_ROLE_OPERATE_ERROR = "admin_0010";
 }

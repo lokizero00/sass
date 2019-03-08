@@ -25,4 +25,7 @@ public abstract class RoleResultCode {
 
     //为角色更新权限失败
     public final static String ROLE_PERMISSION_OPERATE_ERROR = "role_0007";
+
+    //查询的角色不都存在
+    public final static String ROLE_NOT_ALL_EXIST = "role_0008";
 }

@@ -3,11 +3,13 @@ package com.loki.sass.service.manager.controller;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.AdminDTO;
 import com.loki.sass.common.dto.ResultDTO;
+import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.util.ResultDTOUtils;
 import com.loki.sass.common.vo.AdminQueryVO;
 import com.loki.sass.common.vo.AdminRequestVO;
+import com.loki.sass.common.vo.AdminRoleRequestVO;
 import com.loki.sass.service.manager.api.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +63,21 @@ public class AdminController {
         return ResultDTOUtils.success(adminService.findAll());
     }
 
-
     @RequestMapping(value="v1/findByPage",method = RequestMethod.POST)
     public ResultDTO<PageInfo<AdminDTO>> findByPage(@RequestParam("adminQueryVOJson") String adminQueryVOJson)throws BizException{
         AdminQueryVO adminQueryVO = JsonUtils.jsonToObject(adminQueryVOJson, AdminQueryVO.class);
         return ResultDTOUtils.success(adminService.getAdminListSearch(adminQueryVO));
+    }
+
+    @RequestMapping(value="v1/findRolesByAdminId",method = RequestMethod.POST)
+    public ResultDTO<List<RoleDTO>> findRolesByAdminId(@RequestParam("adminId")Integer adminId)throws BizException{
+        return ResultDTOUtils.success(adminService.findRolesByAdminId(adminId));
+    }
+
+    @RequestMapping(value="v1/updateAdminRoles",method = RequestMethod.POST)
+    public ResultDTO<Boolean> updateAdminRoles(@RequestParam("adminRoleRequestVOJson")String adminRoleRequestVOJson)throws BizException{
+        AdminRoleRequestVO adminRoleRequestVO = JsonUtils.jsonToObject(adminRoleRequestVOJson,AdminRoleRequestVO.class);
+        return ResultDTOUtils.success(adminService.updateAdminRoles(adminRoleRequestVO));
     }
 
 }
