@@ -27,7 +27,7 @@ zuul:
     maxPerRouteConnections: 20
   routes:
 #    api-mobile:
-#      path: /api-login/**
+#      path: /api-mobile/**
 #      serviceId: sass-api-mobile
 #      stripPrefix: true
 #      sensitiveHeaders:
