@@ -2,10 +2,12 @@ package com.loki.sass.service.web.controller;
 
 import com.loki.sass.common.code.CommonResultCode;
 import com.loki.sass.common.code.LoginResultCode;
+import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.vo.AdminLoginRequestVO;
 import com.loki.sass.feignclient.feignService.FeignAdminService;
+import com.loki.sass.feignclient.feignService.FeignPermissionService;
 import com.loki.sass.service.web.aop.bind.Function;
 import com.loki.sass.service.web.security.realm.ShiroAdmin;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * created by lokizero00 on 2019-02-21
@@ -30,6 +34,9 @@ import javax.validation.Valid;
 @RequestMapping("/login")
 @Function(value ="admin登录管理",moduleName = "登录管理",subModuleName = "")
 public class LoginController {
+    @Autowired
+    FeignPermissionService feignPermissionService;
+
     @CrossOrigin
     @RequestMapping(value = "/adminLogin", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -56,7 +63,12 @@ public class LoginController {
             Session session=SecurityUtils.getSubject().getSession();
             ShiroAdmin shiroAdmin=(ShiroAdmin) subject.getPrincipal();
             shiroAdmin.setToken(session.getId().toString());
-
+            List<Integer> roleIdList=new ArrayList<>();
+            for (String roleId : shiroAdmin.getRoleSet()){
+                roleIdList.add(Integer.parseInt(roleId));
+            }
+            ResultDTO<List<PermissionDTO>> menuResource=feignPermissionService.selectByRoleIds(roleIdList);
+            shiroAdmin.setMenuResource(menuResource.getModule());
             result.setModule(shiroAdmin);
             result.setSuccess(true);
         } catch (UnknownAccountException e) {

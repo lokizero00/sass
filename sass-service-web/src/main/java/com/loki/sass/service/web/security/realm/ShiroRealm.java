@@ -110,7 +110,6 @@ public class ShiroRealm extends AuthorizingRealm {
         Set<String> roleSet = new HashSet<>();
         Set<String> permissions = new HashSet<>();
 
-
         try {
             //判断redis中是否有当前用户权限
             ValueOperations<String,String> valueOperations = stringRedisTemplate.opsForValue();
@@ -142,7 +141,6 @@ public class ShiroRealm extends AuthorizingRealm {
                         }
                     }
                 }
-
                 adminPermsDTO.setRoleSet(roleSet);
                 adminPermsDTO.setPermissions(permissions);
                 valueOperations.set(Constants.ADMIN_PERMS + shiroAdmin.getMobile(), mapper.writeValueAsString(adminPermsDTO));

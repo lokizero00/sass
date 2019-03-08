@@ -1,8 +1,10 @@
 package com.loki.sass.service.web.security.realm;
 
+import com.loki.sass.common.dto.PermissionDTO;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,5 +26,6 @@ public class ShiroAdmin implements Serializable {
     private Integer zoneId;
     private Integer propertyId;
     private Integer parentComFlag = 0;  //公司总部标识 1：总部，其他：非总部
+    private List<PermissionDTO> menuResource;
     private String token;
 }
