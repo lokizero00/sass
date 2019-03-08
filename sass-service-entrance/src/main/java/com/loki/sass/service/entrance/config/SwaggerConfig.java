@@ -54,7 +54,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
 
     private Predicate<String> paths() {
         return or(
-                regex("/userResidentApply/.*")
+                regex("/doorRecord/.*")
         );
     }
 

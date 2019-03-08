@@ -8,6 +8,19 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="success" jdbcType="INTEGER" property="success" />
   </resultMap>
+
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.model.DoorRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="door_id" jdbcType="INTEGER" property="doorId" />
+    <result column="door_code" jdbcType="VARCHAR" property="doorCode" />
+    <result column="door_name" jdbcType="VARCHAR" property="doorName" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_real_name" jdbcType="VARCHAR" property="userRealName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="success" jdbcType="INTEGER" property="success" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -202,4 +215,55 @@
       success = #{success,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParam" resultMap="QueryResultMap">
+    SELECT
+    dr.*,
+    d.code AS door_code,
+    d.name AS door_name,
+    r.name AS region_name,
+    u.mobile AS user_phone,
+    ua.real_name AS user_real_name
+    FROM
+    door_record dr
+    LEFT JOIN door d ON d.id = dr.door_id
+    LEFT JOIN region r ON r.id = d.region_id
+    LEFT JOIN USER u ON u.id = dr.user_id
+    LEFT JOIN user_auth ua ON ua.id = dr.user_id
+    <where>
+      <if test="doorId!=null and doorId!=0">
+        dr.door_id=#{doorId}
+      </if>
+      <if test="doorCode!=null and doorCode!=''">
+        and d.code like CONCAT('%',#{doorCode},'%')
+      </if>
+      <if test="doorName!=null and doorName!=''">
+        and d.name like CONCAT('%',#{doorName},'%')
+      </if>
+      <if test="regionId!=null and regionId!=0">
+        d.region_id=#{regionId}
+      </if>
+      <if test="regionName!=null and regionName!=''">
+        and r.name like CONCAT('%',#{regionName},'%')
+      </if>
+      <if test="userId!=null and userId!=0">
+        dr.user_id=#{userId}
+      </if>
+      <if test="userPhone!=null and userPhone!=''">
+        and u.mobile like CONCAT('%',#{userPhone},'%')
+      </if>
+      <if test="userRealName!=null and userRealName!=''">
+        and ua.real_name like CONCAT('%',#{userRealName},'%')
+      </if>
+      <if test="createTimeStart!=null and createTimeStart!=''">
+        <![CDATA[   and DATE_FORMAT(dr.create_time, '%Y-%m-%d')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d')   ]]>
+      </if>
+      <if test="createTimeEnd!=null and createTimeEnd!=''">
+        <![CDATA[  and DATE_FORMAT(dr.create_time, '%Y-%m-%d') <= DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d')    ]]>
+      </if>
+      <if test="success!=null and success!=0">
+        and dr.success=#{success}
+      </if>
+    </where>
+  </select>
 </mapper>

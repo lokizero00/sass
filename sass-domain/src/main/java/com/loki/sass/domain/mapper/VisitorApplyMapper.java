@@ -31,6 +31,7 @@ public interface VisitorApplyMapper {
     int updateByPrimaryKeySelective(VisitorApply record);
 
     int updateByPrimaryKey(VisitorApply record);
+
     List<VisitorApplyPO> selectByParam(@Param("visitorName") String visitorName,
                                        @Param("visitorPhone") String visitorPhone,
                                        @Param("visitorUserId") Integer visitorUserId,

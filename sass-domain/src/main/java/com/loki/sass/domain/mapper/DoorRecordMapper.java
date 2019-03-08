@@ -2,7 +2,11 @@ package com.loki.sass.domain.mapper;
 
 import com.loki.sass.domain.model.DoorRecord;
 import com.loki.sass.domain.model.DoorRecordExample;
+
+import java.util.Date;
 import java.util.List;
+
+import com.loki.sass.domain.po.DoorRecordPO;
 import org.apache.ibatis.annotations.Param;
 
 public interface DoorRecordMapper {
@@ -27,4 +31,16 @@ public interface DoorRecordMapper {
     int updateByPrimaryKeySelective(DoorRecord record);
 
     int updateByPrimaryKey(DoorRecord record);
+
+    List<DoorRecordPO> selectByParam(@Param("doorId") Integer doorId,
+                                     @Param("doorCode") String doorCode,
+                                     @Param("doorName") String doorName,
+                                     @Param("regionId") Integer regionId,
+                                     @Param("regionName") String regionName,
+                                     @Param("userId") Integer userId,
+                                     @Param("userPhone") String userPhone,
+                                     @Param("userRealName") String userRealName,
+                                     @Param("createTimeStart") Date createTimeStart,
+                                     @Param("createTimeEnd") Date createTimeEnd,
+                                     @Param("success") Integer success);
 }
