@@ -3,6 +3,8 @@ package com.loki.sass.domain.mapper;
 import com.loki.sass.domain.model.UserResidentApply;
 import com.loki.sass.domain.model.UserResidentApplyExample;
 import java.util.List;
+
+import com.loki.sass.domain.po.UserResidentApplyPO;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserResidentApplyMapper {
@@ -27,4 +29,6 @@ public interface UserResidentApplyMapper {
     int updateByPrimaryKeySelective(UserResidentApply record);
 
     int updateByPrimaryKey(UserResidentApply record);
+
+    List<UserResidentApplyPO> selectByParam(@Param("userRealName") String userRealName,@Param("userPhone") String userPhone,@Param("regionName") String regionName,@Param("regionId") Integer regionId,@Param("updateByName") String updateByName,@Param("state") Integer state);
 }

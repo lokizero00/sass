@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         //非动态消息
         if(!e.isDynamic()){
 
-            errorMessage=this.feignTipInfoService.getTipMsg(resultCode);
+            errorMessage=this.feignTipInfoService.getTipMsg(resultCode).getModule();
 
             if(null != e.getErrors() && e.getErrors().length > 0){
                 MessageFormat messageFormat = new MessageFormat(errorMessage);

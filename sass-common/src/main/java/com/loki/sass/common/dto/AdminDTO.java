@@ -9,7 +9,7 @@ import java.util.Date;
  * created by lokizero00 on 2019-02-15
  */
 @Data
-public class AdminDTO implements Serializable {
+public class AdminDTO {
     private Integer id;
 
     private String userName;

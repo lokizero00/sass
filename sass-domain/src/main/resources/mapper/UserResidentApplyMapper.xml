@@ -10,6 +10,21 @@
     <result column="update_by" jdbcType="INTEGER" property="updateBy" />
     <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
+
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.UserResidentApplyPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_real_name" jdbcType="VARCHAR" property="userRealName" />
+    <result column="region_id" jdbcType="INTEGER" property="regionId" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -234,4 +249,39 @@
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByParam" resultMap="QueryResultMap">
+    SELECT
+      ura.*,
+      u.mobile AS user_phone,
+      ua.real_name AS user_real_name,
+      r.NAME AS region_name,
+      a.real_name AS update_by_name
+    FROM
+      user_resident_apply ura
+        LEFT JOIN USER u ON u.id = ura.user_id
+        LEFT JOIN user_auth ua ON ua.user_id = ura.user_id
+        LEFT JOIN region r ON r.id = ura.region_id
+        LEFT JOIN admin a ON a.id = ura.update_by
+    <where>
+      <if test="userRealName!=null and userRealName!=''">
+        ua.real_name like CONCAT('%',#{userRealName},'%')
+      </if>
+      <if test="userPhone!=null and userPhone!=''">
+        AND u.mobile like CONCAT('%',#{userPhone},'%')
+      </if>
+      <if test="regionName!=null and regionName!=''">
+        AND r.name like CONCAT('%',#{regionName},'%')
+      </if>
+      <if test="regionId!=null and regionId!=0">
+        AND ura.region_id=#{regionId}
+      </if>
+      <if test="updateByName!=null and updateByName!=''">
+        AND a.real_name like CONCAT('%',#{updateByName},'%')
+      </if>
+      <if test="state!=null and state!=0">
+        AND ura.state=#{state}
+      </if>
+    </where>
+  </select>
 </mapper>

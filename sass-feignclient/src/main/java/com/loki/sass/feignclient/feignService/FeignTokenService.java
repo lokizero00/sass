@@ -1,6 +1,7 @@
 package com.loki.sass.feignclient.feignService;
 
 import com.loki.sass.common.dto.CurrentUserInfo;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.exception.UnknownLoginException;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-utils")
 public interface FeignTokenService {
     @RequestMapping(method = RequestMethod.POST, value = "/auth/v1/verifyToken")
-    public Boolean verifyToken(@RequestParam("token") String token) throws BizException;
+    ResultDTO<Boolean> verifyToken(@RequestParam("token") String token) throws BizException;
 
     @RequestMapping(method = RequestMethod.POST, value = "/auth/v1/authLogin")
-    public CurrentUserInfo authLogin(@RequestParam("token") String token, @RequestParam("tokenType") String tokenType) throws UnknownLoginException;
+    ResultDTO<CurrentUserInfo> authLogin(@RequestParam("token") String token, @RequestParam("tokenType") String tokenType) throws UnknownLoginException;
 
     @RequestMapping(method = RequestMethod.POST, value = "/auth/v1/getToken")
-    public String getToken(@RequestParam("appkey") String appkey, @RequestParam("secret") String secret) throws Exception;
+    ResultDTO<String> getToken(@RequestParam("appkey") String appkey, @RequestParam("secret") String secret) throws Exception;
 }

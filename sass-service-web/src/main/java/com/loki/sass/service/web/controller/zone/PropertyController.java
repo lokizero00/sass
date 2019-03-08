@@ -44,11 +44,7 @@ public class PropertyController {
             throw new BizException(message);
         }
 
-        ResultDTO<PageInfo<PropertyDTO>> result = new ResultDTO<>();
-        PageInfo<PropertyDTO> list=feignPropertyService.getPropertyListSearch(JsonUtils.objectToJson(propertyQueryVO));
-        result.setSuccess(true);
-        result.setModule(list);
-        return result;
+        return feignPropertyService.getPropertyListSearch(JsonUtils.objectToJson(propertyQueryVO));
     }
 
     @Operate(value = "创建物业")
@@ -70,12 +66,7 @@ public class PropertyController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         propertyRequestVO.setCreateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignPropertyService.addProperty(JsonUtils.objectToJson(propertyRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignPropertyService.addProperty(JsonUtils.objectToJson(propertyRequestVO));
     }
 
     @Operate(value = "修改物业")
@@ -97,12 +88,7 @@ public class PropertyController {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         propertyRequestVO.setUpdateBy(shiroAdmin.getId());
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignPropertyService.editProperty(JsonUtils.objectToJson(propertyRequestVO))){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignPropertyService.editProperty(JsonUtils.objectToJson(propertyRequestVO));
     }
 
     @Operate(value = "删除物业")
@@ -118,11 +104,6 @@ public class PropertyController {
 
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
 
-        ResultDTO result = new ResultDTO<>();
-        result.setSuccess(false);
-        if(feignPropertyService.deleteProperty(propertyId,shiroAdmin.getId())){
-            result.setSuccess(true);
-        }
-        return result;
+        return feignPropertyService.deleteProperty(propertyId,shiroAdmin.getId());
     }
 }

@@ -2,6 +2,7 @@ package com.loki.sass.service.utils.controller;
 
 import com.loki.sass.common.code.AuthResultCode;
 import com.loki.sass.common.dto.CurrentUserInfo;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.exception.UnknownLoginException;
 import com.loki.sass.service.utils.api.AuthTokenService;
@@ -24,13 +25,15 @@ public class AuthTokenController {
     AuthTokenService authTokenService;
 
     @RequestMapping(value = "v1/verifyToken",method = RequestMethod.POST)
-    public Boolean verifyToken(@RequestParam String token) throws BizException{
+    public ResultDTO<Boolean> verifyToken(@RequestParam String token) throws BizException{
+        ResultDTO<Boolean> result=new ResultDTO<>();
         if (StringUtils.isEmpty(token)){
             log.info("校验失败，token is null");
             throw new BizException(AuthResultCode.AUTH_NULL_ERROR);
         }
         try {
-            return authTokenService.verifyToken(token);
+            result.setSuccess(authTokenService.verifyToken(token));
+            return result;
         }catch(Exception e){
             log.info("token校验失败,token="+token);
             throw new BizException(AuthResultCode.AUTH_VERIFY_ERROR);
@@ -38,7 +41,8 @@ public class AuthTokenController {
     }
 
     @RequestMapping(value = "v1/authLogin",method = RequestMethod.POST)
-    public CurrentUserInfo authLogin(@RequestParam String token, @RequestParam String tokenType) throws UnknownLoginException{
+    public ResultDTO<CurrentUserInfo> authLogin(@RequestParam String token, @RequestParam String tokenType) throws UnknownLoginException{
+        ResultDTO<CurrentUserInfo> result=new ResultDTO<>();
         if (StringUtils.isEmpty(token)){
             log.info("校验失败，token is null");
             throw new BizException(AuthResultCode.AUTH_NULL_ERROR);
@@ -49,7 +53,9 @@ public class AuthTokenController {
         }
         try{
             CurrentUserInfo currentUserInfo=authTokenService.authLogin(token,tokenType);
-            return currentUserInfo;
+            result.setSuccess(true);
+            result.setModule(currentUserInfo);
+            return result;
         }catch(UnknownLoginException e){
             log.info("token校验失败,token="+token+",tokenType="+tokenType);
             throw e;
@@ -57,7 +63,10 @@ public class AuthTokenController {
     }
 
     @RequestMapping(value = "v1/getToken",method = RequestMethod.POST)
-    public String getToken(String appkey,String secret) throws Exception{
-        return authTokenService.getToken(appkey,secret);
+    public ResultDTO<String> getToken(String appkey,String secret) throws Exception{
+        ResultDTO<String> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(authTokenService.getToken(appkey,secret));
+        return result;
     }
 }

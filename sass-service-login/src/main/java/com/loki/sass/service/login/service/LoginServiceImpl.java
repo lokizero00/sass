@@ -80,7 +80,11 @@ public class LoginServiceImpl implements LoginService {
         String secret=storeRedisUserInfo(user,userAuth,Constants.USER_APP_TOKEN);
 
         try {
-            rs.setModule(feignTokenService.getToken(mobile,secret));
+            ResultDTO<String> result=feignTokenService.getToken(mobile,secret);
+            if(!result.isSuccess()){
+                throw new BizException(result.getResultCode());
+            }
+            rs.setModule(result.getModule());
             rs.setSuccess(true);
             rs.setResultCode(LoginResultCode.TRUE);
         } catch (Exception e) {
@@ -102,9 +106,9 @@ public class LoginServiceImpl implements LoginService {
             throw new BizException(LoginResultCode.LOGIN_SMSCODE_NULL_ERROR);
         }
 
-        String resultCode = feignSmsService.confirmSmsCaptcha(mobile,smsCode);
-        if (!resultCode.equals(LoginResultCode.TRUE)){
-            throw new BizException(resultCode);
+        ResultDTO<String> codeResult = feignSmsService.confirmSmsCaptcha(mobile,smsCode);
+        if (!codeResult.isSuccess()){
+            throw new BizException(codeResult.getResultCode());
         }
 
         User user=userMapper.selectByMobile(mobile);
@@ -119,7 +123,11 @@ public class LoginServiceImpl implements LoginService {
         String secret=storeRedisUserInfo(user,userAuth,Constants.USER_APP_TOKEN);
 
         try {
-            rs.setModule(feignTokenService.getToken(mobile,secret));
+            ResultDTO<String> tokenResult=feignTokenService.getToken(mobile,secret);
+            if(!tokenResult.isSuccess()){
+                throw new BizException(tokenResult.getResultCode());
+            }
+            rs.setModule(tokenResult.getModule());
             rs.setSuccess(true);
             rs.setResultCode(LoginResultCode.TRUE);
         } catch (Exception e) {
@@ -186,9 +194,9 @@ public class LoginServiceImpl implements LoginService {
         if(wechatAuth.getUserId() != null)
             throw new BizException("0003","该手机号已绑定");
 //        2、验证手机号的合法性
-        String resultCode = feignSmsService.confirmSmsCaptcha(mobile,smsCode);
-        if (!resultCode.equals(SmsResultCode.TRUE)){
-            throw new BizException(resultCode);
+        ResultDTO<String> resultCode = feignSmsService.confirmSmsCaptcha(mobile,smsCode);
+        if (!resultCode.isSuccess()){
+            throw new BizException(resultCode.getResultCode());
         }
 //        3、判断是否为新用户
         User user = userMapper.selectByMobile(mobile);
@@ -235,7 +243,11 @@ public class LoginServiceImpl implements LoginService {
     public String getUserToken(User user, UserAuth userAuth, String redisKeyPrefix) throws BizException{
         try{
             String secret=this.storeRedisUserInfo(user,userAuth,redisKeyPrefix);
-            return feignTokenService.getToken(user.getMobile(),secret);
+            ResultDTO<String> tokenResult=feignTokenService.getToken(user.getMobile(),secret);
+            if(!tokenResult.isSuccess()){
+                throw new BizException(tokenResult.getResultCode());
+            }
+            return tokenResult.getModule();
         }catch(Exception e){
             throw new BizException(LoginResultCode.LOGIN_SERVICE_ERROR);
         }

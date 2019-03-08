@@ -2,6 +2,7 @@ package com.loki.sass.service.zone.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.DoorDTO;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.vo.DoorQueryVO;
@@ -26,25 +27,34 @@ public class DoorController {
     DoorService doorService;
 
     @RequestMapping(value = "v1/getDoorListSearch",method = RequestMethod.POST)
-    public PageInfo<DoorDTO> getDoorListSearch(@RequestParam String doorQueryJson) throws BizException {
+    public ResultDTO<PageInfo<DoorDTO>> getDoorListSearch(@RequestParam String doorQueryJson) throws BizException {
+        ResultDTO<PageInfo<DoorDTO>> result=new ResultDTO<>();
         DoorQueryVO doorQueryVO= JsonUtils.jsonToObject(doorQueryJson,DoorQueryVO.class);
-        return doorService.getDoorListSearch(doorQueryVO);
+        result.setSuccess(true);
+        result.setModule(doorService.getDoorListSearch(doorQueryVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/addDoor",method = RequestMethod.POST)
-    public Boolean addDoor(@RequestParam String doorRequestStr) throws BizException {
+    public ResultDTO<Boolean> addDoor(@RequestParam String doorRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         DoorRequestVO doorRequestVO= JsonUtils.jsonToObject(doorRequestStr,DoorRequestVO.class);
-        return doorService.addDoor(doorRequestVO);
+        result.setSuccess(doorService.addDoor(doorRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/editDoor",method = RequestMethod.POST)
-    public Boolean editDoor(@RequestParam String doorRequestStr) throws BizException {
+    public ResultDTO<Boolean> editDoor(@RequestParam String doorRequestStr) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
         DoorRequestVO doorRequestVO= JsonUtils.jsonToObject(doorRequestStr,DoorRequestVO.class);
-        return doorService.editDoor(doorRequestVO);
+        result.setSuccess(doorService.editDoor(doorRequestVO));
+        return result;
     }
 
     @RequestMapping(value = "v1/deleteDoor",method = RequestMethod.POST)
-    public Boolean deleteDoor(@RequestParam Integer doorId,@RequestParam Integer adminId) throws BizException {
-        return doorService.deleteDoor(doorId,adminId);
+    public ResultDTO<Boolean> deleteDoor(@RequestParam Integer doorId,@RequestParam Integer adminId) throws BizException {
+        ResultDTO<Boolean> result=new ResultDTO<>();
+        result.setSuccess(doorService.deleteDoor(doorId,adminId));
+        return result;
     }
 }

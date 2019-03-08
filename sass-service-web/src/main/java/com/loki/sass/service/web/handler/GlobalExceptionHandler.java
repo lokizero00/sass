@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
         //非动态消息
         if(!e.isDynamic()){
 
-            errorMessage=this.feignTipInfoService.getTipMsg(resultCode);
+            errorMessage=this.feignTipInfoService.getTipMsg(resultCode).getModule();
 
             if(null != e.getErrors() && e.getErrors().length > 0){
                 MessageFormat messageFormat = new MessageFormat(errorMessage);
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     public ResultDTO<?> unauthorizedException(UnauthorizedException e){
         ResultDTO<String> result = new ResultDTO<>();
         result.setResultCode(CommonResultCode.COMMON_UNAUTH);
-        result.setErrorMessage(this.feignTipInfoService.getTipMsg(CommonResultCode.COMMON_UNAUTH));
+        result.setErrorMessage(this.feignTipInfoService.getTipMsg(CommonResultCode.COMMON_UNAUTH).getModule());
         result.setModule(null);
         result.setSuccess(false);
         return result;
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     public ResultDTO<?> unauthenticatedException(UnauthenticatedException e){
         ResultDTO<String> result = new ResultDTO<>();
         result.setResultCode(CommonResultCode.COMMON_LOGIN_TIMEOUT);
-        result.setErrorMessage(this.feignTipInfoService.getTipMsg(CommonResultCode.COMMON_LOGIN_TIMEOUT));
+        result.setErrorMessage(this.feignTipInfoService.getTipMsg(CommonResultCode.COMMON_LOGIN_TIMEOUT).getModule());
         result.setModule(null);
         result.setSuccess(false);
         return result;

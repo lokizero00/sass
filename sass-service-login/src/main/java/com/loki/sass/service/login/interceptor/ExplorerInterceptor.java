@@ -94,13 +94,19 @@ class UserAuthHandlerInterceptor implements HandlerInterceptor {
         }
         log.debug("auth is :"+token);
 
-        if(!feignTokenService.verifyToken(token)){
+        ResultDTO<Boolean> verifyResult=feignTokenService.verifyToken(token);
+        if(!verifyResult.isSuccess() || !verifyResult.getModule()){
             onLoginFail(response,"无效凭证，请重新登录！");
             return false;
         }
+
         try {
-            CurrentUserInfo currentUserInfo = feignTokenService.authLogin(token,Constants.USER_APP_TOKEN);
-            request.setAttribute(Constants.APP_USER,currentUserInfo);
+            ResultDTO<CurrentUserInfo> currentUserInfoResult=feignTokenService.authLogin(token,Constants.USER_APP_TOKEN);
+            if(!currentUserInfoResult.isSuccess()){
+                onLoginFail(response,"无效凭证，请重新登录！");
+                return false;
+            }
+            request.setAttribute(Constants.APP_USER,currentUserInfoResult.getModule());
         } catch (UnknownLoginException ule){
             onLoginFail(response,ule.getMessage());
             return false;
