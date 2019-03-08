@@ -1,4 +1,4 @@
-package com.loki.sass.service.entrance;
+package com.loki.sass.api.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,10 +18,10 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableHystrix
 @EnableCaching
 @ComponentScan("com.loki.sass")
-public class SassServiceEntranceApplication {
+public class SassApiWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SassServiceEntranceApplication.class, args);
+        SpringApplication.run(SassApiWebApplication.class, args);
     }
 
 }

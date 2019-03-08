@@ -8,9 +8,9 @@
         <version>${sass.version}</version>
     </parent>
     <groupId>com.loki.sass</groupId>
-    <artifactId>sass-service-entrance</artifactId>
+    <artifactId>sass-api-mobile</artifactId>
     <version>${sass.version}</version>
-    <name>sass-service-entrance</name>
+    <name>sass-api-mobile</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -75,6 +75,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session</artifactId>
+            <version>1.3.0.RELEASE</version>
+        </dependency>
         <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -130,6 +135,20 @@
             <version>${springfox.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.arrow</groupId>
+            <artifactId>arrow-format</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

@@ -15,7 +15,7 @@
     <description>Parent container of sass</description>
 
     <modules>
-        <module>sass-service-login</module>
+        <module>sass-api-mobile</module>
         <module>sass-eurake</module>
         <module>sass-turbine</module>
         <module>sass-zipkin</module>
@@ -26,7 +26,7 @@
         <module>sass-service-utils</module>
         <module>sass-service-sysconfig</module>
         <module>sass-service-payment</module>
-        <module>sass-service-web</module>
+        <module>sass-api-web</module>
         <module>sass-feignclient</module>
         <module>sass-service-manager</module>
         <module>sass-service-business</module>

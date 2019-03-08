@@ -13,14 +13,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class RoleServiceImplTest {
 
-    @Autowired
+//    @Autowired
     private RoleService roleService;
 
-    @Test
+//    @Test
     public void toJson(){
         RolePermissionRequestVO rolePermissionRequestVO = new RolePermissionRequestVO();
         rolePermissionRequestVO.setRoleId(15);
@@ -33,7 +33,7 @@ public class RoleServiceImplTest {
         System.out.println(s);
     }
 
-    @Test
+//    @Test
     public void insert() {
         RoleRequestVO roleVO = new RoleRequestVO();
         roleVO.setZoneId(0);
