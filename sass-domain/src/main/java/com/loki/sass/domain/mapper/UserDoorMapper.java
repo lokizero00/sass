@@ -27,4 +27,6 @@ public interface UserDoorMapper {
     int updateByPrimaryKeySelective(UserDoor record);
 
     int updateByPrimaryKey(UserDoor record);
+
+    List<UserDoor> selectByUserId(@Param("userId") Integer userId);
 }

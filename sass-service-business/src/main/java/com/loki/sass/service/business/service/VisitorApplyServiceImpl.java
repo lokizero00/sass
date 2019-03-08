@@ -8,8 +8,12 @@ import com.loki.sass.common.enums.VisitorApplyState;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.VisitorApplyQueryVO;
+import com.loki.sass.domain.mapper.UserDoorMapper;
 import com.loki.sass.domain.mapper.VisitorApplyMapper;
+import com.loki.sass.domain.mapper.VisitorDoorMapper;
+import com.loki.sass.domain.model.UserDoor;
 import com.loki.sass.domain.model.VisitorApply;
+import com.loki.sass.domain.model.VisitorDoor;
 import com.loki.sass.domain.po.VisitorApplyPO;
 import com.loki.sass.service.business.api.VisitorApplyService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,9 +35,13 @@ import java.util.List;
 public class VisitorApplyServiceImpl implements VisitorApplyService {
     @Autowired
     VisitorApplyMapper visitorApplyMapper;
+    @Autowired
+    UserDoorMapper userDoorMapper;
+    @Autowired
+    VisitorDoorMapper visitorDoorMapper;
 
     @Override
-    public boolean applyPass(Integer applyId,String reason, Integer adminId) throws BizException {
+    public boolean applyPass(Integer applyId,Integer waitHour,String reason, Integer adminId) throws BizException {
         VisitorApply visitorApply=visitorApplyMapper.selectByPrimaryKey(applyId);
         if(null==visitorApply){
             throw new BizException(VisitorResultCode.VISIT_APPLY_NOT_EXISTS);
@@ -45,7 +54,20 @@ public class VisitorApplyServiceImpl implements VisitorApplyService {
             visitorApply.setState(VisitorApplyState.PASS.getValue());
             visitorApplyMapper.updateByPrimaryKeySelective(visitorApply);
 
-            //TODO 处理访客门禁权限
+            VisitorDoor visitorDoor=new VisitorDoor();
+            Calendar visitorCalendar = Calendar.getInstance();
+            visitorCalendar.setTime(visitorApply.getVisitingTime());
+            visitorCalendar.add(Calendar.HOUR,waitHour);
+
+            visitorDoor.setStartTime(visitorApply.getVisitingTime());
+            visitorDoor.setEndTime(visitorCalendar.getTime());
+            visitorDoor.setUserId(visitorApply.getVisitorUserId());
+
+            List<UserDoor> intervieweeDoorList=userDoorMapper.selectByUserId(visitorApply.getIntervieweeId());
+            for(UserDoor userDoor:intervieweeDoorList){
+                visitorDoor.setDoorId(userDoor.getDoorId());
+                visitorDoorMapper.insertSelective(visitorDoor);
+            }
         }catch(Exception e){
             throw new BizException(VisitorResultCode.VISIT_VERIFY_ERROR);
         }

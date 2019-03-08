@@ -3,7 +3,6 @@ package com.loki.sass.common.code;
 
 /**
  * @ClassName: LoginResultCode
- * @Description: TODO 基础返回码
  * @date 2018年3月11日 上午10:14:38
  *
  *

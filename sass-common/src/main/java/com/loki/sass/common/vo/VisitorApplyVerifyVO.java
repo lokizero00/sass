@@ -9,6 +9,7 @@ import lombok.Data;
 public class VisitorApplyVerifyVO extends BaseQueryVO{
     private Integer applyId;
     private Integer verifyResult;
+    private Integer waitHour;
     private Integer updateBy;
     private String reason;
 }

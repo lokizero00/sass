@@ -170,4 +170,8 @@
       door_id = #{doorId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByUserId" parameterType="Integer" resultMap="BaseResultMap">
+    select * from user_door where user_id=#{userId}
+  </select>
 </mapper>

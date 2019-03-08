@@ -8,7 +8,9 @@ import com.loki.sass.common.enums.UserResidentApplyState;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.UserResidentApplyQueryVO;
+import com.loki.sass.domain.mapper.UserRegionMapper;
 import com.loki.sass.domain.mapper.UserResidentApplyMapper;
+import com.loki.sass.domain.model.UserRegion;
 import com.loki.sass.domain.model.UserResidentApply;
 import com.loki.sass.domain.po.UserResidentApplyPO;
 import com.loki.sass.service.business.api.UserResidentApplyService;
@@ -30,6 +32,8 @@ import java.util.List;
 public class UserResidentApplyServiceImpl implements UserResidentApplyService {
     @Autowired
     UserResidentApplyMapper userResidentApplyMapper;
+    @Autowired
+    UserRegionMapper userRegionMapper;
 
     @Override
     public boolean applyPass(Integer applyId,String reason, Integer adminId) throws BizException {
@@ -45,7 +49,11 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
             userResidentApply.setState(UserResidentApplyState.USING.getValue());
             userResidentApplyMapper.updateByPrimaryKeySelective(userResidentApply);
 
-            //TODO 处理业主所属区域和门禁权限
+            UserRegion userRegion=new UserRegion();
+            userRegion.setApplyId(userResidentApply.getId());
+            userRegion.setRegionId(userResidentApply.getRegionId());
+            userRegion.setUserId(userResidentApply.getUserId());
+            userRegionMapper.insertSelective(userRegion);
         }catch(Exception e){
             throw new BizException(ResidentResultCode.REGISTER_VERIFY_ERROR);
         }
