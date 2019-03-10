@@ -10,6 +10,7 @@ import com.loki.sass.feignclient.feignService.FeignVisitorApplyService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,6 +31,7 @@ public class VisitorApplyController {
     @Autowired
     FeignVisitorApplyService feignVisitorApplyService;
 
+    @ApiOperation(value="访客申请查询", notes="访客申请查询，条件查询，adminId默认写0")
     @Operate(value = "申请查询")
     @CrossOrigin
     @RequiresPermissions("visitorApplyInfo:view")//权限管理;
@@ -41,9 +43,13 @@ public class VisitorApplyController {
             throw new BizException(message);
         }
 
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        visitorApplyQueryVO.setAdminId(shiroAdmin.getId());
+
         return feignVisitorApplyService.getApplyListSearch(JsonUtils.objectToJson(visitorApplyQueryVO));
     }
 
+    @ApiOperation(value="访客申请审批", notes="访客申请审批")
     @Operate(value = "申请审批")
     @CrossOrigin
     @RequiresPermissions("visitorApplyInfo:verify")//权限管理;

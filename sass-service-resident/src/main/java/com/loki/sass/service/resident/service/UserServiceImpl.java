@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
             PageHelper.startPage(userDetailQueryVO.getPage(), userDetailQueryVO.getRows());
         }
 
-        List<UserDetailPO> userDetailPOList = null;
+        List<UserDetailPO> userDetailPOList = new ArrayList<>();
         switch(roleType){
             case PROPERTY:
                 userDetailPOList=userMapper.findUserDetailByParam(userDetailQueryVO.getMobile(),userDetailQueryVO.getNickName(),userDetailQueryVO.getRealName(),userDetailQueryVO.getState(),admin.getZoneId(),admin.getPropertyId());
@@ -84,11 +85,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageInfo<UserDoorDTO> findUserDoorByPage(UserDoorQueryVO userDoorQueryVO) throws BizException {
-
-        if (!StringUtils.isEmpty(userDoorQueryVO.getPage()) && !StringUtils.isEmpty(userDoorQueryVO.getRows())) {
-            PageHelper.startPage(userDoorQueryVO.getPage(), userDoorQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(userDoorQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -104,7 +100,7 @@ public class UserServiceImpl implements UserService {
             PageHelper.startPage(userDoorQueryVO.getPage(), userDoorQueryVO.getRows());
         }
 
-        List<UserDoorPO> userDoorPOList = null;
+        List<UserDoorPO> userDoorPOList = new ArrayList<>();
         switch(roleType){
             case PROPERTY:
                 userDoorPOList=userMapper.findUserDoorByParam(userDoorQueryVO.getDoorName(),userDoorQueryVO.getUserMobile(),userDoorQueryVO.getUserName(),userDoorQueryVO.getIsPermanent(),admin.getZoneId(),admin.getPropertyId());
@@ -141,7 +137,7 @@ public class UserServiceImpl implements UserService {
             PageHelper.startPage(userRegionQueryVO.getPage(), userRegionQueryVO.getRows());
         }
 
-        List<UserRegionPO> userRegionPOList = null;
+        List<UserRegionPO> userRegionPOList = new ArrayList<>();
         switch(roleType){
             case PROPERTY:
                 userRegionPOList=userMapper.findUserRegionByParam(userRegionQueryVO.getRegionName(),userRegionQueryVO.getUserMobile(),userRegionQueryVO.getUserName(),admin.getZoneId(),admin.getPropertyId());
