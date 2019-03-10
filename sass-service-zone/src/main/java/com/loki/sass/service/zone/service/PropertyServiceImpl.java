@@ -127,10 +127,6 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public PageInfo<PropertyDTO> getPropertyListSearch(PropertyQueryVO propertyQueryVO) throws BizException {
-        if (!StringUtils.isEmpty(propertyQueryVO.getPage()) && !StringUtils.isEmpty(propertyQueryVO.getRows())) {
-            PageHelper.startPage(propertyQueryVO.getPage(), propertyQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(propertyQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -142,8 +138,11 @@ public class PropertyServiceImpl implements PropertyService {
         }
         SysRole roleType=roleTypeResult.getModule();
 
-        List<PropertyPO> list=new ArrayList<>();
+        if (!StringUtils.isEmpty(propertyQueryVO.getPage()) && !StringUtils.isEmpty(propertyQueryVO.getRows())) {
+            PageHelper.startPage(propertyQueryVO.getPage(), propertyQueryVO.getRows());
+        }
 
+        List<PropertyPO> list=new ArrayList<>();
         switch(roleType){
             case PROPERTY:
                 list=propertyMapper.selectByParam(propertyQueryVO.getName(),propertyQueryVO.getCreateByName(),propertyQueryVO.getUpdateByName(),propertyQueryVO.getZoneName(),admin.getZoneId(),admin.getPropertyId(),propertyQueryVO.getState());

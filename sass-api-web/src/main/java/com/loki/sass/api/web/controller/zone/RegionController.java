@@ -10,6 +10,7 @@ import com.loki.sass.feignclient.feignService.FeignRegionService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,6 +32,7 @@ public class RegionController {
     @Autowired
     FeignRegionService feignRegionService;
 
+    @ApiOperation(value = "创建区域", notes = "创建区域")
     @Operate(value = "创建区域")
     @CrossOrigin
     @RequiresPermissions("regionInfo:add")//权限管理;
@@ -55,6 +57,7 @@ public class RegionController {
         return feignRegionService.addRegion(JsonUtils.objectToJson(regionRequestVO));
     }
 
+    @ApiOperation(value = "修改区域", notes = "修改区域")
     @Operate(value = "修改区域")
     @CrossOrigin
     @RequiresPermissions("regionInfo:edit")//权限管理;
@@ -80,6 +83,7 @@ public class RegionController {
         return feignRegionService.editRegion(JsonUtils.objectToJson(regionRequestVO));
     }
 
+    @ApiOperation(value = "删除区域", notes = "删除区域")
     @Operate(value = "删除区域")
     @CrossOrigin
     @RequiresPermissions("regionInfo:delete")//权限管理;
@@ -96,6 +100,7 @@ public class RegionController {
         return feignRegionService.deleteRegion(regionId,shiroAdmin.getId());
     }
 
+    @ApiOperation(value = "子区域查询", notes = "根据父级查询子区域")
     @Operate(value = "根据父级查询子区域")
     @CrossOrigin
     @RequiresPermissions("regionInfo:view")//权限管理;
@@ -110,6 +115,7 @@ public class RegionController {
         return feignRegionService.getRegionListByParentId(regionId);
     }
 
+    @ApiOperation(value = "根区域查询", notes = "查询区域根列表")
     @Operate(value = "查询区域根列表")
     @CrossOrigin
     @RequiresPermissions("regionInfo:view")//权限管理;

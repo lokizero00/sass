@@ -108,10 +108,6 @@ public class VisitorApplyServiceImpl implements VisitorApplyService {
 
     @Override
     public PageInfo<VisitorApplyDTO> getApplyListSearch(VisitorApplyQueryVO visitorApplyQueryVO) throws BizException {
-        if (!StringUtils.isEmpty(visitorApplyQueryVO.getPage()) && !StringUtils.isEmpty(visitorApplyQueryVO.getRows())) {
-            PageHelper.startPage(visitorApplyQueryVO.getPage(), visitorApplyQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(visitorApplyQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -123,8 +119,10 @@ public class VisitorApplyServiceImpl implements VisitorApplyService {
         }
         SysRole roleType=roleTypeResult.getModule();
 
+        if (!StringUtils.isEmpty(visitorApplyQueryVO.getPage()) && !StringUtils.isEmpty(visitorApplyQueryVO.getRows())) {
+            PageHelper.startPage(visitorApplyQueryVO.getPage(), visitorApplyQueryVO.getRows());
+        }
         List<VisitorApplyPO> list=new ArrayList<>();
-
         switch(roleType){
             case PROPERTY:
                 list=visitorApplyMapper.selectByParam(visitorApplyQueryVO.getVisitorName(),visitorApplyQueryVO.getVisitorPhone(),visitorApplyQueryVO.getVisitorUserId(),visitorApplyQueryVO.getRegionId(),visitorApplyQueryVO.getRegionName(),visitorApplyQueryVO.getIntervieweeName(),visitorApplyQueryVO.getIntervieweePhone(),visitorApplyQueryVO.getIntervieweeId(),visitorApplyQueryVO.getVisitingTimeStart(),visitorApplyQueryVO.getVisitingTimeEnd(),visitorApplyQueryVO.getUpdateByName(),visitorApplyQueryVO.getState(),admin.getZoneId(),admin.getPropertyId());

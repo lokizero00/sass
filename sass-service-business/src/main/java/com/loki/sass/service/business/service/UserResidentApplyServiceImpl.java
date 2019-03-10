@@ -93,10 +93,6 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
 
     @Override
     public PageInfo<UserResidentApplyDTO> getApplyListSearch(UserResidentApplyQueryVO userResidentApplyQueryVO) throws BizException {
-        if (!StringUtils.isEmpty(userResidentApplyQueryVO.getPage()) && !StringUtils.isEmpty(userResidentApplyQueryVO.getRows())) {
-            PageHelper.startPage(userResidentApplyQueryVO.getPage(), userResidentApplyQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(userResidentApplyQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -108,8 +104,10 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
         }
         SysRole roleType=roleTypeResult.getModule();
 
+        if (!StringUtils.isEmpty(userResidentApplyQueryVO.getPage()) && !StringUtils.isEmpty(userResidentApplyQueryVO.getRows())) {
+            PageHelper.startPage(userResidentApplyQueryVO.getPage(), userResidentApplyQueryVO.getRows());
+        }
         List<UserResidentApplyPO> list=new ArrayList<>();
-
         switch(roleType){
             case PROPERTY:
                 list=userResidentApplyMapper.selectByParam(userResidentApplyQueryVO.getUserRealName(),userResidentApplyQueryVO.getUserPhone(),userResidentApplyQueryVO.getRegionName(),userResidentApplyQueryVO.getRegionId(),userResidentApplyQueryVO.getUpdateByName(),userResidentApplyQueryVO.getState(),admin.getZoneId(),admin.getPropertyId());

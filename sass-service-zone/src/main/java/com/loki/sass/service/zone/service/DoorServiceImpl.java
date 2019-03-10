@@ -126,10 +126,6 @@ public class DoorServiceImpl implements DoorService {
 
     @Override
     public PageInfo<DoorDTO> getDoorListSearch(DoorQueryVO doorQueryVO) throws BizException {
-        if (!StringUtils.isEmpty(doorQueryVO.getPage()) && !StringUtils.isEmpty(doorQueryVO.getRows())) {
-            PageHelper.startPage(doorQueryVO.getPage(), doorQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(doorQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -141,8 +137,11 @@ public class DoorServiceImpl implements DoorService {
         }
         SysRole roleType=roleTypeResult.getModule();
 
-        List<DoorPO> list=new ArrayList<>();
 
+        if (!StringUtils.isEmpty(doorQueryVO.getPage()) && !StringUtils.isEmpty(doorQueryVO.getRows())) {
+            PageHelper.startPage(doorQueryVO.getPage(), doorQueryVO.getRows());
+        }
+        List<DoorPO> list=new ArrayList<>();
         switch(roleType){
             case PROPERTY:
                 list=doorMapper.selectByParam(doorQueryVO.getName(),doorQueryVO.getCode(),doorQueryVO.getRemoteIp(),doorQueryVO.getRegionName(),doorQueryVO.getRegionId(),doorQueryVO.getCreateByName(),doorQueryVO.getUpdateByName(),doorQueryVO.getState(),admin.getZoneId(),admin.getPropertyId());

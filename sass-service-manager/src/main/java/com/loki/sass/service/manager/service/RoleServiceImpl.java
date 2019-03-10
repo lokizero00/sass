@@ -121,10 +121,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public PageInfo<RoleDTO> getRoleListSearch(RoleQueryVO roleQueryVO)throws BizException {
-        if (!StringUtils.isEmpty(roleQueryVO.getPage()) && !StringUtils.isEmpty(roleQueryVO.getRows())) {
-            PageHelper.startPage(roleQueryVO.getPage(), roleQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(roleQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -132,8 +128,10 @@ public class RoleServiceImpl implements RoleService {
 
         SysRole roleType=this.getDataIsolationLevel(admin.getId());
 
+        if (!StringUtils.isEmpty(roleQueryVO.getPage()) && !StringUtils.isEmpty(roleQueryVO.getRows())) {
+            PageHelper.startPage(roleQueryVO.getPage(), roleQueryVO.getRows());
+        }
         List<RolePO> list=new ArrayList<>();
-
         switch(roleType){
             case PROPERTY:
                 break;

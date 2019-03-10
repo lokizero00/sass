@@ -10,6 +10,7 @@ import com.loki.sass.common.vo.DoorQueryVO;
 import com.loki.sass.common.vo.DoorRequestVO;
 import com.loki.sass.feignclient.feignService.FeignDoorService;
 import com.loki.sass.api.web.aop.bind.Operate;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,6 +32,7 @@ public class DoorController {
     @Autowired
     FeignDoorService feignDoorService;
 
+    @ApiOperation(value = "门禁查询", notes = "门禁查询，条件查询，adminId默认写0")
     @Operate(value = "门禁查询")
     @CrossOrigin
     @RequiresPermissions("doorInfo:view")//权限管理;
@@ -48,6 +50,7 @@ public class DoorController {
         return feignDoorService.getDoorListSearch(JsonUtils.objectToJson(doorQueryVO));
     }
 
+    @ApiOperation(value="创建门禁", notes="创建门禁")
     @Operate(value = "创建门禁")
     @CrossOrigin
     @RequiresPermissions("doorInfo:add")//权限管理;
@@ -72,6 +75,7 @@ public class DoorController {
         return feignDoorService.addDoor(JsonUtils.objectToJson(doorRequestVO));
     }
 
+    @ApiOperation(value="修改门禁", notes="修改门禁")
     @Operate(value = "修改门禁")
     @CrossOrigin
     @RequiresPermissions("doorInfo:edit")//权限管理;
@@ -97,6 +101,7 @@ public class DoorController {
         return feignDoorService.editDoor(JsonUtils.objectToJson(doorRequestVO));
     }
 
+    @ApiOperation(value="删除门禁", notes="删除门禁")
     @Operate(value = "删除门禁")
     @CrossOrigin
     @RequiresPermissions("doorInfo:delete")//权限管理;

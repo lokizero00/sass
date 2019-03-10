@@ -41,10 +41,6 @@ public class DoorRecordServiceImpl implements DoorRecordService {
 
     @Override
     public PageInfo<DoorRecordDTO> getDoorRecordListBySearch(DoorRecordQueryVO doorRecordQueryVO) throws BizException {
-        if (!StringUtils.isEmpty(doorRecordQueryVO.getPage()) && !StringUtils.isEmpty(doorRecordQueryVO.getRows())) {
-            PageHelper.startPage(doorRecordQueryVO.getPage(), doorRecordQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(doorRecordQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -56,8 +52,10 @@ public class DoorRecordServiceImpl implements DoorRecordService {
         }
         SysRole roleType=roleTypeResult.getModule();
 
+        if (!StringUtils.isEmpty(doorRecordQueryVO.getPage()) && !StringUtils.isEmpty(doorRecordQueryVO.getRows())) {
+            PageHelper.startPage(doorRecordQueryVO.getPage(), doorRecordQueryVO.getRows());
+        }
         List<DoorRecordPO> list=new ArrayList<>();
-
         switch(roleType){
             case PROPERTY:
                 list=doorRecordMapper.selectByParam(doorRecordQueryVO.getDoorId(),doorRecordQueryVO.getDoorCode(),doorRecordQueryVO.getDoorName(),doorRecordQueryVO.getRegionId(),doorRecordQueryVO.getRegionName(),doorRecordQueryVO.getUserId(),doorRecordQueryVO.getUserPhone(),doorRecordQueryVO.getUserRealName(),doorRecordQueryVO.getCreateTimeStart(),doorRecordQueryVO.getCreateTimeEnd(),doorRecordQueryVO.getSuccess(),admin.getZoneId(),admin.getPropertyId());

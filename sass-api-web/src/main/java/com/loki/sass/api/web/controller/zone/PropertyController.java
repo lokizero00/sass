@@ -10,6 +10,7 @@ import com.loki.sass.feignclient.feignService.FeignPropertyService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,6 +32,7 @@ public class PropertyController {
     @Autowired
     FeignPropertyService feignPropertyService;
 
+    @ApiOperation(value = "物业查询", notes = "物业查询，条件查询，adminId默认写0")
     @Operate(value = "物业查询")
     @CrossOrigin
     @RequiresPermissions("propertyInfo:view")//权限管理;
@@ -48,6 +50,7 @@ public class PropertyController {
         return feignPropertyService.getPropertyListSearch(JsonUtils.objectToJson(propertyQueryVO));
     }
 
+    @ApiOperation(value = "创建物业", notes = "创建物业")
     @Operate(value = "创建物业")
     @CrossOrigin
     @RequiresPermissions("propertyInfo:add")//权限管理;
@@ -70,6 +73,7 @@ public class PropertyController {
         return feignPropertyService.addProperty(JsonUtils.objectToJson(propertyRequestVO));
     }
 
+    @ApiOperation(value = "修改物业", notes = "修改物业")
     @Operate(value = "修改物业")
     @CrossOrigin
     @RequiresPermissions("propertyInfo:edit")//权限管理;
@@ -92,6 +96,7 @@ public class PropertyController {
         return feignPropertyService.editProperty(JsonUtils.objectToJson(propertyRequestVO));
     }
 
+    @ApiOperation(value = "删除物业", notes = "删除物业，软删除")
     @Operate(value = "删除物业")
     @CrossOrigin
     @RequiresPermissions("propertyInfo:delete")//权限管理;

@@ -81,10 +81,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public PageInfo<AdminDTO> getAdminListSearch(AdminQueryVO adminQueryVO) throws BizException{
-        if (!StringUtils.isEmpty(adminQueryVO.getPage()) && !StringUtils.isEmpty(adminQueryVO.getRows())) {
-            PageHelper.startPage(adminQueryVO.getPage(), adminQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(adminQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -92,6 +88,9 @@ public class AdminServiceImpl implements AdminService {
 
         SysRole roleType=roleService.getDataIsolationLevel(admin.getId());
 
+        if (!StringUtils.isEmpty(adminQueryVO.getPage()) && !StringUtils.isEmpty(adminQueryVO.getRows())) {
+            PageHelper.startPage(adminQueryVO.getPage(), adminQueryVO.getRows());
+        }
         List<AdminPO> list=new ArrayList<>();
 
         switch(roleType){

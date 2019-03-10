@@ -10,6 +10,7 @@ import com.loki.sass.feignclient.feignService.FeignZoneService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,6 +32,7 @@ public class ZoneController {
     @Autowired
     FeignZoneService feignZoneService;
 
+    @ApiOperation(value = "小区查询", notes = "小区查询，条件查询，adminId默认写0")
     @Operate(value = "小区查询")
     @CrossOrigin
     @RequiresPermissions("zoneInfo:view")//权限管理;
@@ -47,6 +49,7 @@ public class ZoneController {
         return feignZoneService.getZoneListSearch(JsonUtils.objectToJson(zoneQueryVO));
     }
 
+    @ApiOperation(value = "创建小区", notes = "创建小区")
     @Operate(value = "创建小区")
     @CrossOrigin
     @RequiresPermissions("zoneInfo:add")//权限管理;
@@ -68,6 +71,7 @@ public class ZoneController {
         return feignZoneService.addZone(JsonUtils.objectToJson(zoneRequestVO));
     }
 
+    @ApiOperation(value = "修改小区", notes = "修改小区")
     @Operate(value = "修改小区")
     @CrossOrigin
     @RequiresPermissions("zoneInfo:edit")//权限管理;
@@ -90,6 +94,7 @@ public class ZoneController {
         return feignZoneService.editZone(JsonUtils.objectToJson(zoneRequestVO));
     }
 
+    @ApiOperation(value = "删除小区", notes = "删除小区，软删除")
     @Operate(value = "删除小区")
     @CrossOrigin
     @RequiresPermissions("zoneInfo:delete")//权限管理;

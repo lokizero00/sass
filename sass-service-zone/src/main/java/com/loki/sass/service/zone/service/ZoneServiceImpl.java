@@ -119,10 +119,6 @@ public class ZoneServiceImpl implements ZoneService {
 
     @Override
     public PageInfo<ZoneDTO> getZoneListSearch(ZoneQueryVO zoneQueryVO) throws BizException {
-        if (!StringUtils.isEmpty(zoneQueryVO.getPage()) && !StringUtils.isEmpty(zoneQueryVO.getRows())) {
-            PageHelper.startPage(zoneQueryVO.getPage(), zoneQueryVO.getRows());
-        }
-
         Admin admin=adminMapper.selectByPrimaryKey(zoneQueryVO.getAdminId());
         if(null==admin){
             throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
@@ -134,8 +130,11 @@ public class ZoneServiceImpl implements ZoneService {
         }
         SysRole roleType=roleTypeResult.getModule();
 
-        List<ZonePO> list=new ArrayList<>();
 
+        if (!StringUtils.isEmpty(zoneQueryVO.getPage()) && !StringUtils.isEmpty(zoneQueryVO.getRows())) {
+            PageHelper.startPage(zoneQueryVO.getPage(), zoneQueryVO.getRows());
+        }
+        List<ZonePO> list=new ArrayList<>();
         switch(roleType){
             case PROPERTY:
                 list=zoneMapper.selectByParam(admin.getZoneId(),zoneQueryVO.getName(),zoneQueryVO.getCreateByName(),zoneQueryVO.getUpdateByName(),zoneQueryVO.getState());
