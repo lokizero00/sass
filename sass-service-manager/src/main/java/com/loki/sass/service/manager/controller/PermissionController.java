@@ -70,4 +70,14 @@ public class PermissionController {
     public ResultDTO<List<PermissionDTO>> findAll()throws BizException {
         return ResultDTOUtils.success(permissionService.findAll());
     }
+
+    @RequestMapping(value="v1/findRootList",method = RequestMethod.POST)
+    public ResultDTO<List<PermissionDTO>> findRootList(@RequestParam("adminId") Integer adminId)throws BizException {
+        return ResultDTOUtils.success(permissionService.findRootListByAdminId(adminId));
+    }
+
+    @RequestMapping(value="v1/findListByParentId",method = RequestMethod.POST)
+    public ResultDTO<List<PermissionDTO>> findListByParentId(@RequestParam("permissionId") Integer permissionId)throws BizException {
+        return ResultDTOUtils.success(permissionService.findListByParentId(permissionId));
+    }
 }

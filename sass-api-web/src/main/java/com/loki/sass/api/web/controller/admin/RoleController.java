@@ -120,6 +120,9 @@ public class RoleController {
             throw new BizException(message);
         }
 
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        roleQueryVO.setAdminId(shiroAdmin.getId());
+
         return feignRoleService.findByPage(JsonUtils.objectToJson(roleQueryVO));
     }
 

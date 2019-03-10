@@ -331,6 +331,9 @@
       <if test="updateByName!=null and updateByName!=''">
         and au.real_name like CONCAT('%',#{updateByName},'%')
       </if>
+      <if test="zoneId!=null and zoneId!=''">
+        and r.zone_id=#{zoneId}
+      </if>
     </where>
   </select>
 

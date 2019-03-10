@@ -25,4 +25,8 @@ public interface PermissionService {
     PermissionDTO findOne(Integer id)throws BizException;
 
     List<PermissionDTO> findAll()throws BizException;
+
+    List<PermissionDTO> findRootListByAdminId(Integer adminId)throws BizException;
+
+    List<PermissionDTO> findListByParentId(Integer permissionId)throws BizException;
 }

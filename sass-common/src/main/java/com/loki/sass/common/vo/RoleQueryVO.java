@@ -10,4 +10,6 @@ public class RoleQueryVO extends BaseQueryVO {
     private String createByName;
 
     private String updateByName;
+
+    private Integer adminId;
 }

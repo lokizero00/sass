@@ -32,7 +32,7 @@ public interface AdminMapper {
 
     Admin selectByMobile(@Param("mobile") String mobile);
 
-    List<AdminPO> selectByParam(@Param("username") String username, @Param("createByName") String createByName, @Param("updateByName") String updateByName, @Param("state") Integer state);
+    List<AdminPO> selectByParam(@Param("username") String username, @Param("createByName") String createByName, @Param("updateByName") String updateByName, @Param("state") Integer state,@Param("zoneId") Integer zoneId,@Param("propertyId") Integer propertyId);
 
     int checkName(@Param("username") String username);
 

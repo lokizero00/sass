@@ -98,7 +98,7 @@ public class PermissionController {
     @RequiresPermissions("permission:view")//权限管理;
     @RequestMapping(value = "/oauth2/findAll", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<List<PermissionDTO>> findByRoleId()  throws BizException {
+    public ResultDTO<List<PermissionDTO>> findAll()  throws BizException {
 
         return feignPermissionService.findAll();
     }
@@ -111,6 +111,25 @@ public class PermissionController {
     public ResultDTO<PermissionDTO> findOne(@RequestParam("id")Integer id)  throws BizException {
 
         return feignPermissionService.findOne(id);
+    }
+
+    @Operate(value = "获取权限树的根节点列表")
+    @CrossOrigin
+    @RequiresPermissions("permission:view")//权限管理;
+    @RequestMapping(value = "/oauth2/findRootList", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<List<PermissionDTO>> findRootList()  throws BizException {
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        return feignPermissionService.findRootList(shiroAdmin.getId());
+    }
+
+    @Operate(value = "根据父权限获取子权限列表")
+    @CrossOrigin
+    @RequiresPermissions("permission:view")//权限管理;
+    @RequestMapping(value = "/oauth2/findListByParentId", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResultDTO<List<PermissionDTO>> findListByParentId(@RequestParam("permissionId")Integer permissionId)  throws BizException {
+        return feignPermissionService.findListByParentId(permissionId);
     }
 
 

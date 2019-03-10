@@ -25,7 +25,7 @@ public interface RoleService {
 
     List<RoleDTO> findAll()throws BizException;
 
-    PageInfo<RoleDTO> getAdminListSearch(RoleQueryVO roleQueryVO)throws BizException;
+    PageInfo<RoleDTO> getRoleListSearch(RoleQueryVO roleQueryVO)throws BizException;
 
     RoleDTO findById(Integer id)throws BizException;
 

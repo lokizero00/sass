@@ -126,6 +126,8 @@ public class AdminController {
             throw new BizException(message);
         }
 
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        adminQueryVO.setAdminId(shiroAdmin.getId());
         return feignAdminService.findByPage(JsonUtils.objectToJson(adminQueryVO));
     }
 

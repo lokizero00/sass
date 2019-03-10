@@ -387,4 +387,21 @@
       #{item}
     </foreach>
   </select>
+
+  <select id="selectRootList" resultMap="BaseResultMap">
+    select p.*
+    from permission p
+    <where>
+      p.is_deleted=0 AND p.available=1
+      <if test="zoneId!=null and zoneId!=0">
+        AND p.zone_id=#{zoneId}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectListByParentId" parameterType="Integer" resultMap="BaseResultMap">
+    select p.*
+    from permission p
+    where  p.is_deleted=0 AND p.available=1 AND p.parent_id=#{parentId}
+  </select>
 </mapper>

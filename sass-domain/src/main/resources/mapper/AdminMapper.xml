@@ -440,6 +440,12 @@
       <if test="state!=null and state!=0">
         and aa.state=#{state}
       </if>
+      <if test="zoneId!=null and zoneId!=0">
+        and aa.zone_id=#{zoneId}
+      </if>
+      <if test="propertyId!=null and propertyId!=0">
+        and aa.property_id=#{propertyId}
+      </if>
     </where>
   </select>
 

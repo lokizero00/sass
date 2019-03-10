@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.AdminResultCode;
 import com.loki.sass.common.code.RoleResultCode;
 import com.loki.sass.common.dto.AdminDTO;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.AdminQueryVO;
@@ -20,6 +22,7 @@ import com.loki.sass.domain.model.AdminRoleRequest;
 import com.loki.sass.domain.model.Role;
 import com.loki.sass.domain.po.AdminPO;
 import com.loki.sass.service.manager.api.AdminService;
+import com.loki.sass.service.manager.api.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -27,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +49,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminRoleMapper adminRoleMapper;
+
+    @Autowired
+    RoleService roleService;
 
     @Override
     public AdminDTO selectByMobile(String mobile)throws BizException {
@@ -77,7 +84,30 @@ public class AdminServiceImpl implements AdminService {
         if (!StringUtils.isEmpty(adminQueryVO.getPage()) && !StringUtils.isEmpty(adminQueryVO.getRows())) {
             PageHelper.startPage(adminQueryVO.getPage(), adminQueryVO.getRows());
         }
-        List<AdminPO> list = adminMapper.selectByParam(adminQueryVO.getUsername(),adminQueryVO.getCreateByName(),adminQueryVO.getUpdateByName(),adminQueryVO.getState());
+
+        Admin admin=adminMapper.selectByPrimaryKey(adminQueryVO.getAdminId());
+        if(null==admin){
+            throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
+        }
+
+        SysRole roleType=roleService.getDataIsolationLevel(admin.getId());
+
+        List<AdminPO> list=new ArrayList<>();
+
+        switch(roleType){
+            case PROPERTY:
+                list=adminMapper.selectByParam(adminQueryVO.getUsername(),adminQueryVO.getCreateByName(),adminQueryVO.getUpdateByName(),adminQueryVO.getState(),admin.getZoneId(),admin.getPropertyId());
+                break;
+            case ZONE:
+                list=adminMapper.selectByParam(adminQueryVO.getUsername(),adminQueryVO.getCreateByName(),adminQueryVO.getUpdateByName(),adminQueryVO.getState(),admin.getZoneId(),0);
+                break;
+            case ADMIN:
+                list=adminMapper.selectByParam(adminQueryVO.getUsername(),adminQueryVO.getCreateByName(),adminQueryVO.getUpdateByName(),adminQueryVO.getState(),0,0);
+                break;
+            default:
+                break;
+        }
+
         List<AdminDTO> dtoList= ConvertUtils.sourceToTarget(list,AdminDTO.class);
         PageInfo<AdminDTO> pageInfo = new PageInfo<>(dtoList);
         return pageInfo;

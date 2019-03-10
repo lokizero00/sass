@@ -34,7 +34,7 @@ public interface RoleMapper {
 
     List<String> selectRoleByAdminId(@Param("adminId") Integer adminId);
 
-    List<RolePO> selectByParam(@Param("role") String role,@Param("createByName") String createByName, @Param("updateByName") String updateByName);
+    List<RolePO> selectByParam(@Param("role") String role,@Param("createByName") String createByName, @Param("updateByName") String updateByName,@Param("zoneId") Integer zoneId);
 
     int checkRole(@Param("role") String role);
 

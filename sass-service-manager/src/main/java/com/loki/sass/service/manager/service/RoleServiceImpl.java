@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -119,11 +120,33 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public PageInfo<RoleDTO> getAdminListSearch(RoleQueryVO roleQueryVO)throws BizException {
+    public PageInfo<RoleDTO> getRoleListSearch(RoleQueryVO roleQueryVO)throws BizException {
         if (!StringUtils.isEmpty(roleQueryVO.getPage()) && !StringUtils.isEmpty(roleQueryVO.getRows())) {
             PageHelper.startPage(roleQueryVO.getPage(), roleQueryVO.getRows());
         }
-        List<RolePO> list = roleMapper.selectByParam(roleQueryVO.getRole(),roleQueryVO.getCreateByName(),roleQueryVO.getUpdateByName());
+
+        Admin admin=adminMapper.selectByPrimaryKey(roleQueryVO.getAdminId());
+        if(null==admin){
+            throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
+        }
+
+        SysRole roleType=this.getDataIsolationLevel(admin.getId());
+
+        List<RolePO> list=new ArrayList<>();
+
+        switch(roleType){
+            case PROPERTY:
+                break;
+            case ZONE:
+                list=roleMapper.selectByParam(roleQueryVO.getRole(),roleQueryVO.getCreateByName(),roleQueryVO.getUpdateByName(),admin.getZoneId());
+                break;
+            case ADMIN:
+                list=roleMapper.selectByParam(roleQueryVO.getRole(),roleQueryVO.getCreateByName(),roleQueryVO.getUpdateByName(),0);
+                break;
+            default:
+                break;
+        }
+
         List<RoleDTO> dtoList= ConvertUtils.sourceToTarget(list,RoleDTO.class);
         return new PageInfo<>(dtoList);
     }

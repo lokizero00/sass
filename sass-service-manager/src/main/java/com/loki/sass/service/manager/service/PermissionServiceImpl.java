@@ -3,14 +3,17 @@ package com.loki.sass.service.manager.service;
 import com.loki.sass.common.code.AdminResultCode;
 import com.loki.sass.common.code.PermissionResultCode;
 import com.loki.sass.common.dto.PermissionDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.PermissionRequestVO;
 import com.loki.sass.domain.mapper.AdminMapper;
 import com.loki.sass.domain.mapper.PermissionMapper;
+import com.loki.sass.domain.model.Admin;
 import com.loki.sass.domain.model.Permission;
 import com.loki.sass.domain.model.PermissionExample;
 import com.loki.sass.service.manager.api.PermissionService;
+import com.loki.sass.service.manager.api.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
     private AdminMapper adminMapper;
+
+    @Autowired
+    RoleService roleService;
 
     @Override
     public List<PermissionDTO> selectByRoleId(Integer roleId) throws BizException {
@@ -179,6 +185,41 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public List<PermissionDTO> findAll() throws BizException{
         List<Permission> permissionList = permissionMapper.selectByExample(new PermissionExample());
+        List<PermissionDTO> permissionDTOList = ConvertUtils.sourceToTarget(permissionList, PermissionDTO.class);
+        return permissionDTOList;
+    }
+
+    @Override
+    public List<PermissionDTO> findRootListByAdminId(Integer adminId) throws BizException {
+        Admin admin=adminMapper.selectByPrimaryKey(adminId);
+        if(null==admin){
+            throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
+        }
+
+        SysRole roleType=roleService.getDataIsolationLevel(admin.getId());
+
+        List<Permission> list=new ArrayList<>();
+
+        switch(roleType){
+            case PROPERTY:
+                break;
+            case ZONE:
+                list=permissionMapper.selectRootList(admin.getZoneId());
+                break;
+            case ADMIN:
+                list=permissionMapper.selectRootList(0);
+                break;
+            default:
+                break;
+        }
+
+        List<PermissionDTO> permissionDTOList = ConvertUtils.sourceToTarget(list, PermissionDTO.class);
+        return permissionDTOList;
+    }
+
+    @Override
+    public List<PermissionDTO> findListByParentId(Integer permissionId) throws BizException {
+        List<Permission> permissionList = permissionMapper.selectListByParentId(permissionId);
         List<PermissionDTO> permissionDTOList = ConvertUtils.sourceToTarget(permissionList, PermissionDTO.class);
         return permissionDTOList;
     }
