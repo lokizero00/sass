@@ -71,7 +71,7 @@ public class RoleController {
     @RequestMapping(value = "v1/findByPage",method = RequestMethod.POST)
     public ResultDTO<PageInfo<RoleDTO>> findByPage(@RequestParam("roleQueryVOJson") String roleQueryVOJson)throws BizException{
         RoleQueryVO roleQueryVO = JsonUtils.jsonToObject(roleQueryVOJson, RoleQueryVO.class);
-        return ResultDTOUtils.success(roleService.getAdminListSearch(roleQueryVO));
+        return ResultDTOUtils.success(roleService.getRoleListSearch(roleQueryVO));
     }
 
     @RequestMapping(value = "v1/findOwnPermissions",method = RequestMethod.POST)
