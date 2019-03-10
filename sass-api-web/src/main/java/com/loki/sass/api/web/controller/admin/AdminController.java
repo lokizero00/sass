@@ -14,6 +14,7 @@ import com.loki.sass.feignclient.feignService.FeignAdminService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -33,6 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @Function(value ="admin登录管理",moduleName = "登录管理",subModuleName = "")
+@Api(tags="管理员管理")
 public class AdminController {
 
     @Autowired

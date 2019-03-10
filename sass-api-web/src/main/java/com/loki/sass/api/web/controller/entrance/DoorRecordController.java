@@ -8,6 +8,7 @@ import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.vo.DoorRecordQueryVO;
 import com.loki.sass.feignclient.feignService.FeignDoorRecordService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/doorRecord")
 @Function(value ="门禁记录管理",moduleName = "出入管理",subModuleName = "")
+@Api(tags="门禁记录管理")
 public class DoorRecordController {
     @Autowired
     FeignDoorRecordService feignDoorRecordService;

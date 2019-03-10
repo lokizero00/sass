@@ -10,6 +10,7 @@ import com.loki.sass.feignclient.feignService.FeignUserResidentApplyService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -26,7 +27,8 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("/userResidentApply")
-@Function(value ="业主入驻管理",moduleName = "业务管理",subModuleName = "")
+@Function(value ="业主入驻申请管理",moduleName = "业务管理",subModuleName = "")
+@Api(tags="业主入驻申请管理")
 public class UserResidentApplyController {
     @Autowired
     FeignUserResidentApplyService feignUserResidentApplyService;

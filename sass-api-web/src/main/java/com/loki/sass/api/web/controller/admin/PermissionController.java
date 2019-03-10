@@ -10,6 +10,7 @@ import com.loki.sass.common.vo.PermissionRequestVO;
 import com.loki.sass.feignclient.feignService.FeignPermissionService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -26,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/permission")
 @Function(value ="权限管理",moduleName = "1登录管理",subModuleName = "")
+@Api(tags="权限管理")
 public class PermissionController {
 
     @Autowired

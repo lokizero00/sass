@@ -14,6 +14,7 @@ import com.loki.sass.common.vo.RoleRequestVO;
 import com.loki.sass.feignclient.feignService.FeignRoleService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -30,6 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/role")
 @Function(value ="角色管理",moduleName = "1登录管理",subModuleName = "")
+@Api(tags="角色管理")
 public class RoleController {
 
     @Autowired

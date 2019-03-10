@@ -10,6 +10,7 @@ import com.loki.sass.feignclient.feignService.FeignZoneService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/zone")
 @Function(value ="小区管理",moduleName = "小区管理",subModuleName = "")
+@Api(tags="小区管理")
 public class ZoneController {
     @Autowired
     FeignZoneService feignZoneService;

@@ -10,6 +10,7 @@ import com.loki.sass.common.vo.DoorQueryVO;
 import com.loki.sass.common.vo.DoorRequestVO;
 import com.loki.sass.feignclient.feignService.FeignDoorService;
 import com.loki.sass.api.web.aop.bind.Operate;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/door")
 @Function(value ="门禁管理",moduleName = "小区管理",subModuleName = "")
+@Api(tags="门禁管理")
 public class DoorController {
     @Autowired
     FeignDoorService feignDoorService;

@@ -1,5 +1,6 @@
 package com.loki.sass.api.web.controller;
 
+import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.common.code.CommonResultCode;
 import com.loki.sass.common.code.LoginResultCode;
 import com.loki.sass.common.dto.PermissionDTO;
@@ -9,6 +10,8 @@ import com.loki.sass.common.vo.AdminLoginRequestVO;
 import com.loki.sass.feignclient.feignService.FeignPermissionService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -32,10 +35,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/login")
 @Function(value ="admin登录管理",moduleName = "登录管理",subModuleName = "")
+@Api(tags="登录管理")
 public class LoginController {
     @Autowired
     FeignPermissionService feignPermissionService;
 
+    @ApiOperation(value = "管理员登录", notes = "管理员登录")
+    @Operate(value = "管理员登录")
     @CrossOrigin
     @RequestMapping(value = "/adminLogin", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -85,6 +91,8 @@ public class LoginController {
         return result;
     }
 
+    @ApiOperation(value = "管理员注销", notes = "管理员注销")
+    @Operate(value = "管理员注销")
     @CrossOrigin
     @RequestMapping(value = "/adminLoginOut", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
