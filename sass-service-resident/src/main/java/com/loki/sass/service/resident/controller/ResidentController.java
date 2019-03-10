@@ -8,6 +8,7 @@ import com.loki.sass.domain.model.User;
 import com.loki.sass.domain.model.UserAuth;
 import com.loki.sass.domain.model.WechatAuth;
 import com.loki.sass.service.resident.api.ResidentService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("/resident")
+@Api(tags="常驻管理")
 public class ResidentController {
 
     @Autowired

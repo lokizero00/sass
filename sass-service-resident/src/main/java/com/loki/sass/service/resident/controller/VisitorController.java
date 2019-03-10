@@ -5,6 +5,7 @@ import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.vo.VisitApplyRequestVO;
 import com.loki.sass.service.resident.api.VisitorService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("/visitor")
+@Api(tags="访客管理")
 public class VisitorController {
     @Autowired
     VisitorService visitorService;
