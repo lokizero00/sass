@@ -393,8 +393,8 @@
     from permission p
     <where>
       p.is_deleted=0 AND p.available=1
-      <if test="zoneId!=null and zoneId!=0">
-        AND p.zone_id=#{zoneId}
+      <if test="isRegional!=null and isRegional!=0">
+        and p.is_regional=1
       </if>
     </where>
   </select>

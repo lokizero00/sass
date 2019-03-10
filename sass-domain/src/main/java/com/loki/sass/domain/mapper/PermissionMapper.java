@@ -41,7 +41,7 @@ public interface PermissionMapper {
 
     int countForList(@Param("ids")List<Integer> ids);
 
-    List<Permission> selectRootList(@Param("zoneId") Integer zoneId);
+    List<Permission> selectRootList(@Param("isRegional") Integer isRegional);
 
     List<Permission> selectListByParentId(@Param("permissionId") Integer PermissionId);
 }

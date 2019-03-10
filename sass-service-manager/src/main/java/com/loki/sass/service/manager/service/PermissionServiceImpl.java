@@ -204,7 +204,7 @@ public class PermissionServiceImpl implements PermissionService {
             case PROPERTY:
                 break;
             case ZONE:
-                list=permissionMapper.selectRootList(admin.getZoneId());
+                list=permissionMapper.selectRootList(1);
                 break;
             case ADMIN:
                 list=permissionMapper.selectRootList(0);
