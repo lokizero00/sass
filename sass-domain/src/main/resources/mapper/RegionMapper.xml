@@ -368,7 +368,24 @@
       r.parent_id =#{parentId} and r.is_deleted=0
   </select>
 
-  <select id="selectByZoneId" resultMap="QueryResultMap">
+  <select id="selectRootAll" resultMap="QueryResultMap">
+    SELECT
+      r.*,
+      z.name AS zone_name,
+      p.name AS property_name,
+      ac.real_name AS create_by_name,
+      au.real_name AS update_by_name
+    FROM
+      region r
+        LEFT JOIN zone z ON z.id = r.zone_id
+        LEFT JOIN property p ON p.id = r.property_id
+        LEFT JOIN admin ac ON ac.id = r.create_by
+        LEFT JOIN admin au ON au.id = r.update_by
+    WHERE
+      r.is_deleted=0 and r.parent_id=0
+  </select>
+
+  <select id="selectRootByZoneId" resultMap="QueryResultMap">
     SELECT
       r.*,
       z.name AS zone_name,
@@ -385,7 +402,7 @@
       r.zone_id =#{zoneId} and r.is_deleted=0 and r.parent_id=0
   </select>
 
-  <select id="selectByPropertyId" resultMap="QueryResultMap">
+  <select id="selectRootByPropertyId" resultMap="QueryResultMap">
     SELECT
       r.*,
       z.name AS zone_name,

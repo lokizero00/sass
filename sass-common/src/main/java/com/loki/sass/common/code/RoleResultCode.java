@@ -28,4 +28,7 @@ public abstract class RoleResultCode {
 
     //查询的角色不都存在
     public final static String ROLE_NOT_ALL_EXIST = "role_0008";
+
+    //数据访问级别查询失败
+    public final static String ROLE_DATA_ISOLATION_LEVEL_ERROR = "role_0009";
 }

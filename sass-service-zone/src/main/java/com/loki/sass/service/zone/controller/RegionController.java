@@ -56,19 +56,11 @@ public class RegionController {
         return result;
     }
 
-    @RequestMapping(value = "v1/getRootRegionListByZoneId",method = RequestMethod.POST)
-    public ResultDTO<List<RegionDTO>> getRootRegionListByZoneId(@RequestParam Integer zoneId) throws BizException {
+    @RequestMapping(value = "v1/getRootRegionList",method = RequestMethod.POST)
+    public ResultDTO<List<RegionDTO>> getRootRegionListByZoneId(@RequestParam Integer adminId) throws BizException {
         ResultDTO<List<RegionDTO>> result=new ResultDTO<>();
         result.setSuccess(true);
-        result.setModule(regionService.getRootRegionListByZoneId(zoneId));
-        return result;
-    }
-
-    @RequestMapping(value = "v1/getRootRegionListByPropertyId",method = RequestMethod.POST)
-    public ResultDTO<List<RegionDTO>> getRootRegionListByPropertyId(@RequestParam Integer propertyId) throws BizException {
-        ResultDTO<List<RegionDTO>> result=new ResultDTO<>();
-        result.setSuccess(true);
-        result.setModule(regionService.getRootRegionListByPropertyId(propertyId));
+        result.setModule(regionService.getRootRegionList(adminId));
         return result;
     }
 }

@@ -264,6 +264,12 @@
       <if test="success!=null and success!=0">
         and dr.success=#{success}
       </if>
+      <if test="zoneId!=null and zoneId!=0">
+        and r.zone_id=#{zoneId}
+      </if>
+      <if test="propertyId!=null and propertyId!=0">
+        and r.property_id=#{propertyId}
+      </if>
     </where>
   </select>
 </mapper>

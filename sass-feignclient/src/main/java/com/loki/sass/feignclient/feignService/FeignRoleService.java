@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,4 +46,6 @@ public interface FeignRoleService {
     @RequestMapping(value="/role/v1/updateOwnPermissions",method = RequestMethod.POST)
     public ResultDTO<Boolean> updateOwnPermissions(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException;
 
+    @RequestMapping(value="/role/v1/getDataIsolationLevel",method = RequestMethod.POST)
+    public ResultDTO<SysRole> getDataIsolationLevel(@RequestParam("adminId")Integer adminId)throws BizException;
 }

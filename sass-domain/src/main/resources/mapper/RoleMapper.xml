@@ -338,6 +338,10 @@
     select r.* from role r left join admin_role ar on r.id=ar.role_id where r.available=1 and ar.admin_id = #{adminId,jdbcType=INTEGER} and r.is_deleted = 0
   </select>
 
+  <select id="selectRoleByAdminId" parameterType="java.lang.Integer" resultType="String">
+    select r.role from role r left join admin_role ar on r.id=ar.role_id where r.available=1 and ar.admin_id = #{adminId,jdbcType=INTEGER} and r.is_deleted = 0
+  </select>
+
   <select id="checkRole" parameterType="String" resultType="Integer">
     select count(id) from role where is_deleted = 0 and role=#{role}
   </select>

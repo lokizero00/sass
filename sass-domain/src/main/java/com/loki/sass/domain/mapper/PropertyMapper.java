@@ -32,5 +32,5 @@ public interface PropertyMapper {
 
     int checkName(@Param("name") String name,@Param("zoneId") Integer zoneId);
 
-    List<PropertyPO> selectByParam(@Param("name") String name, @Param("createByName") String createByName, @Param("updateByName") String updateByName,@Param("zoneName") String zoneName,@Param("zoneId") Integer zoneId, @Param("state") Integer state);
+    List<PropertyPO> selectByParam(@Param("name") String name, @Param("createByName") String createByName, @Param("updateByName") String updateByName,@Param("zoneName") String zoneName,@Param("zoneId") Integer zoneId,@Param("propertyId") Integer propertyId, @Param("state") Integer state);
 }

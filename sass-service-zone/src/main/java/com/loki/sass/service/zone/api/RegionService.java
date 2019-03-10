@@ -14,7 +14,8 @@ public interface RegionService {
     boolean editRegion(RegionRequestVO regionRequestVO) throws BizException;
     boolean deleteRegion(Integer regionId,Integer adminId) throws BizException;
     List<RegionDTO> getRegionListByParentId(Integer regionId) throws BizException;
-    List<RegionDTO> getRootRegionListByZoneId(Integer zoneId) throws BizException;
-    List<RegionDTO> getRootRegionListByPropertyId(Integer propertyId) throws BizException;
+    List<RegionDTO> getRootRegionList(Integer adminId) throws BizException;
+//    List<RegionDTO> getRootRegionListByZoneId(Integer zoneId) throws BizException;
+//    List<RegionDTO> getRootRegionListByPropertyId(Integer propertyId) throws BizException;
 
 }

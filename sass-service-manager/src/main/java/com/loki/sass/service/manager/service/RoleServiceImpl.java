@@ -7,6 +7,7 @@ import com.loki.sass.common.code.PermissionResultCode;
 import com.loki.sass.common.code.RoleResultCode;
 import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.RoleDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.RolePermissionRequestVO;
@@ -16,10 +17,7 @@ import com.loki.sass.domain.mapper.AdminMapper;
 import com.loki.sass.domain.mapper.PermissionMapper;
 import com.loki.sass.domain.mapper.RoleMapper;
 import com.loki.sass.domain.mapper.RolePermissionMapper;
-import com.loki.sass.domain.model.Permission;
-import com.loki.sass.domain.model.Role;
-import com.loki.sass.domain.model.RoleExample;
-import com.loki.sass.domain.model.RolePermissionRequest;
+import com.loki.sass.domain.model.*;
 import com.loki.sass.domain.po.RolePO;
 import com.loki.sass.service.manager.api.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -166,6 +164,25 @@ public class RoleServiceImpl implements RoleService {
             throw new BizException(RoleResultCode.ROLE_PERMISSION_OPERATE_ERROR);
         }
         return result>0;
+    }
+
+    @Override
+    public SysRole getDataIsolationLevel(Integer adminId) throws BizException {
+        //数据隔离
+        //roleType，PROPERTY：物业管理员，ZONE：小区管理员，ADMIN：超级管理员
+        SysRole roleType=SysRole.PROPERTY;
+        Admin admin=adminMapper.selectByPrimaryKey(adminId);
+        List<String> roleList=roleMapper.selectRoleByAdminId(adminId);
+
+        if(roleList.contains(SysRole.ZONE.getValue())){
+            roleType=SysRole.ZONE;
+        }
+
+        if(roleList.contains(SysRole.ADMIN.getValue())){
+            roleType=SysRole.ADMIN;
+        }
+
+        return roleType;
     }
 
 }

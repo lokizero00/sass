@@ -32,5 +32,5 @@ public interface DoorMapper {
 
     int checkName(@Param("name") String name,@Param("regionId") Integer regionId);
 
-    List<DoorPO> selectByParam(@Param("name") String name,@Param("code") String code,@Param("remoteIp") String remoteIp,@Param("regionName") String regionName,@Param("regionId") Integer regionId, @Param("createByName") String createByName, @Param("updateByName") String updateByName, @Param("state") Integer state);
+    List<DoorPO> selectByParam(@Param("name") String name,@Param("code") String code,@Param("remoteIp") String remoteIp,@Param("regionName") String regionName,@Param("regionId") Integer regionId, @Param("createByName") String createByName, @Param("updateByName") String updateByName, @Param("state") Integer state,@Param("zoneId") Integer zoneId,@Param("propertyId") Integer propertyId);
 }

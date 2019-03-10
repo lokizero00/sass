@@ -43,6 +43,8 @@ public interface VisitorApplyMapper {
                                        @Param("visitingTimeStart") Date visitingTimeStart,
                                        @Param("visitingTimeEnd") Date visitingTimeEnd,
                                        @Param("updateByName") String updateByName,
-                                       @Param("state") Integer state);
+                                       @Param("state") Integer state,
+                                       @Param("zoneId") Integer zoneId,
+                                       @Param("propertyId") Integer propertyId);
 
 }

@@ -341,6 +341,9 @@
       <if test="zoneId!=null and zoneId!=0">
         and p.zone_id=#{zoneId}
       </if>
+      <if test="propertyId!=null and propertyId!=0">
+        and p.id=#{propertyId}
+      </if>
       <if test="state!=null and state!=0">
         and p.state=#{state}
       </if>

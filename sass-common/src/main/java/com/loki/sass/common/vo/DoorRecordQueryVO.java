@@ -30,4 +30,6 @@ public class DoorRecordQueryVO extends BaseQueryVO{
     private Date createTimeEnd;
 
     private Integer success;
+
+    private Integer adminId;
 }

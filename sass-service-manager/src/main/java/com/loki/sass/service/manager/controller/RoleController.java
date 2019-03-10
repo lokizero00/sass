@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.JsonUtils;
 import com.loki.sass.common.util.ResultDTOUtils;
@@ -82,5 +83,13 @@ public class RoleController {
     public ResultDTO<Boolean> updateOwnPermissions(@RequestParam("rolePermissionRequestVOJson")String rolePermissionRequestVOJson)throws BizException{
         RolePermissionRequestVO rolePermissionRequestVO = JsonUtils.jsonToObject(rolePermissionRequestVOJson, RolePermissionRequestVO.class);
         return ResultDTOUtils.success(roleService.updateOwnPermissions(rolePermissionRequestVO));
+    }
+
+    @RequestMapping(value="v1/getDataIsolationLevel",method = RequestMethod.POST)
+    public ResultDTO<SysRole> getDataIsolationLevel(@RequestParam("adminId") Integer adminId)throws BizException{
+        ResultDTO<SysRole> result=new ResultDTO<>();
+        result.setSuccess(true);
+        result.setModule(roleService.getDataIsolationLevel(adminId));
+        return result;
     }
 }

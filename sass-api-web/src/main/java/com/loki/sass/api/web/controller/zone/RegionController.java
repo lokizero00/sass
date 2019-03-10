@@ -1,6 +1,5 @@
 package com.loki.sass.api.web.controller.zone;
 
-import com.loki.sass.common.code.PropertyResultCode;
 import com.loki.sass.common.code.RegionResultCode;
 import com.loki.sass.common.code.ZoneResultCode;
 import com.loki.sass.common.dto.ResultDTO;
@@ -111,29 +110,13 @@ public class RegionController {
         return feignRegionService.getRegionListByParentId(regionId);
     }
 
-    @Operate(value = "根据小区ID查询区域")
+    @Operate(value = "查询区域根列表")
     @CrossOrigin
     @RequiresPermissions("regionInfo:view")//权限管理;
-    @RequestMapping(value = "/oauth2/getRootRegionListByZoneId", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/oauth2/getRootRegionList", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<?> getRootRegionListByZoneId(@RequestParam("zoneId") final int zoneId)  throws BizException {
-        if (zoneId<=0){
-            throw new BizException(ZoneResultCode.ZONE_ID_INVALID);
-        }
-
-        return feignRegionService.getRootRegionListByZoneId(zoneId);
-    }
-
-    @Operate(value = "根据物业ID查询区域")
-    @CrossOrigin
-    @RequiresPermissions("regionInfo:view")//权限管理;
-    @RequestMapping(value = "/oauth2/getRootRegionListByPropertyId", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public ResultDTO<?> getRootRegionListByPropertyId(@RequestParam("propertyId") final int propertyId)  throws BizException {
-        if (propertyId<=0){
-            throw new BizException(PropertyResultCode.PROPERTY_ID_INVALID);
-        }
-
-        return feignRegionService.getRootRegionListByPropertyId(propertyId);
+    public ResultDTO<?> getRootRegionList()  throws BizException {
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        return feignRegionService.getRootRegionList(shiroAdmin.getId());
     }
 }

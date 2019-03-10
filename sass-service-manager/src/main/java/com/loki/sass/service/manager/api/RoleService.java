@@ -3,6 +3,7 @@ package com.loki.sass.service.manager.api;
 import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.dto.PermissionDTO;
 import com.loki.sass.common.dto.RoleDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.vo.RolePermissionRequestVO;
 import com.loki.sass.common.vo.RoleQueryVO;
@@ -31,4 +32,6 @@ public interface RoleService {
     List<PermissionDTO> findOwnPermissions(Integer roleId)throws BizException;
 
     Boolean updateOwnPermissions(RolePermissionRequestVO rolePermissionRequestVO)throws BizException;
+
+    SysRole getDataIsolationLevel(Integer adminId) throws BizException;
 }

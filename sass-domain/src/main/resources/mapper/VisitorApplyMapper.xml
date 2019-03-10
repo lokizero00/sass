@@ -394,6 +394,12 @@
       <if test="state!=null and state!=0">
         AND va.state=#{state}
       </if>
+      <if test="zoneId!=null and zoneId!=0">
+        AND r.zone_id=#{zoneId}
+      </if>
+      <if test="propertyId!=null and propertyId!=0">
+        AND r.property_id=#{propertyId}
+      </if>
       <if test="visitingTimeStart!=null and visitingTimeStart!=''">
         <![CDATA[   and DATE_FORMAT(va.visiting_time, '%Y-%m-%d')>=  DATE_FORMAT(#{visitingTimeStart}, '%Y-%m-%d')   ]]>
       </if>

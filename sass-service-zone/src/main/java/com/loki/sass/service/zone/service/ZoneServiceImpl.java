@@ -2,16 +2,25 @@ package com.loki.sass.service.zone.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.loki.sass.common.code.AdminResultCode;
+import com.loki.sass.common.code.RoleResultCode;
 import com.loki.sass.common.code.ZoneResultCode;
+import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.ZoneDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.enums.ZoneState;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.ZoneQueryVO;
 import com.loki.sass.common.vo.ZoneRequestVO;
+import com.loki.sass.domain.mapper.AdminMapper;
+import com.loki.sass.domain.mapper.RoleMapper;
+import com.loki.sass.domain.model.Admin;
+import com.loki.sass.domain.model.Role;
 import com.loki.sass.domain.model.Zone;
 import com.loki.sass.domain.po.ZonePO;
 import com.loki.sass.domain.mapper.ZoneMapper;
+import com.loki.sass.feignclient.feignService.FeignRoleService;
 import com.loki.sass.service.zone.api.ZoneService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +41,12 @@ import java.util.List;
 public class ZoneServiceImpl implements ZoneService {
     @Autowired
     ZoneMapper zoneMapper;
+    @Autowired
+    AdminMapper adminMapper;
+    @Autowired
+    RoleMapper roleMapper;
+    @Autowired
+    FeignRoleService feignRoleService;
 
     @Override
     public boolean addZone(ZoneRequestVO zoneRequestVO) throws BizException {
@@ -106,7 +122,33 @@ public class ZoneServiceImpl implements ZoneService {
         if (!StringUtils.isEmpty(zoneQueryVO.getPage()) && !StringUtils.isEmpty(zoneQueryVO.getRows())) {
             PageHelper.startPage(zoneQueryVO.getPage(), zoneQueryVO.getRows());
         }
-        List<ZonePO> list=zoneMapper.selectByParam(zoneQueryVO.getName(),zoneQueryVO.getCreateByName(),zoneQueryVO.getUpdateByName(),zoneQueryVO.getState());
+
+        Admin admin=adminMapper.selectByPrimaryKey(zoneQueryVO.getAdminId());
+        if(null==admin){
+            throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
+        }
+
+        ResultDTO<SysRole> roleTypeResult=feignRoleService.getDataIsolationLevel(admin.getId());
+        if(!roleTypeResult.isSuccess()){
+            throw new BizException(RoleResultCode.ROLE_DATA_ISOLATION_LEVEL_ERROR);
+        }
+        SysRole roleType=roleTypeResult.getModule();
+
+        List<ZonePO> list=new ArrayList<>();
+
+        switch(roleType){
+            case PROPERTY:
+                list=zoneMapper.selectByParam(admin.getZoneId(),zoneQueryVO.getName(),zoneQueryVO.getCreateByName(),zoneQueryVO.getUpdateByName(),zoneQueryVO.getState());
+                break;
+            case ZONE:
+                list=zoneMapper.selectByParam(admin.getZoneId(),zoneQueryVO.getName(),zoneQueryVO.getCreateByName(),zoneQueryVO.getUpdateByName(),zoneQueryVO.getState());
+                break;
+            case ADMIN:
+                list=zoneMapper.selectByParam(0,zoneQueryVO.getName(),zoneQueryVO.getCreateByName(),zoneQueryVO.getUpdateByName(),zoneQueryVO.getState());
+                break;
+            default:
+                break;
+        }
         List<ZoneDTO> dtoList= ConvertUtils.sourceToTarget(list,ZoneDTO.class);
         PageInfo<ZoneDTO> pageInfo = new PageInfo<>(dtoList);
         return pageInfo;

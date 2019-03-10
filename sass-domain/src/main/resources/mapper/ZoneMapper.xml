@@ -349,6 +349,9 @@
       <if test="state!=null and state!=0">
         and z.state=#{state}
       </if>
+      <if test="zoneId!=null and zoneId!=0">
+        and z.id=#{zoneId}
+      </if>
     </where>
   </select>
 

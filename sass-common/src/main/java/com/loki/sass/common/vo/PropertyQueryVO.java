@@ -23,4 +23,6 @@ public class PropertyQueryVO extends BaseQueryVO{
     private String updateByName;
 
     private Integer state;
+
+    private Integer adminId;
 }

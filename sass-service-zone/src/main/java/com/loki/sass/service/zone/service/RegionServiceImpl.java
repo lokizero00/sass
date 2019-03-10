@@ -1,25 +1,29 @@
 package com.loki.sass.service.zone.service;
 
-import com.loki.sass.common.code.PropertyResultCode;
-import com.loki.sass.common.code.RegionResultCode;
-import com.loki.sass.common.code.ZoneResultCode;
+import com.loki.sass.common.code.*;
 import com.loki.sass.common.dto.RegionDTO;
+import com.loki.sass.common.dto.ResultDTO;
+import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
 import com.loki.sass.common.vo.RegionRequestVO;
+import com.loki.sass.domain.mapper.AdminMapper;
 import com.loki.sass.domain.mapper.PropertyMapper;
 import com.loki.sass.domain.mapper.RegionMapper;
 import com.loki.sass.domain.mapper.ZoneMapper;
+import com.loki.sass.domain.model.Admin;
 import com.loki.sass.domain.model.Property;
 import com.loki.sass.domain.model.Region;
 import com.loki.sass.domain.model.Zone;
 import com.loki.sass.domain.po.RegionPO;
+import com.loki.sass.feignclient.feignService.FeignRoleService;
 import com.loki.sass.service.zone.api.RegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +42,12 @@ public class RegionServiceImpl implements RegionService {
 
     @Autowired
     RegionMapper regionMapper;
+
+    @Autowired
+    AdminMapper adminMapper;
+
+    @Autowired
+    FeignRoleService feignRoleService;
 
     @Override
     public boolean addRegion(RegionRequestVO regionRequestVO) throws BizException {
@@ -142,18 +152,35 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
-    public List<RegionDTO> getRootRegionListByZoneId(Integer zoneId) throws BizException {
-        List<RegionPO> list=regionMapper.selectByZoneId(zoneId);
+    public List<RegionDTO> getRootRegionList(Integer adminId) throws BizException {
+        Admin admin=adminMapper.selectByPrimaryKey(adminId);
+        if(null==admin){
+            throw new BizException(AdminResultCode.ADMIN_NOT_EXIST);
+        }
+
+        ResultDTO<SysRole> roleTypeResult=feignRoleService.getDataIsolationLevel(admin.getId());
+        if(!roleTypeResult.isSuccess()){
+            throw new BizException(RoleResultCode.ROLE_DATA_ISOLATION_LEVEL_ERROR);
+        }
+        SysRole roleType=roleTypeResult.getModule();
+
+        List<RegionPO> list=new ArrayList<>();
+
+        switch(roleType){
+            case PROPERTY:
+                list=regionMapper.selectRootByPropertyId(admin.getPropertyId());
+                break;
+            case ZONE:
+                list=regionMapper.selectRootByZoneId(admin.getZoneId());
+                break;
+            case ADMIN:
+                list=regionMapper.selectRootAll();
+                break;
+            default:
+                break;
+        }
+
         List<RegionDTO> dtoList= ConvertUtils.sourceToTarget(list,RegionDTO.class);
         return dtoList;
     }
-
-    @Override
-    public List<RegionDTO> getRootRegionListByPropertyId(Integer propertyId) throws BizException {
-        List<RegionPO> list=regionMapper.selectByPropertyId(propertyId);
-        List<RegionDTO> dtoList= ConvertUtils.sourceToTarget(list,RegionDTO.class);
-        return dtoList;
-    }
-
-
 }

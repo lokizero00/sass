@@ -296,6 +296,12 @@
       <if test="state!=null and state!=0">
         AND ura.state=#{state}
       </if>
+      <if test="zoneId!=null and zoneId!=0">
+        AND r.zone_id=#{zoneId}
+      </if>
+      <if test="propertyId!=null and propertyId!=0">
+        AND r.property_id=#{propertyId}
+      </if>
     </where>
   </select>
 </mapper>

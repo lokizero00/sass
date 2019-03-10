@@ -42,6 +42,8 @@ public class ZoneController {
             throw new BizException(message);
         }
 
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        zoneQueryVO.setAdminId(shiroAdmin.getId());
         return feignZoneService.getZoneListSearch(JsonUtils.objectToJson(zoneQueryVO));
     }
 

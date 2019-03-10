@@ -29,9 +29,6 @@ public interface FeignRegionService {
     @RequestMapping(value = "/region/v1/getRegionListByParentId",method = RequestMethod.POST)
     ResultDTO<List<RegionDTO>> getRegionListByParentId(@RequestParam("regionId") Integer regionId) throws BizException ;
 
-    @RequestMapping(value = "/region/v1/getRootRegionListByZoneId",method = RequestMethod.POST)
-    ResultDTO<List<RegionDTO>> getRootRegionListByZoneId(@RequestParam("zoneId") Integer zoneId) throws BizException;
-
-    @RequestMapping(value = "/region/v1/getRootRegionListByPropertyId",method = RequestMethod.POST)
-    ResultDTO<List<RegionDTO>> getRootRegionListByPropertyId(@RequestParam("propertyId") Integer propertyId) throws BizException;
+    @RequestMapping(value = "/region/v1/getRootRegionList",method = RequestMethod.POST)
+    ResultDTO<List<RegionDTO>> getRootRegionList(@RequestParam("adminId") Integer adminId) throws BizException;
 }

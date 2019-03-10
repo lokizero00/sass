@@ -42,6 +42,9 @@ public class PropertyController {
             throw new BizException(message);
         }
 
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        propertyQueryVO.setAdminId(shiroAdmin.getId());
+
         return feignPropertyService.getPropertyListSearch(JsonUtils.objectToJson(propertyQueryVO));
     }
 

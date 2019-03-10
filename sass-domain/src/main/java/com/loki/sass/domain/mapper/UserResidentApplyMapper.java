@@ -30,5 +30,5 @@ public interface UserResidentApplyMapper {
 
     int updateByPrimaryKey(UserResidentApply record);
 
-    List<UserResidentApplyPO> selectByParam(@Param("userRealName") String userRealName, @Param("userPhone") String userPhone, @Param("regionName") String regionName, @Param("regionId") Integer regionId, @Param("updateByName") String updateByName, @Param("state") Integer state);
+    List<UserResidentApplyPO> selectByParam(@Param("userRealName") String userRealName, @Param("userPhone") String userPhone, @Param("regionName") String regionName, @Param("regionId") Integer regionId, @Param("updateByName") String updateByName, @Param("state") Integer state,@Param("zoneId") Integer zoneId,@Param("propertyId") Integer propertyId);
 }

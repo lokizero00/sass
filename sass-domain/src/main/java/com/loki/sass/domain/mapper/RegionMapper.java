@@ -32,7 +32,9 @@ public interface RegionMapper {
 
     List<RegionPO> selectByParentId(@Param("parentId") Integer parentId);
 
-    List<RegionPO> selectByZoneId(@Param("zoneId") Integer zoneId);
+    List<RegionPO> selectRootAll();
 
-    List<RegionPO> selectByPropertyId(@Param("propertyId") Integer propertyId);
+    List<RegionPO> selectRootByZoneId(@Param("zoneId") Integer zoneId);
+
+    List<RegionPO> selectRootByPropertyId(@Param("propertyId") Integer propertyId);
 }

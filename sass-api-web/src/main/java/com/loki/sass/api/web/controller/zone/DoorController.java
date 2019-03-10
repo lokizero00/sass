@@ -42,6 +42,9 @@ public class DoorController {
             throw new BizException(message);
         }
 
+        ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
+        doorQueryVO.setAdminId(shiroAdmin.getId());
+
         return feignDoorService.getDoorListSearch(JsonUtils.objectToJson(doorQueryVO));
     }
 

@@ -350,6 +350,12 @@
       <if test="state!=null and state!=0">
         and d.state=#{state}
       </if>
+      <if test="zoneId!=null and zoneId!=0">
+        and r.zone_id=#{zoneId}
+      </if>
+      <if test="propertyId!=null and propertyId!=0">
+        and r.property_id=#{propertyId}
+      </if>
     </where>
   </select>
 </mapper>
