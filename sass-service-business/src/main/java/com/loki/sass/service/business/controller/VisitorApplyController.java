@@ -45,7 +45,7 @@ public class VisitorApplyController {
         boolean bs=false;
 
         if(visitorApplyVerifyVO.getVerifyResult().equals(PASS.getValue())){
-            bs=visitorApplyService.applyPass(visitorApplyVerifyVO.getApplyId(),visitorApplyVerifyVO.getReason(),visitorApplyVerifyVO.getUpdateBy());
+            bs=visitorApplyService.applyPass(visitorApplyVerifyVO.getApplyId(),visitorApplyVerifyVO.getWaitHour(),visitorApplyVerifyVO.getReason(),visitorApplyVerifyVO.getUpdateBy());
         }else if (visitorApplyVerifyVO.getVerifyResult().equals(REFUSE.getValue())){
             bs=visitorApplyService.applyRefuse(visitorApplyVerifyVO.getApplyId(),visitorApplyVerifyVO.getReason(),visitorApplyVerifyVO.getUpdateBy());
         }
