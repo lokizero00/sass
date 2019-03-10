@@ -14,6 +14,7 @@ import com.loki.sass.common.vo.RoleRequestVO;
 import com.loki.sass.feignclient.feignService.FeignRoleService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -34,6 +35,7 @@ public class RoleController {
     @Autowired
     private FeignRoleService feignRoleService;
 
+    @ApiOperation(value="查看角色", notes="查看角色")
     @Operate(value = "查看角色")
     @CrossOrigin
     @RequiresPermissions("role:view")//权限管理;
@@ -43,6 +45,7 @@ public class RoleController {
         return feignRoleService.selectByUserId(adminId);
     }
 
+    @ApiOperation(value="添加角色", notes="添加角色")
     @Operate(value = "添加角色")
     @CrossOrigin
     @RequiresPermissions("role:add")//权限管理;
@@ -63,6 +66,7 @@ public class RoleController {
         return feignRoleService.addRole(JsonUtils.objectToJson(roleRequestVO));
     }
 
+    @ApiOperation(value="删除角色", notes="删除角色")
     @Operate(value = "删除角色")
     @CrossOrigin
     @RequiresPermissions("role:delete")//权限管理;
@@ -74,6 +78,7 @@ public class RoleController {
         return feignRoleService.deleteRole(id,shiroAdmin.getId());
     }
 
+    @ApiOperation(value="编辑角色", notes="编辑角色")
     @Operate(value = "编辑角色")
     @CrossOrigin
     @RequiresPermissions("role:edit")//权限管理;
@@ -91,6 +96,7 @@ public class RoleController {
         return feignRoleService.editRole(JsonUtils.objectToJson(roleRequestVO));
     }
 
+    @ApiOperation(value="通过id查看单个角色", notes="通过id查看单个角色")
     @Operate(value = "通过id查看单个角色")
     @CrossOrigin
     @RequiresPermissions("role:view")//权限管理;
@@ -100,6 +106,7 @@ public class RoleController {
         return feignRoleService.findOne(id);
     }
 
+    @ApiOperation(value="查看所有角色", notes="查看所有角色")
     @Operate(value = "查看所有角色")
     @CrossOrigin
     @RequiresPermissions("role:view")//权限管理;
@@ -109,6 +116,7 @@ public class RoleController {
         return feignRoleService.findAll();
     }
 
+    @ApiOperation(value="分页查看角色", notes="分页查看角色，adminId默认写0")
     @Operate(value = "分页查看角色")
     @CrossOrigin
     @RequiresPermissions("role:view")//权限管理;
@@ -126,6 +134,7 @@ public class RoleController {
         return feignRoleService.findByPage(JsonUtils.objectToJson(roleQueryVO));
     }
 
+    @ApiOperation(value="查看角色拥有的权限", notes="查看角色拥有的权限")
     @Operate(value = "查看角色拥有的权限")
     @CrossOrigin
     @RequiresPermissions("role:auth")//权限管理;
@@ -135,6 +144,7 @@ public class RoleController {
         return feignRoleService.findOwnPermissions(roleId);
     }
 
+    @ApiOperation(value="更新角色拥有的权限", notes="更新角色拥有的权限")
     @Operate(value = "更新角色拥有的权限")
     @CrossOrigin
     @RequiresPermissions("role:auth")//权限管理;

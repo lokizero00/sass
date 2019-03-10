@@ -10,6 +10,7 @@ import com.loki.sass.common.vo.PermissionRequestVO;
 import com.loki.sass.feignclient.feignService.FeignPermissionService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,6 +31,7 @@ public class PermissionController {
     @Autowired
     private FeignPermissionService feignPermissionService;
 
+    @ApiOperation(value="添加权限", notes="添加权限")
     @Operate(value = "添加权限")
     @CrossOrigin
     @RequiresPermissions("permission:add")//权限管理;
@@ -50,6 +52,7 @@ public class PermissionController {
         return feignPermissionService.addPermission(JsonUtils.objectToJson(permissionRequestVO),shiroAdmin.getId());
     }
 
+    @ApiOperation(value="修改权限", notes="修改权限")
     @Operate(value = "修改权限")
     @CrossOrigin
     @RequiresPermissions("permission:edit")//权限管理;
@@ -71,6 +74,7 @@ public class PermissionController {
         return feignPermissionService.editPermission(JsonUtils.objectToJson(permissionRequestVO),shiroAdmin.getId());
     }
 
+    @ApiOperation(value="删除权限", notes="删除权限")
     @Operate(value = "删除权限")
     @CrossOrigin
     @RequiresPermissions("permission:delete")//权限管理;
@@ -83,6 +87,7 @@ public class PermissionController {
         return feignPermissionService.deletePermission(id,shiroAdmin.getId());
     }
 
+    @ApiOperation(value="查看角色拥有权限", notes="查看角色拥有权限")
     @Operate(value = "查看角色拥有权限")
     @CrossOrigin
     @RequiresPermissions("permission:view")//权限管理;
@@ -93,6 +98,7 @@ public class PermissionController {
         return feignPermissionService.selectByRoleId(roleId);
     }
 
+    @ApiOperation(value="查看所有权限", notes="查看所有权限")
     @Operate(value = "查看所有权限")
     @CrossOrigin
     @RequiresPermissions("permission:view")//权限管理;
@@ -103,6 +109,7 @@ public class PermissionController {
         return feignPermissionService.findAll();
     }
 
+    @ApiOperation(value="通过id查看单个权限", notes="通过id查看单个权限")
     @Operate(value = "通过id查看单个权限")
     @CrossOrigin
     @RequiresPermissions("permission:view")//权限管理;
@@ -113,6 +120,7 @@ public class PermissionController {
         return feignPermissionService.findOne(id);
     }
 
+    @ApiOperation(value="获取权限树的根节点列表", notes="获取权限树的根节点列表")
     @Operate(value = "获取权限树的根节点列表")
     @CrossOrigin
     @RequiresPermissions("permission:view")//权限管理;
@@ -123,6 +131,7 @@ public class PermissionController {
         return feignPermissionService.findRootList(shiroAdmin.getId());
     }
 
+    @ApiOperation(value="根据父权限获取子权限列表", notes="根据父权限获取子权限列表")
     @Operate(value = "根据父权限获取子权限列表")
     @CrossOrigin
     @RequiresPermissions("permission:view")//权限管理;

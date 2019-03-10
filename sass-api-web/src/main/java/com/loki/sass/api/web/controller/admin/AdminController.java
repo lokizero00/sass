@@ -14,6 +14,7 @@ import com.loki.sass.feignclient.feignService.FeignAdminService;
 import com.loki.sass.api.web.aop.bind.Function;
 import com.loki.sass.api.web.aop.bind.Operate;
 import com.loki.sass.api.web.security.realm.ShiroAdmin;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -37,6 +38,7 @@ public class AdminController {
     @Autowired
     private FeignAdminService feignAdminService;
 
+    @ApiOperation(value="添加管理员", notes="添加管理员")
     @Operate(value = "添加管理员")
     @CrossOrigin
     @RequiresPermissions("admin:add")//权限管理;
@@ -57,6 +59,7 @@ public class AdminController {
         return feignAdminService.addAdmin(JsonUtils.objectToJson(adminRequestVO));
     }
 
+    @ApiOperation(value="删除管理员", notes="删除管理员")
     @Operate(value = "删除管理员")
     @CrossOrigin
     @RequiresPermissions("admin:delete")//权限管理;
@@ -68,6 +71,7 @@ public class AdminController {
         return feignAdminService.deleteAdmin(id,shiroAdmin.getId());
     }
 
+    @ApiOperation(value="编辑管理员", notes="编辑管理员")
     @Operate(value = "编辑管理员")
     @CrossOrigin
     @RequiresPermissions("admin:edit")//权限管理;
@@ -85,6 +89,7 @@ public class AdminController {
         return feignAdminService.editAdmin(JsonUtils.objectToJson(adminRequestVO));
     }
 
+    @ApiOperation(value="通过手机号查询管理员", notes="通过手机号查询管理员")
     @Operate(value = "通过手机号查询管理员")
     @CrossOrigin
     @RequiresPermissions("admin:view")//权限管理;
@@ -95,6 +100,7 @@ public class AdminController {
         return feignAdminService.selectByMobile(mobile);
     }
 
+    @ApiOperation(value="通过主键id查询管理员", notes="通过主键id查询管理员")
     @Operate(value = "通过主键id查询管理员")
     @CrossOrigin
     @RequiresPermissions("admin:view")//权限管理;
@@ -105,6 +111,7 @@ public class AdminController {
         return feignAdminService.findOne(id);
     }
 
+    @ApiOperation(value="查询所有管理员", notes="查询所有管理员")
     @Operate(value = "查询所有管理员")
     @CrossOrigin
     @RequiresPermissions("admin:view")//权限管理;
@@ -115,6 +122,7 @@ public class AdminController {
         return feignAdminService.findAll();
     }
 
+    @ApiOperation(value="分页查询所有管理员", notes="分页查询所有管理员，adminId默认写0")
     @Operate(value = "分页查询所有管理员")
     @CrossOrigin
     @RequiresPermissions("admin:view")//权限管理;
@@ -131,6 +139,7 @@ public class AdminController {
         return feignAdminService.findByPage(JsonUtils.objectToJson(adminQueryVO));
     }
 
+    @ApiOperation(value="查看管理员的角色", notes="查看管理员的角色")
     @Operate(value = "查看管理员的角色")
     @CrossOrigin
     @RequiresPermissions("admin:auth")//权限管理;
@@ -141,6 +150,7 @@ public class AdminController {
         return feignAdminService.findRolesByAdminId(adminId);
     }
 
+    @ApiOperation(value="修改管理员的角色", notes="修改管理员的角色")
     @Operate(value = "修改管理员的角色")
     @CrossOrigin
     @RequiresPermissions("admin:auth")//权限管理;
