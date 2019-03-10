@@ -26,21 +26,21 @@ public class UserController {
 
     @RequestMapping(value = "/v1/findUserDetailByPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDTO<PageInfo<UserDetailDTO>> superFindUserDetailByPage(@RequestParam("userDetailQueryVOJson") String userDetailQueryVOJson)  throws BizException {
+    public ResultDTO<PageInfo<UserDetailDTO>> findUserDetailByPage(@RequestParam("userDetailQueryVOJson") String userDetailQueryVOJson)  throws BizException {
         UserDetailQueryVO userDetailQueryVO = JsonUtils.jsonToObject(userDetailQueryVOJson, UserDetailQueryVO.class);
         return ResultDTOUtils.success(userService.findUserDetailByPage(userDetailQueryVO));
     }
 
     @RequestMapping(value = "/v1/findUserDoorByPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDTO<PageInfo<UserDoorDTO>> superFindUserDoorByPage(@RequestParam("userDoorQueryVOJson") String userDoorQueryVOJson)  throws BizException {
+    public ResultDTO<PageInfo<UserDoorDTO>> findUserDoorByPage(@RequestParam("userDoorQueryVOJson") String userDoorQueryVOJson)  throws BizException {
         UserDoorQueryVO userDoorQueryVO = JsonUtils.jsonToObject(userDoorQueryVOJson, UserDoorQueryVO.class);
         return ResultDTOUtils.success(userService.findUserDoorByPage(userDoorQueryVO));
     }
 
     @RequestMapping(value = "/v1/findUserRegionByPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDTO<PageInfo<UserRegionDTO>> superFindUserRegionByPage(@RequestParam("userRegionQueryVOJson") String userRegionQueryVOJson)  throws BizException {
+    public ResultDTO<PageInfo<UserRegionDTO>> findUserRegionByPage(@RequestParam("userRegionQueryVOJson") String userRegionQueryVOJson)  throws BizException {
         UserRegionQueryVO userRegionQueryVO = JsonUtils.jsonToObject(userRegionQueryVOJson, UserRegionQueryVO.class);
         return ResultDTOUtils.success(userService.findUserRegionByPage(userRegionQueryVO));
     }

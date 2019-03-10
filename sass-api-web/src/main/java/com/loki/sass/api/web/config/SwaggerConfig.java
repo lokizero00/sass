@@ -71,7 +71,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
                 regex("/role/.*"),
                 regex("/userResidentApply/.*"),
                 regex("/visitorApply/.*"),
-                regex("/doorRecord/.*")
+                regex("/doorRecord/.*"),
+                regex("/user/.*")
         );
     }
 
