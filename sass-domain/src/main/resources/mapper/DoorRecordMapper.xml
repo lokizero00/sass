@@ -9,7 +9,7 @@
     <result column="success" jdbcType="INTEGER" property="success" />
   </resultMap>
 
-  <resultMap id="QueryResultMap" type="com.loki.sass.domain.model.DoorRecord">
+  <resultMap id="QueryResultMap" type="com.loki.sass.domain.po.DoorRecordPO">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="door_id" jdbcType="INTEGER" property="doorId" />
     <result column="door_code" jdbcType="VARCHAR" property="doorCode" />
