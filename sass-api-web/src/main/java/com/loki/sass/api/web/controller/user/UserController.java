@@ -35,7 +35,7 @@ public class UserController {
     @ApiOperation(value="用户详情查询", notes="用户详情查询,用户信息及真实姓名")
     @Operate(value = "记录查询")
     @CrossOrigin
-    @RequiresPermissions("user:view")//权限管理;
+    @RequiresPermissions("userDetail:view")//权限管理;
     @RequestMapping(value = "/oauth2/findUserDetailByPage", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResultDTO<PageInfo<UserDetailDTO>> findUserDetailByPage(@RequestBody UserDetailQueryVO userDetailQueryVO)  throws BizException {
@@ -48,7 +48,7 @@ public class UserController {
     @ApiOperation(value="用户门禁查询", notes="用户关联门禁查询")
     @Operate(value = "记录查询")
     @CrossOrigin
-    @RequiresPermissions("user:view")//权限管理;
+    @RequiresPermissions("userDoor:view")//权限管理;
     @RequestMapping(value = "/oauth2/findUserDoorByPage", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResultDTO<PageInfo<UserDoorDTO>> findUserDoorByPage(@RequestBody UserDoorQueryVO userDoorQueryVO)  throws BizException {
@@ -61,7 +61,7 @@ public class UserController {
     @ApiOperation(value="用户区域查询", notes="用户关联区域查询")
     @Operate(value = "记录查询")
     @CrossOrigin
-    @RequiresPermissions("user:view")//权限管理;
+    @RequiresPermissions("userRegion:view")//权限管理;
     @RequestMapping(value = "/oauth2/findUserRegionByPage", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResultDTO<PageInfo<UserRegionDTO>> findUserRegionByPage(@RequestBody UserRegionQueryVO userRegionQueryVO)  throws BizException {
