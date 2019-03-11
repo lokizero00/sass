@@ -44,7 +44,7 @@ public interface UserMapper {
     List<UserDoorPO> findUserDoorByParam(@Param("doorName")String doorName,
                                          @Param("userMobile")String userMobile,
                                          @Param("userName")String userName,
-                                         @Param("isPermanent")Integer isPermanent,
+                                         @Param("isPermanent")Boolean isPermanent,
                                          @Param("zoneId")Integer zoneId,
                                          @Param("propertyId")Integer propertyId);
 

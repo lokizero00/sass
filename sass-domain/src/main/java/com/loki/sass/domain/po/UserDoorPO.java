@@ -15,5 +15,5 @@ public class UserDoorPO {
 
     private String userName;
 
-    private Integer isPermanent;
+    private Integer type;
 }

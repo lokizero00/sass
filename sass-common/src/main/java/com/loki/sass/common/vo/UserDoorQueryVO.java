@@ -11,7 +11,7 @@ public class UserDoorQueryVO extends BaseQueryVO {
 
     private String userName;
 
-    private Integer isPermanent;
+    private Boolean isPermanent;
 
     private Integer adminId;
 

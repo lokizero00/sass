@@ -20,22 +20,22 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="registry_time" jdbcType="TIMESTAMP" property="registryTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
-    <result column="realName" jdbcType="VARCHAR" property="realName"/>
+    <result column="real_name" jdbcType="VARCHAR" property="realName"/>
   </resultMap>
   <resultMap id="UserDoorResultMap" type="com.loki.sass.domain.po.UserDoorPO">
     <result column="id" jdbcType="INTEGER" property="id"/>
-    <result column="code" jdbcType="VARCHAR" property="doorCode"/>
-    <result column="name" jdbcType="VARCHAR" property="doorName"/>
-    <result column="mobile" jdbcType="VARCHAR" property="userMobile"/>
-    <result column="type" jdbcType="INTEGER" property="isPermanent"/>
+    <result column="doorCode" jdbcType="VARCHAR" property="doorCode"/>
+    <result column="doorName" jdbcType="VARCHAR" property="doorName"/>
+    <result column="userMobile" jdbcType="VARCHAR" property="userMobile"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
   </resultMap>
   <resultMap id="UserRegionResultMap" type="com.loki.sass.domain.po.UserRegionPO">
     <result column="id" jdbcType="INTEGER" property="id"/>
-    <result column="name" jdbcType="VARCHAR" property="regionName"/>
-    <result column="mobile" jdbcType="VARCHAR" property="userMobile"/>
-    <result column="name" jdbcType="VARCHAR" property="userName"/>
-    <result column="name" jdbcType="VARCHAR" property="zoneName"/>
-    <result column="name" jdbcType="VARCHAR" property="propertyName"/>
+    <result column="regionName" jdbcType="VARCHAR" property="regionName"/>
+    <result column="userMobile" jdbcType="VARCHAR" property="userMobile"/>
+    <result column="userName" jdbcType="VARCHAR" property="userName"/>
+    <result column="zoneName" jdbcType="VARCHAR" property="zoneName"/>
+    <result column="propertyName" jdbcType="VARCHAR" property="propertyName"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -307,7 +307,7 @@
   </select>
 
   <select id="findUserDoorByParam" resultMap="UserDoorResultMap">
-    select u.id as id,u.mobile as userMobile,u.nick_name as userName,u.type as isPermanent,d.code as doorCode,d.name as doorName
+    select u.id as id,u.mobile as userMobile,u.nick_name as userName,u.type as type,d.code as doorCode,d.name as doorName
     from user u
     left join door_record dr on u.id = dr.user_id
     left join door d on d.id = dr.door_id
@@ -322,10 +322,10 @@
         and u.name = #{userName}
       </if>
       <if test="isPermanent!=null">
-        <if test="isPermanent==1">
+        <if test="isPermanent==true">
             and u.type = 2
         </if>
-        <if test="isPermanent==0">
+        <if test="isPermanent==false">
             and u.type = 3
         </if>
       </if>

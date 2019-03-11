@@ -29,17 +29,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags="用户管理")
 public class UserController {
 
-    /*
-    @RequestMapping(value = "/user/v1/findUserDetailByPage", method = RequestMethod.POST)
-    public ResultDTO<PageInfo<UserDetailDTO>> superFindUserDetailByPage(@RequestParam("userDetailQueryVOJson") String userDetailQueryVOJson)  throws BizException;
-
-    @RequestMapping(value = "/user/v1/findUserDoorByPage", method = RequestMethod.POST)
-    public ResultDTO<PageInfo<UserDoorDTO>> superFindUserDoorByPage(@RequestParam("userDoorQueryVOJson") String userDoorQueryVOJson)  throws BizException ;
-
-    @RequestMapping(value = "/user/v1/findUserRegionByPage", method = RequestMethod.POST)
-    public ResultDTO<PageInfo<UserRegionDTO>> superFindUserRegionByPage(@RequestParam("userRegionQueryVOJson") String userRegionQueryVOJson)  throws BizException ;
-    * */
-
     @Autowired
     private FeignUserService feignUserService;
 
@@ -49,7 +38,7 @@ public class UserController {
     @RequiresPermissions("user:view")//权限管理;
     @RequestMapping(value = "/oauth2/findUserDetailByPage", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResultDTO<PageInfo<UserDetailDTO>> superFindUserDetailByPage(@RequestBody UserDetailQueryVO userDetailQueryVO)  throws BizException {
+    public ResultDTO<PageInfo<UserDetailDTO>> findUserDetailByPage(@RequestBody UserDetailQueryVO userDetailQueryVO)  throws BizException {
         ShiroAdmin shiroAdmin=(ShiroAdmin) SecurityUtils.getSubject().getPrincipal();
         userDetailQueryVO.setAdminId(shiroAdmin.getId());
 
