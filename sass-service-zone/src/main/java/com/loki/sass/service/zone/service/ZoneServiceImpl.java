@@ -64,6 +64,7 @@ public class ZoneServiceImpl implements ZoneService {
             zone.setTown(zoneRequestVO.getTown());
             zone.setCreateTime(new Date());
             zone.setState(zoneRequestVO.getState());
+            zone.setCreateBy(zoneRequestVO.getCreateBy());
             zoneMapper.insertSelective(zone);
         }catch(Exception e){
             e.printStackTrace();
