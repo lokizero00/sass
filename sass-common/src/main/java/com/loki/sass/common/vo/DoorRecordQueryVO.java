@@ -25,9 +25,9 @@ public class DoorRecordQueryVO extends BaseQueryVO{
 
     private String userRealName;
 
-    private Date createTimeStart;
+    private String createTimeStart;
 
-    private Date createTimeEnd;
+    private String createTimeEnd;
 
     private Integer success;
 

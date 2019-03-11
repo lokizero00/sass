@@ -26,12 +26,7 @@ zuul:
     maxTotalConnections: 200
     maxPerRouteConnections: 20
   routes:
-#    api-mobile:
-#      path: /api-mobile/**
-#      serviceId: sass-api-mobile
-#      stripPrefix: true
-#      sensitiveHeaders:
-    service-web:
+    api-web:
       path: /api-web/**
       serviceId: sass-api-web
       stripPrefix: true
@@ -52,6 +47,7 @@ ribbon:
     max-connections-per-route: 50 # 默认值
   eager-load:
     enabled: true
+
 hystrix:
   enabled: false
   config:
@@ -66,13 +62,13 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 6000
-service-blogs:
+api-web:
   ribbon:
     ReadTimeout: 3000
     ConnectTimeout: 3000
     MaxAutoRetries: 0
     MaxAutoRetriesNextServer: 1
-service-order:
+service-resident:
   ribbon:
     ReadTimeout: 3000
     ConnectTimeout: 3000
@@ -82,9 +78,9 @@ service-order:
 management:
   security:
     enabled: false
+
 logging:
   file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
   level:
     root: INFO
-    #    org.springframework.web: DEBUG
     com.loki.sass: DEBUG

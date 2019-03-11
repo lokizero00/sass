@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("sass-service-entrance")
 public interface FeignDoorRecordService {
 
-    @RequestMapping(value = "/doorRecordv1/getDoorRecordListSearch",method = RequestMethod.POST)
+    @RequestMapping(value = "/doorRecord/v1/getDoorRecordListSearch",method = RequestMethod.POST)
     ResultDTO<PageInfo<DoorRecordDTO>> getDoorRecordListSearch(@RequestParam("doorRecordQueryJson") String doorRecordQueryJson) throws BizException;
 }

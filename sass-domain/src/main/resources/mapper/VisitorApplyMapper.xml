@@ -400,11 +400,11 @@
       <if test="propertyId!=null and propertyId!=0">
         AND r.property_id=#{propertyId}
       </if>
-      <if test="visitingTimeStart!=null and visitingTimeStart!=''">
-        <![CDATA[   and DATE_FORMAT(va.visiting_time, '%Y-%m-%d')>=  DATE_FORMAT(#{visitingTimeStart}, '%Y-%m-%d')   ]]>
+      <if test="visitingTimeStart!= null and visitingTimeStart!=''">
+        <![CDATA[ and va.visiting_time>=#{visitingTimeStart} ]]>
       </if>
       <if test="visitingTimeEnd!=null and visitingTimeEnd!=''">
-        <![CDATA[  and DATE_FORMAT(va.visiting_time, '%Y-%m-%d') <= DATE_FORMAT(#{visitingTimeEnd}, '%Y-%m-%d')    ]]>
+        <![CDATA[  and va.visiting_time<=#{visitingTimeEnd}  ]]>
       </if>
     </where>
   </select>

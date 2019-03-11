@@ -28,27 +28,6 @@ spring:
     #    max-active: 8
     #    max-wait: 1
 
-
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://39.98.90.27:3306/sass-db?useUnicode=true&characterEncoding=utf-8&useSSL=false
-#    username: test01
-#    password: Onepercent_01
-#    type: com.alibaba.druid.pool.DruidDataSource
-#    initialSize: 2
-#    minIdle: 0
-#    maxActive: 20
-#    maxWait: 60000
-#    timeBetweenEvictionRunsMillis: 60000
-#    minEvictableIdleTimeMillis: 30000
-#    validationQuery: SELECT 1
-#    testWhileIdle: true
-#    testOnBorrow: false
-#    testOnReturn: true
-#    poolPreparedStatements: false
-#    maxPoolPreparedStatementPerConnectionSize: 20
-#    filters: stat,wall,slf4j
-#    logSlowSql: true
 feign:
   httpclient:
     enabled: false
@@ -66,7 +45,6 @@ logging:
   file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
   level:
     root: INFO
-    #    org.springframework.web: DEBUG
     com.loki.sass: DEBUG
 
 system:
@@ -103,3 +81,11 @@ system:
       appSecret: 08933835002d9a767aee303e4230dbeb
       miniSecret: 0c78276b44031e39579b3086946a14f1
       miniRecruitSiteSecret: 0a1210ed2584ef4ced650197a652ca0c
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

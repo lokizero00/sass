@@ -72,20 +72,12 @@ logging:
   file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
   level:
     root: INFO
-    #    org.springframework.web: DEBUG
     com.loki.sass: DEBUG
 
 hystrix:
-  enabled: false
-  config:
-    stream:
-      maxConcurrentConnections: 50
   command:
     default:
       execution:
-        strategy: THREAD          # SEMAPHORE/THREAD
-        timeout:
-          enabled: true
         isolation:
           thread:
-            timeoutInMilliseconds: 6000
+            timeoutInMilliseconds: 60000

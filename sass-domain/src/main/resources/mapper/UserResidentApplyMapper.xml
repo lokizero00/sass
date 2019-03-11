@@ -273,7 +273,7 @@
     a.real_name AS update_by_name
     FROM
     user_resident_apply ura
-    LEFT JOIN USER u ON u.id = ura.user_id
+    LEFT JOIN user u ON u.id = ura.user_id
     LEFT JOIN user_auth ua ON ua.user_id = ura.user_id
     LEFT JOIN region r ON r.id = ura.region_id
     LEFT JOIN admin a ON a.id = ura.update_by

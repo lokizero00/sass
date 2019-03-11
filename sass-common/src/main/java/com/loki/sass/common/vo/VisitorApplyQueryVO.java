@@ -26,9 +26,9 @@ public class VisitorApplyQueryVO extends BaseQueryVO{
 
     private Integer intervieweeId;
 
-    private Date visitingTimeStart;
+    private String visitingTimeStart;
 
-    private Date visitingTimeEnd;
+    private String visitingTimeEnd;
 
     private String updateByName;
 

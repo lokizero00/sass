@@ -40,8 +40,8 @@ public interface DoorRecordMapper {
                                      @Param("userId") Integer userId,
                                      @Param("userPhone") String userPhone,
                                      @Param("userRealName") String userRealName,
-                                     @Param("createTimeStart") Date createTimeStart,
-                                     @Param("createTimeEnd") Date createTimeEnd,
+                                     @Param("createTimeStart") String createTimeStart,
+                                     @Param("createTimeEnd") String createTimeEnd,
                                      @Param("success") Integer success,
                                      @Param("zoneId") Integer zoneId,
                                      @Param("propertyId") Integer propertyId);

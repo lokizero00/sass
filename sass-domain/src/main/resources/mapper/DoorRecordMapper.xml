@@ -228,7 +228,7 @@
     door_record dr
     LEFT JOIN door d ON d.id = dr.door_id
     LEFT JOIN region r ON r.id = d.region_id
-    LEFT JOIN USER u ON u.id = dr.user_id
+    LEFT JOIN user u ON u.id = dr.user_id
     LEFT JOIN user_auth ua ON ua.id = dr.user_id
     <where>
       <if test="doorId!=null and doorId!=0">
@@ -255,11 +255,11 @@
       <if test="userRealName!=null and userRealName!=''">
         and ua.real_name like CONCAT('%',#{userRealName},'%')
       </if>
-      <if test="createTimeStart!=null and createTimeStart!=''">
-        <![CDATA[   and DATE_FORMAT(dr.create_time, '%Y-%m-%d')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d')   ]]>
+      <if test="createTimeStart!= null and createTimeStart!=''">
+        <![CDATA[ and dr.create_time>=#{createTimeStart} ]]>
       </if>
       <if test="createTimeEnd!=null and createTimeEnd!=''">
-        <![CDATA[  and DATE_FORMAT(dr.create_time, '%Y-%m-%d') <= DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d')    ]]>
+        <![CDATA[  and dr.create_time<=#{createTimeEnd}  ]]>
       </if>
       <if test="success!=null and success!=0">
         and dr.success=#{success}

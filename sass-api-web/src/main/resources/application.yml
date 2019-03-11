@@ -72,10 +72,17 @@ logging:
   file: /Users/lokizero00/Documents/java_proj/sass-logs/${spring.application.name}-${server.port}.log
   level:
     root: INFO
-#    org.springframework.web: DEBUG
     com.loki.sass: DEBUG
 
 system:
   swagger:
     enable: true
     api-host: localhost:${server.port}
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
