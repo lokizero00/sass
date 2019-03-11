@@ -34,4 +34,6 @@ public class PropertyDTO {
     private Date updateTime;
 
     private Integer isDeleted;
+
+    private Integer state;
 }

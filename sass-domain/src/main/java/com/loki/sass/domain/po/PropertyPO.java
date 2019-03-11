@@ -34,4 +34,6 @@ public class PropertyPO {
     private Date updateTime;
 
     private Integer isDeleted;
+
+    private Integer state;
 }
