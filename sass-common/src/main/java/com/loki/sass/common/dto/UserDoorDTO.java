@@ -19,5 +19,5 @@ public class UserDoorDTO {
 
     private String userName;
 
-    private Integer type;
+    private Boolean isPermanent;
 }

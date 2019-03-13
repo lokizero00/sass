@@ -11,6 +11,7 @@ import com.loki.sass.common.dto.UserRegionDTO;
 import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
+import com.loki.sass.common.util.interfaces.IConvertHelper;
 import com.loki.sass.common.vo.UserDetailQueryVO;
 import com.loki.sass.common.vo.UserDoorQueryVO;
 import com.loki.sass.common.vo.UserRegionQueryVO;
@@ -114,7 +115,18 @@ public class UserServiceImpl implements UserService {
             default:
                 break;
         }
-        List<UserDoorDTO> dtoList= ConvertUtils.sourceToTarget(userDoorPOList,UserDoorDTO.class);
+        List<UserDoorDTO> dtoList = ConvertUtils.sourceToTarget(userDoorPOList, UserDoorDTO.class, new IConvertHelper<UserDoorPO, UserDoorDTO>() {
+
+            @Override
+            public void afterConvert(UserDoorPO userDoorPO, UserDoorDTO userDoorDTO) {
+                userDoorDTO.setIsPermanent(null);//如果是无法识别的标志
+                if (userDoorPO.getType() == 2) {//如果是常驻用户
+                    userDoorDTO.setIsPermanent(true);
+                } else if (userDoorPO.getType() == 3) {//如果是访客
+                    userDoorDTO.setIsPermanent(false);
+                }
+            }
+        });
         PageInfo<UserDoorDTO> pageInfo = new PageInfo<>(dtoList);
         return pageInfo;
     }

@@ -4,6 +4,9 @@ package com.loki.sass.common.enums;
  * created by lokizero00 on 2019-02-17
  */
 public enum SysRole {
+
+    //未知
+    UNKNOWN("unknown"),
     //超级管理员
     ADMIN("admin"),
     //小区管理员

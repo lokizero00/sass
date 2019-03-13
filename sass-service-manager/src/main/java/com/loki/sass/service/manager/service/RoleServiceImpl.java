@@ -191,9 +191,13 @@ public class RoleServiceImpl implements RoleService {
     public SysRole getDataIsolationLevel(Integer adminId) throws BizException {
         //数据隔离
         //roleType，PROPERTY：物业管理员，ZONE：小区管理员，ADMIN：超级管理员
-        SysRole roleType=SysRole.PROPERTY;
+        SysRole roleType=SysRole.UNKNOWN;
         Admin admin=adminMapper.selectByPrimaryKey(adminId);
         List<String> roleList=roleMapper.selectRoleByAdminId(adminId);
+
+        if(roleList.contains(SysRole.PROPERTY.getValue())){
+            roleType = SysRole.PROPERTY;
+        }
 
         if(roleList.contains(SysRole.ZONE.getValue())){
             roleType=SysRole.ZONE;
