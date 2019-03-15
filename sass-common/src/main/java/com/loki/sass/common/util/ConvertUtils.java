@@ -8,6 +8,7 @@
 
 package com.loki.sass.common.util;
 
+import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.util.interfaces.IConvertHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,45 @@ public class ConvertUtils {
         }
 
         return targetList;
+    }
+
+    public static <T> PageInfo<T> sourceToTarget(PageInfo<?> sourcePage, Class<T> target){
+        if(sourcePage == null){
+            return null;
+        }
+
+        List sourceList=sourcePage.getList();
+        List targetList = new ArrayList<>(sourceList.size());
+        try {
+            for(Object source : sourceList){
+                T targetObject = target.newInstance();
+                BeanUtils.copyProperties(source, targetObject);
+                targetList.add(targetObject);
+            }
+
+            PageInfo<T> targetPage=new PageInfo<>(targetList);
+            targetPage.setTotal(sourcePage.getTotal());
+            targetPage.setEndRow(sourcePage.getEndRow());
+            targetPage.setHasNextPage(sourcePage.isHasNextPage());
+            targetPage.setHasPreviousPage(sourcePage.isHasPreviousPage());
+            targetPage.setIsFirstPage(sourcePage.isIsFirstPage());
+            targetPage.setIsLastPage(sourcePage.isIsLastPage());
+            targetPage.setNavigateFirstPage(sourcePage.getNavigateFirstPage());
+            targetPage.setNavigateLastPage(sourcePage.getNavigateLastPage());
+            targetPage.setNavigatepageNums(sourcePage.getNavigatepageNums());
+            targetPage.setNavigatePages(sourcePage.getNavigatePages());
+            targetPage.setNextPage(sourcePage.getNextPage());
+            targetPage.setPageNum(sourcePage.getPageNum());
+            targetPage.setPages(sourcePage.getPages());
+            targetPage.setPageSize(sourcePage.getPageSize());
+            targetPage.setPrePage(sourcePage.getPrePage());
+            targetPage.setSize(sourcePage.getSize());
+            targetPage.setStartRow(sourcePage.getStartRow());
+            return targetPage;
+        }catch (Exception e){
+            logger.error("convert error ", e);
+        }
+        return null;
     }
 
     /*
