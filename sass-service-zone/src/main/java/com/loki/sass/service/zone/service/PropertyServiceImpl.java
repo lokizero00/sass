@@ -8,7 +8,6 @@ import com.loki.sass.common.code.RoleResultCode;
 import com.loki.sass.common.code.ZoneResultCode;
 import com.loki.sass.common.dto.PropertyDTO;
 import com.loki.sass.common.dto.ResultDTO;
-import com.loki.sass.common.enums.PropertyState;
 import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
 import com.loki.sass.common.util.ConvertUtils;
@@ -156,9 +155,10 @@ public class PropertyServiceImpl implements PropertyService {
             default:
                 break;
         }
+        PageInfo<PropertyPO> propertyPOPageInfo = new PageInfo<>(list);
 
-        List<PropertyDTO> dtoList= ConvertUtils.sourceToTarget(list,PropertyDTO.class);
-        PageInfo<PropertyDTO> pageInfo = new PageInfo<>(dtoList);
+        PageInfo<PropertyDTO> pageInfo= ConvertUtils.sourceToTarget(propertyPOPageInfo,PropertyDTO.class);
+
         return pageInfo;
     }
 }

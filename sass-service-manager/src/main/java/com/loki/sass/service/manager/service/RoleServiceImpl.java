@@ -144,9 +144,8 @@ public class RoleServiceImpl implements RoleService {
             default:
                 break;
         }
-
-        List<RoleDTO> dtoList= ConvertUtils.sourceToTarget(list,RoleDTO.class);
-        return new PageInfo<>(dtoList);
+        PageInfo<RolePO> rolePOPageInfo = new PageInfo<>(list);
+        return ConvertUtils.sourceToTarget(rolePOPageInfo,RoleDTO.class);
     }
 
     @Override

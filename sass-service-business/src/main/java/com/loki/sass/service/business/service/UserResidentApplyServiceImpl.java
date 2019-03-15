@@ -121,9 +121,8 @@ public class UserResidentApplyServiceImpl implements UserResidentApplyService {
             default:
                 break;
         }
+        PageInfo<UserResidentApplyPO> userResidentApplyPOPageInfo = new PageInfo<>(list);
+        return ConvertUtils.sourceToTarget(userResidentApplyPOPageInfo,UserResidentApplyDTO.class);
 
-        List<UserResidentApplyDTO> dtoList= ConvertUtils.sourceToTarget(list,UserResidentApplyDTO.class);
-        PageInfo<UserResidentApplyDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
     }
 }

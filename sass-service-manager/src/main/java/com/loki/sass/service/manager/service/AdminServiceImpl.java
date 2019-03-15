@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.loki.sass.common.code.AdminResultCode;
 import com.loki.sass.common.code.RoleResultCode;
 import com.loki.sass.common.dto.AdminDTO;
-import com.loki.sass.common.dto.ResultDTO;
 import com.loki.sass.common.dto.RoleDTO;
 import com.loki.sass.common.enums.SysRole;
 import com.loki.sass.common.exception.BizException;
@@ -106,10 +105,8 @@ public class AdminServiceImpl implements AdminService {
             default:
                 break;
         }
-
-        List<AdminDTO> dtoList= ConvertUtils.sourceToTarget(list,AdminDTO.class);
-        PageInfo<AdminDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        PageInfo<AdminPO> adminPOPageInfo = new PageInfo<>(list);
+        return ConvertUtils.sourceToTarget(adminPOPageInfo,AdminDTO.class);
     }
 
     @Override

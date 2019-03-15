@@ -155,9 +155,10 @@ public class DoorServiceImpl implements DoorService {
             default:
                 break;
         }
+        PageInfo<DoorPO> doorPOPageInfo = new PageInfo<>(list);
 
-        List<DoorDTO> dtoList= ConvertUtils.sourceToTarget(list,DoorDTO.class);
-        PageInfo<DoorDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        PageInfo<DoorDTO> doorDTOPageInfo = ConvertUtils.sourceToTarget(doorPOPageInfo, DoorDTO.class);
+
+        return doorDTOPageInfo;
     }
 }

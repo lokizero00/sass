@@ -29,6 +29,7 @@
         <module>sass-api-web</module>
         <module>sass-feignclient</module>
         <module>sass-service-manager</module>
+        <!--<module>sass-service-mqtt</module>-->
         <module>sass-service-business</module>
         <module>sass-service-resident</module>
         <module>sass-service-zone</module>

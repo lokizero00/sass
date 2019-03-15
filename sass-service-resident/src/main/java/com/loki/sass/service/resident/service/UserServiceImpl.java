@@ -79,9 +79,8 @@ public class UserServiceImpl implements UserService {
             default:
                 break;
         }
-        List<UserDetailDTO> dtoList= ConvertUtils.sourceToTarget(userDetailPOList,UserDetailDTO.class);
-        PageInfo<UserDetailDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        PageInfo<UserDetailPO> userDetailPOPageInfo = new PageInfo<>(userDetailPOList);
+        return ConvertUtils.sourceToTarget(userDetailPOPageInfo,UserDetailDTO.class);
     }
 
     @Override
@@ -115,7 +114,8 @@ public class UserServiceImpl implements UserService {
             default:
                 break;
         }
-        List<UserDoorDTO> dtoList = ConvertUtils.sourceToTarget(userDoorPOList, UserDoorDTO.class, new IConvertHelper<UserDoorPO, UserDoorDTO>() {
+        PageInfo<UserDoorPO> userDoorPOPageInfo = new PageInfo<>(userDoorPOList);
+        return ConvertUtils.sourceToTarget(userDoorPOPageInfo, UserDoorDTO.class, new IConvertHelper<UserDoorPO,UserDoorDTO>(){
 
             @Override
             public void afterConvert(UserDoorPO userDoorPO, UserDoorDTO userDoorDTO) {
@@ -127,8 +127,6 @@ public class UserServiceImpl implements UserService {
                 }
             }
         });
-        PageInfo<UserDoorDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
     }
 
     @Override
@@ -163,8 +161,7 @@ public class UserServiceImpl implements UserService {
             default:
                 break;
         }
-        List<UserRegionDTO> dtoList= ConvertUtils.sourceToTarget(userRegionPOList,UserRegionDTO.class);
-        PageInfo<UserRegionDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        PageInfo<UserRegionPO> userRegionPOPageInfo = new PageInfo<>(userRegionPOList);
+        return ConvertUtils.sourceToTarget(userRegionPOPageInfo, UserRegionDTO.class);
     }
 }

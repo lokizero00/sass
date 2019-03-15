@@ -60,67 +60,6 @@ public class ConvertUtils {
         return targetList;
     }
 
-    public static <T> PageInfo<T> sourceToTarget(PageInfo<?> sourcePage, Class<T> target){
-        if(sourcePage == null){
-            return null;
-        }
-
-        List sourceList=sourcePage.getList();
-        List targetList = new ArrayList<>(sourceList.size());
-        try {
-            for(Object source : sourceList){
-                T targetObject = target.newInstance();
-                BeanUtils.copyProperties(source, targetObject);
-                targetList.add(targetObject);
-            }
-
-            PageInfo<T> targetPage=new PageInfo<>(targetList);
-            targetPage.setTotal(sourcePage.getTotal());
-            targetPage.setEndRow(sourcePage.getEndRow());
-            targetPage.setHasNextPage(sourcePage.isHasNextPage());
-            targetPage.setHasPreviousPage(sourcePage.isHasPreviousPage());
-            targetPage.setIsFirstPage(sourcePage.isIsFirstPage());
-            targetPage.setIsLastPage(sourcePage.isIsLastPage());
-            targetPage.setNavigateFirstPage(sourcePage.getNavigateFirstPage());
-            targetPage.setNavigateLastPage(sourcePage.getNavigateLastPage());
-            targetPage.setNavigatepageNums(sourcePage.getNavigatepageNums());
-            targetPage.setNavigatePages(sourcePage.getNavigatePages());
-            targetPage.setNextPage(sourcePage.getNextPage());
-            targetPage.setPageNum(sourcePage.getPageNum());
-            targetPage.setPages(sourcePage.getPages());
-            targetPage.setPageSize(sourcePage.getPageSize());
-            targetPage.setPrePage(sourcePage.getPrePage());
-            targetPage.setSize(sourcePage.getSize());
-            targetPage.setStartRow(sourcePage.getStartRow());
-            return targetPage;
-        }catch (Exception e){
-            logger.error("convert error ", e);
-        }
-        return null;
-    }
-
-    /*
-    public static<T> T sourceToTarget(Object source,Class<T> targetClass,IConvertHandler convertHandler){
-        if(convertHandler==null){
-            return sourceToTarget(source,targetClass);
-        }
-        if(source == null){
-            return null;
-        }
-        T target = null;
-        try {
-            target = targetClass.newInstance();
-            convertHandler.beforeConvert(source,target);
-            BeanUtils.copyProperties(source, target);
-            convertHandler.afterConvert(source,target);
-        } catch (Exception e) {
-            logger.error("convert error ", e);
-        }
-
-        return target;
-    }
-    */
-
     /**
      * 针对集合类型,如果转换前后类型字段不一致,可以用这个方法
      * @param collection        待转换集合
@@ -150,4 +89,17 @@ public class ConvertUtils {
         }
         return list;
     }
+
+    public static<S,T> PageInfo<T> sourceToTarget(PageInfo<S> pageInfo, Class<T> tClass){
+        return sourceToTarget(pageInfo,tClass,null);
+    }
+
+    public static<S,T> PageInfo<T> sourceToTarget(PageInfo<S> pageInfo, Class<T> tClass,IConvertHelper convertHelper){
+        List<T> targetList = sourceToTarget(pageInfo.getList(), tClass,convertHelper);
+        PageInfo<T> rtnPage = new PageInfo<T>(targetList);
+        BeanUtils.copyProperties(pageInfo,rtnPage);
+        rtnPage.setList(targetList);
+        return rtnPage;
+    }
+
 }

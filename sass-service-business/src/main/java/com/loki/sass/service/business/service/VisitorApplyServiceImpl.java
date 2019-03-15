@@ -136,9 +136,7 @@ public class VisitorApplyServiceImpl implements VisitorApplyService {
             default:
                 break;
         }
-
-        List<VisitorApplyDTO> dtoList= ConvertUtils.sourceToTarget(list,VisitorApplyDTO.class);
-        PageInfo<VisitorApplyDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        PageInfo<VisitorApplyPO> visitorApplyPOPageInfo = new PageInfo<>(list);
+        return ConvertUtils.sourceToTarget(visitorApplyPOPageInfo,VisitorApplyDTO.class);
     }
 }

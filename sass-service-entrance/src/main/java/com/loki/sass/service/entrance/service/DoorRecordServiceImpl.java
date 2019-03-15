@@ -69,9 +69,7 @@ public class DoorRecordServiceImpl implements DoorRecordService {
             default:
                 break;
         }
-
-        List<DoorRecordDTO> dtoList= ConvertUtils.sourceToTarget(list,DoorRecordDTO.class);
-        PageInfo<DoorRecordDTO> pageInfo = new PageInfo<>(dtoList);
-        return pageInfo;
+        PageInfo<DoorRecordPO> doorRecordPOPageInfo = new PageInfo<>(list);
+        return ConvertUtils.sourceToTarget(doorRecordPOPageInfo,DoorRecordDTO.class);
     }
 }
