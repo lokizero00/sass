@@ -68,13 +68,13 @@ public class UserServiceImpl implements UserService {
         List<UserDetailPO> userDetailPOList = new ArrayList<>();
         switch(roleType){
             case PROPERTY:
-                userDetailPOList=userMapper.findUserDetailByParam(userDetailQueryVO.getMobile(),userDetailQueryVO.getNickName(),userDetailQueryVO.getRealName(),userDetailQueryVO.getState(),admin.getZoneId(),admin.getPropertyId());
+                userDetailPOList=userMapper.findUserDetailByParam(userDetailQueryVO.getMobile(),userDetailQueryVO.getNickName(),userDetailQueryVO.getType(),userDetailQueryVO.getRealName(),userDetailQueryVO.getState(),userDetailQueryVO.getRegionName(),userDetailQueryVO.getZoneName(),admin.getZoneId(),admin.getPropertyId());
                 break;
             case ZONE:
-                userDetailPOList=userMapper.findUserDetailByParam(userDetailQueryVO.getMobile(),userDetailQueryVO.getNickName(),userDetailQueryVO.getRealName(),userDetailQueryVO.getState(),admin.getZoneId(),0);
+                userDetailPOList=userMapper.findUserDetailByParam(userDetailQueryVO.getMobile(),userDetailQueryVO.getNickName(),userDetailQueryVO.getType(),userDetailQueryVO.getRealName(),userDetailQueryVO.getState(),userDetailQueryVO.getRegionName(),userDetailQueryVO.getZoneName(),admin.getZoneId(),0);
                 break;
             case ADMIN:
-                userDetailPOList=userMapper.findUserDetailByParam(userDetailQueryVO.getMobile(),userDetailQueryVO.getNickName(),userDetailQueryVO.getRealName(),userDetailQueryVO.getState(),0,0);
+                userDetailPOList=userMapper.findUserDetailByParam(userDetailQueryVO.getMobile(),userDetailQueryVO.getNickName(),userDetailQueryVO.getType(),userDetailQueryVO.getRealName(),userDetailQueryVO.getState(),userDetailQueryVO.getRegionName(),userDetailQueryVO.getZoneName(),0,0);
                 break;
             default:
                 break;
@@ -103,13 +103,13 @@ public class UserServiceImpl implements UserService {
         List<UserDoorPO> userDoorPOList = new ArrayList<>();
         switch(roleType){
             case PROPERTY:
-                userDoorPOList=userMapper.findUserDoorByParam(userDoorQueryVO.getDoorName(),userDoorQueryVO.getUserMobile(),userDoorQueryVO.getUserName(),userDoorQueryVO.getIsPermanent(),admin.getZoneId(),admin.getPropertyId());
+                userDoorPOList=userMapper.findUserDoorByParam(userDoorQueryVO.getDoorCode(),userDoorQueryVO.getDoorName(),userDoorQueryVO.getUserMobile(),userDoorQueryVO.getUserName(),userDoorQueryVO.getIsPermanent(),admin.getZoneId(),admin.getPropertyId());
                 break;
             case ZONE:
-                userDoorPOList=userMapper.findUserDoorByParam(userDoorQueryVO.getDoorName(),userDoorQueryVO.getUserMobile(),userDoorQueryVO.getUserName(),userDoorQueryVO.getIsPermanent(),admin.getZoneId(),0);
+                userDoorPOList=userMapper.findUserDoorByParam(userDoorQueryVO.getDoorCode(),userDoorQueryVO.getDoorName(),userDoorQueryVO.getUserMobile(),userDoorQueryVO.getUserName(),userDoorQueryVO.getIsPermanent(),admin.getZoneId(),0);
                 break;
             case ADMIN:
-                userDoorPOList=userMapper.findUserDoorByParam(userDoorQueryVO.getDoorName(),userDoorQueryVO.getUserMobile(),userDoorQueryVO.getUserName(),userDoorQueryVO.getIsPermanent(),0,0);
+                userDoorPOList=userMapper.findUserDoorByParam(userDoorQueryVO.getDoorCode(),userDoorQueryVO.getDoorName(),userDoorQueryVO.getUserMobile(),userDoorQueryVO.getUserName(),userDoorQueryVO.getIsPermanent(),0,0);
                 break;
             default:
                 break;

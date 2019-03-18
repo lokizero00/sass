@@ -24,4 +24,16 @@ public class UserDetailDTO {
     private Integer state;
 
     private String realName;
+
+    private String userRealName;
+
+    private Integer userRegionId;
+
+    private Integer regionId;
+
+    private String regionName;
+
+    private Integer zoneId;
+
+    private String zoneName;
 }

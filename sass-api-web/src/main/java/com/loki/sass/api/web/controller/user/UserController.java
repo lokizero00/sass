@@ -32,7 +32,7 @@ public class UserController {
     @Autowired
     private FeignUserService feignUserService;
 
-    @ApiOperation(value="用户详情查询", notes="用户详情查询,用户信息及真实姓名")
+    @ApiOperation(value="用户详情查询", notes="用户详情,关联区域,小区,可能一对多")
     @Operate(value = "记录查询")
     @CrossOrigin
     @RequiresPermissions("userDetail:view")//权限管理;

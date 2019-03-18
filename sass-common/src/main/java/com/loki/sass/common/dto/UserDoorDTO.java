@@ -4,7 +4,6 @@ import lombok.Data;
 
 /**
  * 用户与门禁的关系
- * 返回:门禁编号,门禁名称,用户手机,用户姓名,授权类型
  */
 @Data
 public class UserDoorDTO {

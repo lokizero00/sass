@@ -20,7 +20,12 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="registry_time" jdbcType="TIMESTAMP" property="registryTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+    <result column="user_real_name" jdbcType="VARCHAR" property="userRealName"/>
+    <result column="user_region_id" jdbcType="INTEGER" property="userRegionId"/>
+    <result column="region_id" jdbcType="INTEGER" property="regionId"/>
+    <result column="region_name" jdbcType="VARCHAR" property="regionName"/>
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId"/>
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName"/>
   </resultMap>
   <resultMap id="UserDoorResultMap" type="com.loki.sass.domain.po.UserDoorPO">
     <result column="id" jdbcType="INTEGER" property="id"/>
@@ -280,28 +285,41 @@
     select * from user u where mobile=#{mobile}
   </select>
 
+  <!--
+                                             @Param("regionName")String regionName,
+                                             @Param("zoneName")String zoneName,
+                                             @Param("zoneId")Integer zoneId,
+                                             @Param("propertyId")Integer propertyId);
+  -->
   <select id="findUserDetailByParam" resultMap="UserDetailResultMap">
-    select u.*,ua.real_name as real_name
+    select u.*,ua.real_name as user_real_name,ur.id as user_region_id,r.id as region_id, r.name as region_name,r.zone_id as zone_id,z.name as zone_name
     from user u
     left join user_auth ua on u.id = ua.user_id
+    left join user_region ur on u.id = ur.user_id
+    left join region r on ur.region_id = r.id
+    left join zone z on z.id = r.zone_id
     <where>
+      1 = 1
       <if test="userMobile!=null and userMobile!=''">
         and u.mobile like CONCAT('%',#{userMobile},'%')
       </if>
       <if test="userNickName!=null and userNickName!=''">
         and u.nick_name like CONCAT('%',#{userNickName},'%')
       </if>
+      <if test="userType!=null and userType!=0">
+        and u.type = #{userType}
+      </if>
       <if test="state!=null and state!=''">
         and u.state = #{state}
       </if>
       <if test="userRealName!=null and userRealName!=''">
-        and u.real_name like CONCAT('%',#{userRealName},'%')
+        and ua.real_name like CONCAT('%',#{userRealName},'%')
       </if>
-      <if test="zoneId!=null and zoneId!=0">
-        and r.zone_id=#{zoneId}
+      <if test="regionName!=null and regionName!=''">
+        and r.name like CONCAT('%',#{regionName},'%')
       </if>
-      <if test="propertyId!=null and propertyId!=0">
-        and r.property_id=#{propertyId}
+      <if test="zoneName!=null and zoneName!=''">
+        and z.name like CONCAT('%',#{zoneName},'%')
       </if>
     </where>
   </select>
@@ -312,6 +330,10 @@
     left join door_record dr on u.id = dr.user_id
     left join door d on d.id = dr.door_id
     <where>
+      1 = 1
+      <if test="doorCode!=null and doorCode!=''">
+        and d.code = #{doorCode}
+      </if>
       <if test="doorName!=null and doorName!=''">
         and d.name like CONCAT('%',#{doorName},'%')
       </if>
@@ -346,6 +368,7 @@
     left join zone z on r.zone_id = z.id
     left join property p on r.property_id = p.id
     <where>
+      TRUE
       <if test="regionName!=null and regionName!=''">
         and r.name like CONCAT('%',#{regionName},'%')
       </if>

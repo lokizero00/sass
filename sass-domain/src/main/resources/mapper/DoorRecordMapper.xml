@@ -231,8 +231,9 @@
     LEFT JOIN user u ON u.id = dr.user_id
     LEFT JOIN user_auth ua ON ua.id = dr.user_id
     <where>
+      TRUE
       <if test="doorId!=null and doorId!=0">
-        dr.door_id=#{doorId}
+        and dr.door_id=#{doorId}
       </if>
       <if test="doorCode!=null and doorCode!=''">
         and d.code like CONCAT('%',#{doorCode},'%')
@@ -241,13 +242,13 @@
         and d.name like CONCAT('%',#{doorName},'%')
       </if>
       <if test="regionId!=null and regionId!=0">
-        d.region_id=#{regionId}
+        and d.region_id=#{regionId}
       </if>
       <if test="regionName!=null and regionName!=''">
         and r.name like CONCAT('%',#{regionName},'%')
       </if>
       <if test="userId!=null and userId!=0">
-        dr.user_id=#{userId}
+        and dr.user_id=#{userId}
       </if>
       <if test="userPhone!=null and userPhone!=''">
         and u.mobile like CONCAT('%',#{userPhone},'%')

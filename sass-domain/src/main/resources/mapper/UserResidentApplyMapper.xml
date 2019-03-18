@@ -278,8 +278,9 @@
     LEFT JOIN region r ON r.id = ura.region_id
     LEFT JOIN admin a ON a.id = ura.update_by
     <where>
+      TRUE
       <if test="userRealName!=null and userRealName!=''">
-        ua.real_name like CONCAT('%',#{userRealName},'%')
+        AND ua.real_name like CONCAT('%',#{userRealName},'%')
       </if>
       <if test="userPhone!=null and userPhone!=''">
         AND u.mobile like CONCAT('%',#{userPhone},'%')

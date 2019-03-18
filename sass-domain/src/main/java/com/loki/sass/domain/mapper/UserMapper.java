@@ -36,12 +36,16 @@ public interface UserMapper {
 
     List<UserDetailPO> findUserDetailByParam(@Param("userMobile")String userMobile,
                                              @Param("userNickName")String userNickName,
+                                             @Param("userType")Integer userType,
                                              @Param("userRealName") String userRealName,
                                              @Param("state") Integer state,
+                                             @Param("regionName")String regionName,
+                                             @Param("zoneName")String zoneName,
                                              @Param("zoneId")Integer zoneId,
                                              @Param("propertyId")Integer propertyId);
 
-    List<UserDoorPO> findUserDoorByParam(@Param("doorName")String doorName,
+    List<UserDoorPO> findUserDoorByParam(@Param("doorCode")String doorCode,
+                                         @Param("doorName")String doorName,
                                          @Param("userMobile")String userMobile,
                                          @Param("userName")String userName,
                                          @Param("isPermanent")Boolean isPermanent,

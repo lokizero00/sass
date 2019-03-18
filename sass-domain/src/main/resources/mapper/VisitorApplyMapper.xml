@@ -364,8 +364,9 @@
     LEFT JOIN region r ON r.id = va.region_id
     LEFT JOIN admin a ON a.id = va.update_by
     <where>
+      TRUE
       <if test="visitorName!=null and visitorName!=''">
-        va.visitor_name like CONCAT('%',#{visitorName},'%')
+        AND va.visitor_name like CONCAT('%',#{visitorName},'%')
       </if>
       <if test="visitorPhone!=null and visitorPhone!=''">
         AND va.visitor_phone like CONCAT('%',#{visitorPhone},'%')

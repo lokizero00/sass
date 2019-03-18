@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class UserDoorQueryVO extends BaseQueryVO {
 
+    private String doorCode;
+
     private String doorName;
 
     private String userMobile;
