@@ -285,12 +285,6 @@
     select * from user u where mobile=#{mobile}
   </select>
 
-  <!--
-                                             @Param("regionName")String regionName,
-                                             @Param("zoneName")String zoneName,
-                                             @Param("zoneId")Integer zoneId,
-                                             @Param("propertyId")Integer propertyId);
-  -->
   <select id="findUserDetailByParam" resultMap="UserDetailResultMap">
     select u.*,ua.real_name as user_real_name,ur.id as user_region_id,r.id as region_id, r.name as region_name,r.zone_id as zone_id,z.name as zone_name
     from user u
@@ -299,7 +293,7 @@
     left join region r on ur.region_id = r.id
     left join zone z on z.id = r.zone_id
     <where>
-      1 = 1
+      TRUE
       <if test="userMobile!=null and userMobile!=''">
         and u.mobile like CONCAT('%',#{userMobile},'%')
       </if>
@@ -321,6 +315,13 @@
       <if test="zoneName!=null and zoneName!=''">
         and z.name like CONCAT('%',#{zoneName},'%')
       </if>
+      <!--权限校验-->
+      <if test="zoneId!=null and zoneId!=0">
+        and r.zone_id=#{zoneId}
+      </if>
+      <if test="propertyId!=null and propertyId!=0">
+        and r.property_id=#{propertyId}
+      </if>
     </where>
   </select>
 
@@ -330,7 +331,7 @@
     left join door_record dr on u.id = dr.user_id
     left join door d on d.id = dr.door_id
     <where>
-      1 = 1
+      TRUE
       <if test="doorCode!=null and doorCode!=''">
         and d.code = #{doorCode}
       </if>
